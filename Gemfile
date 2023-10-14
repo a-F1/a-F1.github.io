@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-# source 'https://gems.ruby-china.com' # for cn
 
 group :jekyll_plugins do
     gem 'classifier-reborn'

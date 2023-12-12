@@ -1,12 +1,12 @@
 {
-  "basics": [{
+  "basics": {
     "name": "Chongyu Fan",
     "label": "Student",
     "image": "",
     "email": "chongyu.fan93@gmail.com",
     "phone": "",
     "url": "https://a-f1.github.io"
-  }],
+  },
   "work": [],
   "volunteer": [],
   "education": [

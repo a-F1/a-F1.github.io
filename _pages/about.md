@@ -19,5 +19,5 @@ latest_posts: true  # includes a list of the newest posts
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
-I am Chongyu Fan(樊翀宇), a senior student at Huazhong University of Science and Technology.
-My research interests lie in the trustworthy and scalable ML algorithms.
+I am Chongyu Fan(樊翀宇), a first-year Ph.D. student at Michigan State University.
+My research interests lie in the trustworthy and scalable Machine Learning algorithms.

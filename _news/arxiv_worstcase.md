@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-:sparkles:  Our paper <a href="https://arxiv.org/abs/2403.07362"> Challenging Forgets: Unveiling the Worst-Case Forget Sets in Machine Unlearning</a> has been made public on arxiv!
+:sparkles:  Our paper <a href="https://arxiv.org/abs/2403.07362"> Challenging Forgets </a> has been made public on arxiv!

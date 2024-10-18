@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-I am Chongyu Fan, a first-year Ph.D. student in Computer Science at [Michigan State University](https://msu.edu/), under the supervision of [Prof. Sijia Liu](https://lsjxjtu.github.io/). I received B.Eng. from [Huazhong University of Science and Technology](https://english.hust.edu.cn/) in 2024.
+I am Chongyu Fan(樊翀宇), a first-year Ph.D. student in Computer Science at [Michigan State University](https://msu.edu/), under the supervision of [Prof. Sijia Liu](https://lsjxjtu.github.io/). I received B.Eng. from [Huazhong University of Science and Technology](https://english.hust.edu.cn/) in 2024.
 
 # :microscope: Research
 My research interests focus on developing trustworthy and scalable machine learning algorithms, including areas such as machine unlearning.

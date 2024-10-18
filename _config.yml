@@ -21,7 +21,7 @@ repository               : "a-F1/a-F1.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "my_photo/intro.png"
+  avatar           : "my_photo/intro.jpg"
   name             : "Chongyu Fan"
   pronouns         : # example: "she/her"  
   bio              : "Short biography for the left-hand sidebar"

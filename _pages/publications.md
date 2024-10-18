@@ -5,6 +5,22 @@ permalink: /publications/
 author_profile: true
 ---
 
+<style>
+/* Adjust the font size for the entire page */
+body {
+  font-size: 14px; /* Change this value to adjust font size */
+}
+
+/* Adjust the font size for the titles */
+h2, h3 {
+  font-size: 16px;
+}
+
+p, li {
+  font-size: 12px;
+}
+</style>
+
 ## 2024
 
 **Salun: Empowering machine unlearning via gradient-based weight saliency in both image classification and generation**

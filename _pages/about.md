@@ -7,6 +7,22 @@ redirect_from:
   - /about.html
 ---
 
+<style>
+/* Adjust the font size for the entire page */
+body {
+  font-size: 16px; /* Change this value to adjust font size */
+}
+
+/* Adjust the font size for the titles */
+h2, h3 {
+  font-size: 18px;
+}
+
+p, li {
+  font-size: 14px;
+}
+</style>
+
 I am Chongyu Fan(樊翀宇), a first-year Ph.D. student in Computer Science at [Michigan State University](https://msu.edu/), under the supervision of [Prof. Sijia Liu](https://lsjxjtu.github.io/). I received B.Eng. from [Huazhong University of Science and Technology](https://english.hust.edu.cn/) in 2024.
 
 # :microscope: Research

@@ -25,7 +25,7 @@ p, li {
 
 - **Simplicity Prevails: Rethinking Negative Preference Optimization for LLM Unlearning**
   - <span style="color:blue">**Chongyu Fan\***</span>, Jiancheng Liu\*, Licong Lin\*, Jinghan Jia, Ruiqi Zhang, Song Mei, Sijia Liu
-  - [[Paper]](https://arxiv.org/pdf/2410.07163?)
+  - [[Paper]](https://arxiv.org/pdf/2410.07163?)[[Code]](https://github.com/OPTML-Group/Unlearn-Simple)
 - **UnlearnCanvas: A Stylized Image Dataset to Benchmark Machine Unlearning for Diffusion Models**
   - Yihua Zhang, <span style="color:blue">**Chongyu Fan**</span>, Yimeng Zhang, Yuguang Yao, Jinghan Jia, Jiancheng Liu, Gaoyuan Zhang, Gaowen Liu, Ramana Rao Kompella, Xiaoming Liu, Sijia Liu
   - **Neurips 2024**

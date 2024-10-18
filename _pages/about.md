@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "About me"
+title: ":books: About me"
 author_profile: true
 redirect_from: 
   - /about/
@@ -10,7 +10,8 @@ redirect_from:
 I am Chongyu Fan, a first-year Ph.D. student in Computer Science at [Michigan State University](https://msu.edu/), under the supervision of [Prof. Sijia Liu](https://lsjxjtu.github.io/). I received B.Eng. from [Huazhong University of Science and Technology](https://english.hust.edu.cn/) in 2024.
 
 # :microscope: Research
-My research interests focus on developing trustworthy and scalable machine learning algorithms, including areas such as machine unlearning. I’m always open to discussing exciting research ideas and exploring potential academic collaborations. Feel free to reach out via email if you’re interested in working together.
+My research interests focus on developing trustworthy and scalable machine learning algorithms, including areas such as machine unlearning. 
+I’m always open to discussing exciting research ideas and exploring potential academic collaborations. Feel free to reach out via email if you’re interested in working together.
 
 
 # :fire: News

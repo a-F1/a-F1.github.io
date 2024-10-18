@@ -40,5 +40,5 @@ p, li {
   - [[Paper]](https://arxiv.org/abs/2403.07362)
 - **Salun: Empowering machine unlearning via gradient-based weight saliency in both image classification and generation**
   - <span style="color:blue">**Chongyu Fan\***</span>, Jiancheng Liu\*, Yihua Zhang, Dennis Wei, Eric Wong, Sijia Liu
-  - <span style="color:red">**ICLR 2024 Spotlight**</span>
+  - **ICLR 2024 <span style="color:red">Spotlight</span>**
   - [[Paper]](https://arxiv.org/abs/2310.12508)

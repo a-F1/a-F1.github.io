@@ -9,7 +9,9 @@ redirect_from:
 
 I am Chongyu Fan, a first-year Ph.D. student in Computer Science at [Michigan State University](https://msu.edu/), under the supervision of [Prof. Sijia Liu](https://lsjxjtu.github.io/). I received B.Eng. from [Huazhong University of Science and Technology](https://english.hust.edu.cn/) in 2024.
 
-My research interests focus on developing trustworthy and scalable machine learning algorithms, including areas such as machine unlearning.
+# :microscope: Research
+My research interests focus on developing trustworthy and scalable machine learning algorithms, including areas such as machine unlearning. I’m always open to discussing exciting research ideas and exploring potential academic collaborations. Feel free to reach out via email if you’re interested in working together.
+
 
 # :fire: News
 - :sparkles:  One first-author paper <a href="https://arxiv.org/abs/2410.07163"> SimNPO </a> has been made public on arxiv!

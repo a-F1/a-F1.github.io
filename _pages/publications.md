@@ -8,16 +8,16 @@ author_profile: true
 <style>
 /* Adjust the font size for the entire page */
 body {
-  font-size: 14px; /* Change this value to adjust font size */
+  font-size: 16px; /* Change this value to adjust font size */
 }
 
 /* Adjust the font size for the titles */
 h2, h3 {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 p, li {
-  font-size: 12px;
+  font-size: 14px;
 }
 </style>
 

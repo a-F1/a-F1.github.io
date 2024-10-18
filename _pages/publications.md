@@ -21,7 +21,7 @@ p, li {
 }
 </style>
 
-## 2024
+# 2024
 
 - **Simplicity Prevails: Rethinking Negative Preference Optimization for LLM Unlearning**
   - **Chongyu Fan\***, Jiancheng Liu\*, Licong Lin\*, Jinghan Jia, Ruiqi Zhang, Song Mei, Sijia Liu

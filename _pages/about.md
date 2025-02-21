@@ -32,6 +32,7 @@ I’m always open to discussing exciting research ideas and exploring potential 
 
 
 # :fire: News
+- 2025.02: :sparkles:  One first-author paper <a href="https://arxiv.org/abs/2502.05374"> Smooth Unlearn </a> has been made public on arxiv!
 - 2024.10: :sparkles:  One first-author paper <a href="https://arxiv.org/abs/2410.07163"> SimNPO </a> has been made public on arxiv!
 - 2024.09: :tada: Two papers <a href="https://arxiv.org/abs/2402.11846"> UnlearnCanvas </a> and <a href="https://arxiv.org/abs/2405.15234">  AdvUnlearn </a> have been accepted in Neurips 2024!
 - 2024.07: :tada: One first-author paper <a href="https://arxiv.org/abs/2403.07362"> Challenging Forgets </a> has been accepted in ECCV 2024!

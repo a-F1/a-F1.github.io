@@ -24,7 +24,7 @@ p, li {
 
 ## 2025
 - **Towards LLM Unlearning Resilient to Relearning Attacks: A Sharpness-Aware Minimization Perspective and Beyond**
-  - <span style="color:blue">**Chongyu Fan\***</span>, Jinghan Jia\***, Yihua Zhang, Anil Ramakrishna, Mingyi Hong, Sijia Liu
+  - <span style="color:blue">**Chongyu Fan\***</span>, Jinghan Jia\*, Yihua Zhang, Anil Ramakrishna, Mingyi Hong, Sijia Liu
   - [[Paper]](https://arxiv.org/abs/2502.05374), [[Code]](https://github.com/OPTML-Group/Unlearn-Smooth)
 
 ## 2024

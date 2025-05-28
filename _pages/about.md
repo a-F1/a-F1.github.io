@@ -140,10 +140,11 @@ redirect_from:
 </div>
 
 <div class="visit-map">
-  <div style="text-align: center; margin-top: 20px; margin-bottom: 130px;">
-    <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=7r2s2IMaTwMRed-pm9pUjPfM9dnEooj5tzaXLS5aWCU&cl=ffffff&w=a"></script>
+  <div style="text-align: center; margin-top: 20px; margin-bottom: 130px; width: 150px; margin-left: auto; margin-right: auto;">
+    <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=7r2s2IMaTwMRed-pm9pUjPfM9dnEooj5tzaXLS5aWCU&cl=ffffff&w=200"></script>
   </div>
 </div>
+
 
 <style>
 /* Base styles */

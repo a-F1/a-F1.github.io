@@ -113,7 +113,7 @@ redirect_from:
   <div class="service-category">
     <ul>
       <li>2024.09–Present, Ph.D. in CS, Michigan State University</li>
-      <li>2020.09–2024.06, B.E. in Robotics (Outstanding Graduate), Huazhong University of Science and Technology</li>
+      <li>2020.09–2024.06, B.E. in Robotics (<strong>Outstanding Graduate</strong>), Huazhong University of Science and Technology</li>
     </ul>
   </div>
   <h2>💻 Work</h2>

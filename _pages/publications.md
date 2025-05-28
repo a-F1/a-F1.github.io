@@ -31,6 +31,7 @@ author_profile: true
 .pub-venue {
     display: inline-block;
     margin-right: 5px;
+    font-weight: bold;
 }
 .pub-links {
     display: inline-block;

@@ -145,7 +145,6 @@ redirect_from:
   </div>
 </div>
 
-
 <style>
 /* Base styles */
 body {

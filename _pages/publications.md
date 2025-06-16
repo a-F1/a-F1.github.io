@@ -43,8 +43,29 @@ author_profile: true
     color: #0645AD;
     text-decoration: none;
 }
-.pub-links a + a {
-    margin-left: 6px;
+/* 取消 [ Code] 里的空隙 */
+.pub-links a + a {  /* 仅用于分隔多链接：依赖 HTML 中已有空格，不再额外留白 */
+    margin-left: 0;
+}
+
+/* ----------  页面级标题  ---------- */
+.section-title {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-weight: 900;
+    font-size: 36px; /* 更醒目 */
+    color: #374151;  /* 深灰，易读 */
+    margin: 10px 0 32px;
+    letter-spacing: 0.7px;
+    position: relative;
+}
+.section-title::after {  /* 底部细线强化层次 */
+    content: "";
+    display: block;
+    width: 72px;
+    height: 3px;
+    background: #4F7FD9;
+    margin-top: 10px;
+    border-radius: 3px;
 }
 
 /* ----------  分类标题  ---------- */
@@ -88,8 +109,7 @@ hr {
 }
 </style>
 
-<div class="section-title">Conference Papers</div>
-<hr>
+<div class="section-title">Conference&nbsp;Papers</div>
 
 <!-- ================ Efficient Reasoning ================ -->
 <section class="papers-section efficient">

@@ -73,6 +73,26 @@ hr {
 <div class="section-title">Conference Papers</div>
 <hr>
 
+<h4 class="category">Efficient Reasoning</h4>
+
+<div class="publication">
+  <div class="pub-title">CyclicReflex: Improving Large Reasoning Models via Cyclical Reflection Token Scheduling</div>
+  <div class="pub-authors"><span style="font-weight: bold; text-decoration: underline; color:blue;">Chongyu Fan</span>, Yihua Zhang, Jinghan Jia, Alfred Hero, Sijia Liu</div>
+  <div class="pub-venue-links">
+    <span class="pub-links">[<a href="https://arxiv.org/abs/2506.11077">Paper</a>] [<a href="https://github.com/OPTML-Group/CyclicReflex">Code</a>]</span>
+  </div>
+</div>
+
+<div class="publication">
+  <div class="pub-title">EPiC: Towards Lossless Speedup for Reasoning Training through Edge-Preserving CoT Condensation</div>
+  <div class="pub-authors">Jinghan Jia, Hadi Reisizadeh, <span style="font-weight: bold; text-decoration: underline; color:blue;">Chongyu Fan</span>, Nathalie Baracaldo, Mingyi Hong, Sijia Liu</div>
+  <div class="pub-venue-links">
+    <span class="pub-links">[<a href="https://arxiv.org/abs/2506.04205">Paper</a>] [<a href="https://github.com/OPTML-Group/EPiC">Code</a>]</span>
+  </div>
+</div>
+
+<h4 class="category">Machine Unlearning</h4>
+
 <div class="publication">
   <div class="pub-title">Towards LLM Unlearning Resilient to Relearning Attacks: A Sharpness-Aware Minimization Perspective and Beyond</div>
   <div class="pub-authors"><span style="font-weight: bold; text-decoration: underline; color:blue;">Chongyu Fan*</span>, Jinghan Jia*, Yihua Zhang, Anil Ramakrishna, Mingyi Hong, Sijia Liu</div>
@@ -127,4 +147,3 @@ hr {
 </div>
 
 <div style="height: 150px;"></div>
-

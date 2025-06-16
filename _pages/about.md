@@ -8,17 +8,18 @@ redirect_from:
 ---
 
 <div class="intro-container">
-  <p>🔹 I am <strong>Chongyu Fan (樊翀宇)</strong>, a first-year Ph.D. student in Computer Science at <a href="https://msu.edu/">Michigan State University</a>, supervised by Prof. <a href="https://lsjxjtu.github.io/">Sijia Liu</a>. I received B.Eng. from <a href="https://english.hust.edu.cn/">Huazhong University of Science and Technology</a> in 2024.</p>
+  <p>🔹 I am <strong>Chongyu Fan (樊翀宇)</strong>, a second-year Ph.D. student in Computer Science at <a href="https://msu.edu/">Michigan State University</a>, supervised by Prof. <a href="https://lsjxjtu.github.io/">Sijia Liu</a>. I received B.Eng. from <a href="https://english.hust.edu.cn/">Huazhong University of Science and Technology</a> in 2024.</p>
 
   <p>🔹 Currently, I am a Research Intern at <a href="https://www.bytedance.com/en/">ByteDance</a>, supervised by Dr. <a href="https://scholar.google.ca/citations?user=fl77g-UAAAAJ&hl=en">Jian Du</a>.</p>
 
-  <p>🔹 My research focuses on trustworthy and scalable machine learning, such as machine unlearning. </p>
+  <p>🔹 My research focuses on trustworthy and efficient algorthms, including machine unlearning and efficient reasoning. </p>
 
   <p>🔹 Feel free to reach out via email if you’re interested in working together. </p>
 </div>
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
+    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> and another paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> have been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
     <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
     <div class="news-item"><span class="news-date">2024.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been made public on arXiv!</div>

@@ -73,7 +73,7 @@ hr {
 <div class="section-title">Conference Papers</div>
 <hr>
 
-<h2 class="category">Efficient Reasoning</h2>
+<h1 class="category">Efficient Reasoning</h1>
 
 <div class="publication">
   <div class="pub-title">CyclicReflex: Improving Large Reasoning Models via Cyclical Reflection Token Scheduling</div>
@@ -91,7 +91,7 @@ hr {
   </div>
 </div>
 
-<h2 class="category">Machine Unlearning</h2>
+<h1 class="category">Machine Unlearning</h1>
 
 <div class="publication">
   <div class="pub-title">Towards LLM Unlearning Resilient to Relearning Attacks: A Sharpness-Aware Minimization Perspective and Beyond</div>

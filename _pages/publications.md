@@ -71,7 +71,7 @@ author_profile: true
 .category-header {
     font-family: "Microsoft YaHei", sans-serif;
     font-weight: 900;
-    font-size: 26px; /* 略微缩小 */
+    font-size: 24px; /* 略微缩小 */
     margin: 40px 0 22px;
     padding: 6px 14px;
     border-left: 8px solid;

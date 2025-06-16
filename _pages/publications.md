@@ -18,7 +18,7 @@ author_profile: true
 }
 .pub-title {
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16.5px; /* 略微缩小 */
     margin: 0 0 8px;
     color: #000;
 }
@@ -43,8 +43,7 @@ author_profile: true
     color: #0645AD;
     text-decoration: none;
 }
-/* 取消 [ Code] 里的空隙 */
-.pub-links a + a {  /* 仅用于分隔多链接：依赖 HTML 中已有空格，不再额外留白 */
+.pub-links a + a {
     margin-left: 0;
 }
 
@@ -52,13 +51,13 @@ author_profile: true
 .section-title {
     font-family: "Microsoft YaHei", sans-serif;
     font-weight: 900;
-    font-size: 36px; /* 更醒目 */
-    color: #374151;  /* 深灰，易读 */
+    font-size: 36px;
+    color: #374151;
     margin: 10px 0 32px;
     letter-spacing: 0.7px;
     position: relative;
 }
-.section-title::after {  /* 底部细线强化层次 */
+.section-title::after {
     content: "";
     display: block;
     width: 72px;
@@ -72,7 +71,7 @@ author_profile: true
 .category-header {
     font-family: "Microsoft YaHei", sans-serif;
     font-weight: 900;
-    font-size: 30px;
+    font-size: 26px; /* 略微缩小 */
     margin: 40px 0 22px;
     padding: 6px 14px;
     border-left: 8px solid;

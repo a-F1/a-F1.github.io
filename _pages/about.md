@@ -19,7 +19,8 @@ redirect_from:
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
-    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> and another paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> have been made public on arXiv!</div>
+    <div class="news-item"><span class="news-date">2025.06:</span> ✨ Two first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> and <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> have been made public on arXiv!</div>
+    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
     <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
     <div class="news-item"><span class="news-date">2024.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been made public on arXiv!</div>
@@ -78,7 +79,7 @@ redirect_from:
 </div>
 
 
-<h3 class="section-heading"><span>📄 CV (Updated: 2025-06-15)</span></h3>
+<h3 class="section-heading"><span>📄 CV (Updated: 2025-06-23)</span></h3>
 
 <div class="cv-container">
   <!-- <p class="cv-update-date">Last updated: 2025-02-03</p> -->

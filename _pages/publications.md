@@ -136,6 +136,14 @@ hr {
   <h1 class="category-header unlearning">Machine Unlearning</h1>
 
   <div class="publication">
+    <div class="pub-title">Reasoning Model Unlearning: Forgetting Traces, Not Just Answers, While Preserving Reasoning Skills</div>
+    <div class="pub-authors">Changsheng Wang, <span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Yihua Zhang, Jinghan Jia, Dennis Wei, Parikshit Ram, Nathalie Baracaldo, Sijia Liu</div>
+    <div class="pub-venue-links">
+      <span class="pub-links">[<a href="https://arxiv.org/abs/2506.12963">Paper</a>] [<a href="https://github.com/OPTML-Group/Unlearn-R2MU">Code</a>]</span>
+    </div>
+  </div>
+
+  <div class="publication">
     <div class="pub-title">Towards LLM Unlearning Resilient to Relearning Attacks: A Sharpness-Aware Minimization Perspective and Beyond</div>
     <div class="pub-authors"><span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Jinghan Jia*, Yihua Zhang, Anil Ramakrishna, Mingyi Hong, Sijia Liu</div>
     <div class="pub-venue-links">

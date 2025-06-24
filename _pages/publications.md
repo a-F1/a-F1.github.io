@@ -137,7 +137,7 @@ hr {
 
   <div class="publication">
     <div class="pub-title">Reasoning Model Unlearning: Forgetting Traces, Not Just Answers, While Preserving Reasoning Skills</div>
-    <div class="pub-authors">Changsheng Wang, <span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Yihua Zhang, Jinghan Jia, Dennis Wei, Parikshit Ram, Nathalie Baracaldo, Sijia Liu</div>
+    <div class="pub-authors">Changsheng Wang*, <span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Yihua Zhang, Jinghan Jia, Dennis Wei, Parikshit Ram, Nathalie Baracaldo, Sijia Liu</div>
     <div class="pub-venue-links">
       <span class="pub-links">[<a href="https://arxiv.org/abs/2506.12963">Paper</a>] [<a href="https://github.com/OPTML-Group/Unlearn-R2MU">Code</a>]</span>
     </div>

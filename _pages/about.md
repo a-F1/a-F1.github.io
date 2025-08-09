@@ -10,8 +10,6 @@ redirect_from:
 <div class="intro-container">
   <p>🔹 I am <strong>Chongyu Fan (樊翀宇)</strong>, a second-year Ph.D. student in Computer Science at <a href="https://msu.edu/">Michigan State University</a>, supervised by Prof. <a href="https://lsjxjtu.github.io/">Sijia Liu</a>. I received B.Eng. from <a href="https://english.hust.edu.cn/">Huazhong University of Science and Technology</a> in 2024.</p>
 
-  <p>🔹 Currently, I am a Research Intern at <a href="https://www.bytedance.com/en/">ByteDance</a>, supervised by Dr. <a href="https://scholar.google.ca/citations?user=fl77g-UAAAAJ&hl=en">Jian Du</a>.</p>
-
   <p>🔹 My research focuses on trustworthy and efficient algorthms, including machine unlearning and efficient reasoning. </p>
 
   <p>🔹 Feel free to reach out via email if you’re interested in working together. </p>

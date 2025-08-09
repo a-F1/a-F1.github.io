@@ -7,12 +7,23 @@ redirect_from:
   - /about.html
 ---
 
+<div class="theme-toggle" role="group" aria-label="Theme">
+  <button id="themeButton" class="theme-btn" aria-pressed="false" aria-label="Toggle dark mode" title="Click to switch theme · Right-click to follow system">🌙</button>
+</div>
+
 <div class="intro-container">
-  <p>🔹 I am <strong>Chongyu Fan (樊翀宇)</strong>, a second-year Ph.D. student in Computer Science at <a href="https://msu.edu/" target="_blank" rel="noopener noreferrer">Michigan State University</a>, supervised by Prof. <a href="https://lsjxjtu.github.io/" target="_blank" rel="noopener noreferrer">Sijia Liu</a>. I received my B.Eng. from <a href="https://english.hust.edu.cn/" target="_blank" rel="noopener noreferrer">Huazhong University of Science and Technology</a> in 2024.</p>
+  <div class="intro-body">
+    <p class="intro-line">I am <strong>Chongyu Fan (樊翀宇)</strong>, a second-year Ph.D. student in Computer Science at <a href="https://msu.edu/" target="_blank" rel="noopener noreferrer">Michigan State University</a>, supervised by Prof. <a href="https://lsjxjtu.github.io/" target="_blank" rel="noopener noreferrer">Sijia Liu</a>. I received my B.Eng. from <a href="https://english.hust.edu.cn/" target="_blank" rel="noopener noreferrer">Huazhong University of Science and Technology</a> in 2024.</p>
 
-  <p>🔹 My research focuses on trustworthy and efficient <strong>algorithms</strong>, including <em>machine unlearning</em> and <em>efficient reasoning</em>.</p>
+    <p class="intro-line">My research focuses on trustworthy and efficient <strong>algorithms</strong>, including <em>machine unlearning</em> and <em>efficient reasoning</em>.</p>
 
-  <p>🔹 Feel free to reach out via email if you’re interested in working together.</p>
+    <p class="intro-line">Feel free to reach out via email if you’re interested in working together.</p>
+  </div>
+  <ul class="intro-chips" aria-label="Research areas">
+    <li>Trustworthy ML</li>
+    <li>Machine Unlearning</li>
+    <li>Efficient Reasoning</li>
+  </ul>
 </div>
 
 <h3 class="section-heading" id="news"><span>🔥 News</span></h3>
@@ -116,7 +127,7 @@ redirect_from:
   <h2>💻 Work</h2>
   <div class="service-category">
     <ul>
-      <li>2025.05–Present, Research Scientist Intern, ByteDance</li>
+      <li>2025.05–2025.08, Research Scientist Intern, ByteDance</li>
     </ul>
   </div>
 </div>
@@ -207,18 +218,80 @@ body {
   border-bottom: 1px solid var(--accent);
 }
 
-/* Introduction section */
+/* Introduction (hero) */
 .intro-container {
-  margin: 1.5em 0 2em 0;
-  padding: 1.5em;
-  background: linear-gradient(to right, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  border-left: 4px solid var(--brand);
-  border-radius: 0 8px 8px 0;
+  position: relative;
+  margin: 1.8em 0 2.2em 0;
+  padding: clamp(18px, 2.4vw, 28px);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01)),
+    var(--card);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
-  font-size: 1.08rem;
+  overflow: hidden;
 }
 
-.intro-container p { margin-bottom: 1em; }
+/* decorative glow + top gradient bar */
+.intro-container::before {
+  content: "";
+  position: absolute;
+  right: -60px; top: -80px;
+  width: 260px; height: 260px;
+  background: radial-gradient(closest-side, rgba(68,133,199,0.18), transparent 65%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+.intro-container::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  opacity: .8;
+}
+
+.intro-body { display: grid; gap: .65em; }
+
+.intro-line {
+  position: relative;
+  margin: 0;
+  padding-left: 18px;
+  font-size: clamp(1.02rem, 0.4vw + 1rem, 1.12rem);
+}
+.intro-line::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .95em;
+  width: 7px; height: 7px;
+  border-radius: 999px;
+  background: var(--brand);
+  box-shadow: 0 0 0 4px rgba(68,133,199,0.15);
+}
+
+/* topic chips */
+.intro-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+.intro-chips li {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  font-size: .85rem; font-weight: 600;
+  color: var(--brand);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(0,0,0,0.02));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 640px) {
+  .intro-line { padding-left: 16px; }
+  .intro-line::before { top: .9em; width: 6px; height: 6px; }
+}
 
 /* Section headings */
 .section-heading {
@@ -388,4 +461,99 @@ body {
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+/* ---------------------------------------------
+   Theme toggle overrides (manual wins over system)
+----------------------------------------------*/
+:root[data-theme='dark'] {
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --bg: #0b0f14;
+  --card: #10161d;
+  --border: rgba(255,255,255,0.08);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+  --shadow-md: 0 3px 15px rgba(0,0,0,0.55);
+  --shadow-lg: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+:root[data-theme='light'] {
+  --brand: #4485C7;
+  --accent: #8244b8;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --bg: #fcfcfc;
+  --card: #ffffff;
+  --border: rgba(0,0,0,0.06);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 3px 15px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 25px rgba(99,41,145,0.12);
+}
+
+/* Toggle button styles */
+.theme-toggle { position: sticky; top: 10px; display: flex; justify-content: flex-end; z-index: 1000; }
+.theme-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 9999px;
+  background: var(--card); color: var(--text);
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  cursor: pointer; user-select: none; transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+}
+.theme-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.theme-btn:active { transform: translateY(0); }
+
 </style>
+<script>
+(function() {
+  const STORAGE_KEY = 'theme'; // 'light' | 'dark'
+  const doc = document.documentElement;
+  const btn = document.getElementById('themeButton');
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function setMode(mode, persist = true) {
+    if (mode === 'dark' || mode === 'light') {
+      doc.setAttribute('data-theme', mode);
+      if (persist) localStorage.setItem(STORAGE_KEY, mode);
+      reflect(mode);
+    }
+  }
+
+  function reflect(mode) {
+    const isDark = mode === 'dark';
+    if (btn) {
+      btn.setAttribute('aria-pressed', String(isDark));
+      btn.textContent = isDark ? '☀️' : '🌙';
+      btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+  }
+
+  // Initialize
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved === 'light' || saved === 'dark') {
+    setMode(saved, false);
+  } else {
+    // follow system without persisting
+    setMode(media.matches ? 'dark' : 'light', false);
+  }
+
+  // Toggle on click
+  btn && btn.addEventListener('click', () => {
+    const current = doc.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    setMode(next);
+  });
+
+  // Right-click to reset to system preference
+  btn && btn.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    localStorage.removeItem(STORAGE_KEY);
+    setMode(media.matches ? 'dark' : 'light', false);
+  });
+
+  // React to system changes only if user hasn't fixed a choice
+  media.addEventListener('change', (e) => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved !== 'light' && saved !== 'dark') {
+      setMode(e.matches ? 'dark' : 'light', false);
+    }
+  });
+})();
+</script>

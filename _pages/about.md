@@ -17,7 +17,8 @@ redirect_from:
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
-    <div class="news-item"><span class="news-date">2025.06:</span> ✨ Two first-author papers <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> and <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> have been made public on arXiv!</div>
+    <div class="news-item"><span class="news-date">2025.08:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!</div>
+    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author papers <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
     <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
@@ -29,6 +30,21 @@ redirect_from:
 
 
 <h3 class="section-heading"><span>🎯 First-Authored Publications</span></h3>
+
+<div class="paper-container">
+  <div class="paper-image">
+    <img src="images/pub/emnlp2025_r2mu.jpg">
+  </div>
+  <div class="paper-text">
+    <div class="paper-title">Reasoning Model Unlearning: Forgetting Traces, Not Just Answers, While Preserving Reasoning Skills</div>
+    <p class="paper-authors">Changsheng Wang*, <strong style="text-decoration-line: underline; color:blue;">Chongyu Fan*</strong>, Yihua Zhang, Jinghan Jia, Dennis Wei, Parikshit Ram, Nathalie Baracaldo, Sijia Liu</p>
+    <p class="paper-venue">EMNLP 2025 Main</p>
+    <p class="paper-links">
+      <a href="https://arxiv.org/abs/2506.12963">[Paper]</a>
+      <a href="https://github.com/OPTML-Group/Unlearn-R2MU">[Code]</a>
+    </p>
+  </div>
+</div>
 
 <div class="paper-container">
   <div class="paper-image">
@@ -77,7 +93,7 @@ redirect_from:
 </div>
 
 
-<h3 class="section-heading"><span>📄 CV (Updated: 2025-06-23)</span></h3>
+<h3 class="section-heading"><span>📄 CV (Updated: 2025-08-21)</span></h3>
 
 <div class="cv-container">
   <!-- <p class="cv-update-date">Last updated: 2025-02-03</p> -->

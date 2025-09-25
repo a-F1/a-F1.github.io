@@ -136,9 +136,19 @@ hr {
   <h1 class="category-header unlearning">Machine Unlearning</h1>
 
   <div class="publication">
+    <div class="pub-title">Simplicity Prevails: Rethinking Negative Preference Optimization for LLM Unlearning</div>
+    <div class="pub-authors"><span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Jiancheng Liu*, Licong Lin*, Jinghan Jia, Ruiqi Zhang, Song Mei, Sijia Liu</div>
+    <div class="pub-venue-links">
+      <span class="pub-venue">NeurIPS'25</span>
+      <span class="pub-links">[<a href="https://arxiv.org/pdf/2410.07163">Paper</a>] [<a href="https://github.com/OPTML-Group/Unlearn-Simple">Code</a>]</span>
+    </div>
+  </div>
+
+  <div class="publication">
     <div class="pub-title">Reasoning Model Unlearning: Forgetting Traces, Not Just Answers, While Preserving Reasoning Skills</div>
     <div class="pub-authors">Changsheng Wang*, <span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Yihua Zhang, Jinghan Jia, Dennis Wei, Parikshit Ram, Nathalie Baracaldo, Sijia Liu</div>
     <div class="pub-venue-links">
+      <span class="pub-venue">EMNLP'25 Main</span>
       <span class="pub-links">[<a href="https://arxiv.org/abs/2506.12963">Paper</a>] [<a href="https://github.com/OPTML-Group/Unlearn-R2MU">Code</a>]</span>
     </div>
   </div>
@@ -149,14 +159,6 @@ hr {
     <div class="pub-venue-links">
       <span class="pub-venue">ICML 2025</span>
       <span class="pub-links">[<a href="https://arxiv.org/abs/2502.05374">Paper</a>] [<a href="https://github.com/OPTML-Group/Unlearn-Smooth">Code</a>]</span>
-    </div>
-  </div>
-
-  <div class="publication">
-    <div class="pub-title">Simplicity Prevails: Rethinking Negative Preference Optimization for LLM Unlearning</div>
-    <div class="pub-authors"><span style="font-weight:bold;text-decoration:underline;color:#a72828;">Chongyu Fan*</span>, Jiancheng Liu*, Licong Lin*, Jinghan Jia, Ruiqi Zhang, Song Mei, Sijia Liu</div>
-    <div class="pub-venue-links">
-      <span class="pub-links">[<a href="https://arxiv.org/pdf/2410.07163">Paper</a>] [<a href="https://github.com/OPTML-Group/Unlearn-Simple">Code</a>]</span>
     </div>
   </div>
 

@@ -17,12 +17,13 @@ redirect_from:
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
+    <div class="news-item"><span class="news-date">2025.09:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been accepted in NeurIPS 2025!</div>
     <div class="news-item"><span class="news-date">2025.08:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!</div>
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author papers <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
     <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
-    <div class="news-item"><span class="news-date">2024.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been made public on arXiv!</div>
+    <!-- <div class="news-item"><span class="news-date">2024.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been made public on arXiv!</div> -->
     <div class="news-item"><span class="news-date">2024.09:</span> 🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> have been accepted in NeurIPS 2024!</div>
     <div class="news-item"><span class="news-date">2024.07:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> has been accepted in ECCV 2024!</div>
     <div class="news-item"><span class="news-date">2024.01:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> has been accepted in ICLR 2024 as spotlight!</div>
@@ -30,6 +31,21 @@ redirect_from:
 
 
 <h3 class="section-heading"><span>🎯 First-Authored Publications</span></h3>
+
+<div class="paper-container">
+  <div class="paper-image">
+    <img src="images/pub/neurips2025_simnpo.jpg">
+  </div>
+  <div class="paper-text">
+    <div class="paper-title">Simplicity Prevails: Rethinking Negative Preference Optimization for LLM Unlearning</div>
+    <p class="paper-authors"><strong style="text-decoration-line: underline; color:blue;">Chongyu Fan*</strong>, Jiancheng Liu*, Licong Lin*, Jinghan Jia, Ruiqi Zhang, Song Mei, Sijia Liu</p>
+    <p class="paper-venue">NeurIPS 2025</p>
+    <p class="paper-links">
+      <a href="https://arxiv.org/abs/2410.07163">[Paper]</a>
+      <a href="https://github.com/OPTML-Group/Unlearn-Simple">[Code]</a>
+    </p>
+  </div>
+</div>
 
 <div class="paper-container">
   <div class="paper-image">

@@ -109,7 +109,7 @@ redirect_from:
 </div>
 
 
-<h3 class="section-heading"><span>📄 CV (Updated: 2025-10-07)</span></h3>
+<h3 class="section-heading"><span>📄 CV (Updated: 2025-10-24)</span></h3>
 
 <div class="cv-container">
   <!-- <p class="cv-update-date">Last updated: 2025-02-03</p> -->

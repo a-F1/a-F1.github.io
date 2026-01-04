@@ -32,7 +32,7 @@ redirect_from:
 <div class="news-container">
     <div class="news-item"><span class="news-date">2025.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626"> LLM Unlearning Bench</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.09:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been accepted in NeurIPS 2025!</div>
-    <div class="news-item"><span class="news-date">2024.09:</span> 🎉 One paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a> has been accepted in NeurIPS 2025 as spotlight!
+    <div class="news-item"><span class="news-date">2024.09:</span> 🎉 One paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a> has been accepted in NeurIPS 2025 as spotlight!</div>
     <div class="news-item"><span class="news-date">2025.08:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!</div>
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
@@ -180,9 +180,9 @@ redirect_from:
   <div class="service-category">
     <h3>Conferences</h3>
     <ul>
-      <li>The International Conference on Machine Learning (ICML)</li>
-      <li>The International Conference on Learning Representations (ICLR)</li>
-      <li>The Annual Conference on Neural Information Processing Systems (Neurips)</li>
+      <li>The International Conference on Machine Learning (ICML): ICML25, ICML26</li>
+      <li>The International Conference on Learning Representations (ICLR): ICLR25, ICLR26</li>
+      <li>The Annual Conference on Neural Information Processing Systems (NeurIPS): NeurIPS25</li>
     </ul>
   </div>
 </div>

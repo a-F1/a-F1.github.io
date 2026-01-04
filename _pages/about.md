@@ -8,18 +8,33 @@ redirect_from:
 ---
 
 <div class="intro-container">
-  <p>🔹 I am <strong>Chongyu Fan (樊翀宇)</strong>, a second-year Ph.D. student in Computer Science at <a href="https://msu.edu/">Michigan State University</a>, supervised by Prof. <a href="https://lsjxjtu.github.io/">Sijia Liu</a>. I received B.Eng. from <a href="https://english.hust.edu.cn/">Huazhong University of Science and Technology</a> in 2024.</p>
+  <p>🔹 I am <strong>Chongyu Fan (樊翀宇)</strong>, a second-year Ph.D. student in Computer Science at
+    <a href="https://msu.edu/">Michigan State University</a>, advised by Prof.
+    <a href="https://lsjxjtu.github.io/">Sijia Liu</a>. I received my B.Eng. from
+    <a href="https://english.hust.edu.cn/">Huazhong University of Science and Technology</a> in 2024.
+  </p>
 
-  <p>🔹 My research focuses on trustworthy and efficient algorthms, including machine unlearning and efficient reasoning. </p>
+  <p>🔹 I am currently a Student Researcher at
+    <a href="https://seed.bytedance.com/en/">ByteDance Seed</a>, working on multimodal foundation models.
+  </p>
 
-  <p>🔹 Feel free to reach out via email if you’re interested in working together. </p>
+  <p>🔹 My research interests include:</p>
+  <ul>
+    <li>Reinforcement learning for agents and foundation models</li>
+    <li>Efficient reasoning and test-time scaling</li>
+    <li>Machine unlearning and alignment</li>
+  </ul>
+
+  <p>🔹 Feel free to reach out by email if you’re interested in collaborating.</p>
 </div>
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
+    <div class="news-item"><span class="news-date">2025.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626"> LLM Unlearning Bench</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.09:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been accepted in NeurIPS 2025!</div>
+    <div class="news-item"><span class="news-date">2024.09:</span> 🎉 One paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a> has been accepted in NeurIPS 2025 as spotlight!
     <div class="news-item"><span class="news-date">2025.08:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!</div>
-    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author papers <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div>
+    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
     <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
@@ -109,7 +124,7 @@ redirect_from:
 </div>
 
 
-<h3 class="section-heading"><span>📄 CV (Updated: 2025-10-24)</span></h3>
+<h3 class="section-heading"><span>📄 CV (Updated: 2026-01-03)</span></h3>
 
 <div class="cv-container">
   <!-- <p class="cv-update-date">Last updated: 2025-02-03</p> -->
@@ -151,7 +166,8 @@ redirect_from:
   <h2>💻 Work</h2>
   <div class="service-category">
     <ul>
-      <li>2025.05–2025.08, Research Scientist Intern, ByteDance</li>
+      <li>2025.12–Present, Student Researcher, ByteDance Seed</li>
+      <li>2025.05–2025.09, Research Scientist Intern, TikTok</li>
     </ul>
   </div>
 </div>

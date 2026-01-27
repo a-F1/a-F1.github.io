@@ -30,11 +30,15 @@ redirect_from:
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
+    <div class="news-item">
+        <span class="news-date">2026.01:</span> 🎉 Three papers have been accepted to ICLR 2026, including one first-author paper (<a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a>) and two other papers (<a href="https://arxiv.org/abs/2510.00761">Optimizers in Unlearning</a>, <a href="https://arxiv.org/abs/2511.07970">Continual Unlearning</a>)!
+    </div>
     <div class="news-item"><span class="news-date">2025.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626"> LLM Unlearning Bench</a> has been made public on arXiv!</div>
-    <div class="news-item"><span class="news-date">2025.09:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been accepted in NeurIPS 2025!</div>
-    <div class="news-item"><span class="news-date">2024.09:</span> 🎉 One paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a> has been accepted in NeurIPS 2025 as spotlight!</div>
+    <div class="news-item">
+        <span class="news-date">2025.09:</span> 🎉 Two papers have been accepted to NeurIPS 2025, including one first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> and one Spotlight paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a>!
+    </div>
     <div class="news-item"><span class="news-date">2025.08:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!</div>
-    <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div>
+    <!-- <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div> -->
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
     <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
@@ -46,6 +50,21 @@ redirect_from:
 
 
 <h3 class="section-heading"><span>🎯 First-Authored Publications</span></h3>
+
+<div class="paper-container">
+  <div class="paper-image">
+    <img src="images/pub/iclr26_cyclicreflex.png">
+  </div>
+  <div class="paper-text">
+    <div class="paper-title">CyclicReflex: Improving Reasoning Models via Cyclical Reflection Token Scheduling</div>
+    <p class="paper-authors"><strong style="text-decoration-line: underline; color:blue;">Chongyu Fan</strong>, Yihua Zhang, Jinghan Jia, Alfred Hero, Sijia Liu</p>
+    <p class="paper-venue">ICLR 2026</p>
+    <p class="paper-links">
+      <a href="https://arxiv.org/abs/2506.11077">[Paper]</a>
+      <a href="https://github.com/OPTML-Group/CyclicReflex">[Code]</a>
+    </p>
+  </div>
+</div>
 
 <div class="paper-container">
   <div class="paper-image">

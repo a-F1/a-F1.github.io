@@ -28,7 +28,7 @@ redirect_from:
   <p>🔹 Feel free to reach out by email if you’re interested in collaborating.</p>
 </div>
 
-<h3 class="section-heading"><span>🔥 News</span></h3>
+<!-- <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
     <div class="news-item">
         <span class="news-date">2026.01:</span> 🎉 There papers accepted to ICLR 2026: one first-author reasoning paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a>, and two on unlearning (<a href="https://arxiv.org/abs/2510.00761">Optimizers</a> & <a href="https://arxiv.org/abs/2511.07970">Continual</a>).
@@ -46,6 +46,74 @@ redirect_from:
     <div class="news-item"><span class="news-date">2024.09:</span> 🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> have been accepted in NeurIPS 2024!</div>
     <div class="news-item"><span class="news-date">2024.07:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> has been accepted in ECCV 2024!</div>
     <div class="news-item"><span class="news-date">2024.01:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> has been accepted in ICLR 2024 as spotlight!</div>
+</div> -->
+
+<h3 class="section-heading"><span>🔥 News</span></h3>
+<div class="news-container">
+    
+    <div class="news-item">
+        <div class="news-date">2026.01</div>
+        <div class="news-content">
+            🎉 3 ICLR 2026 papers: 1st-author reasoning <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> & two on unlearning (<a href="https://arxiv.org/abs/2510.00761">Optimizers</a>, <a href="https://arxiv.org/abs/2511.07970">Continual</a>).
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.10</div>
+        <div class="news-content">
+            ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626">LLM Unlearning Bench</a> has been made public on arXiv!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.09</div>
+        <div class="news-content">
+            🎉 Two papers accepted to NeurIPS 2025: one first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> and one Spotlight paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a>!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.08</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.06</div>
+        <div class="news-content">
+            ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.05</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2024.09</div>
+        <div class="news-content">
+            🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> have been accepted in NeurIPS 2024!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2024.07</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> has been accepted in ECCV 2024!
+        </div>
+    </div>
+    
+    <div class="news-item">
+        <div class="news-date">2024.01</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> has been accepted in ICLR 2024 as spotlight!
+        </div>
+    </div>
+
 </div>
 
 
@@ -394,7 +462,7 @@ body {
   margin-bottom: 20px;
 } */
 
-.news-container {
+/* .news-container {
   background: #fff;
   border-radius: 12px;
   padding: 20px 25px;
@@ -402,17 +470,70 @@ body {
   border: 1px solid rgba(0,0,0,0.05);
   margin-bottom: 20px;
 
-  max-height: 250px; /* 你可以根据实际每条 item 的高度微调这个值 */
+  max-height: 250px;
   overflow-y: auto;
 }
-
-
 .news-item {
   margin-bottom: 12px;
   padding-bottom: 12px;
   border-bottom: 1px solid #eeeeee;
   position: relative;
   padding-left: 15px;
+}
+.news-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.news-item:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #4485C7;
+  font-weight: bold;
+}
+.news-date {
+  font-weight: 600;
+  color: #444;
+  margin-right: 8px;
+} */
+
+ /* News Container */
+.news-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  /* 限制高度，开启滚动 */
+  max-height: 300px; 
+  overflow-y: auto;
+}
+
+/* 漂亮的滚动条 (Webkit only) */
+.news-container::-webkit-scrollbar {
+  width: 6px;
+}
+.news-container::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 4px;
+}
+.news-container::-webkit-scrollbar-thumb {
+  background: #ccc; 
+  border-radius: 4px;
+}
+.news-container::-webkit-scrollbar-thumb:hover {
+  background: #aaa; 
+}
+
+/* 单条 News Item: 使用 Flexbox 布局 */
+.news-item {
+  display: flex;       /* 核心：弹性布局 */
+  align-items: baseline; /* 文字与日期顶部对齐 */
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #eee; /* 改为虚线更轻量 */
 }
 
 .news-item:last-child {
@@ -421,18 +542,29 @@ body {
   padding-bottom: 0;
 }
 
-.news-item:before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #4485C7;
-  font-weight: bold;
+/* 日期样式：固定宽度，不会被压缩 */
+.news-date {
+  flex: 0 0 85px;      /* 固定左侧宽度 */
+  font-weight: 600;
+  color: #555;
+  background: #f4f6f8; /* 浅灰色背景 */
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-right: 15px;  /* 日期和内容的间距 */
+  border: 1px solid #e1e4e8;
 }
 
-.news-date {
-  font-weight: 600;
-  color: #444;
-  margin-right: 8px;
+/* 内容样式：自适应剩余空间 */
+.news-content {
+  flex: 1;             /* 占据剩余宽度 */
+  line-height: 1.6;
+}
+
+/* 移除原来的伪元素小圆点，因为现在有日期块了，不需要圆点 */
+.news-item:before {
+  content: none;
 }
 
 /* CV Download section */

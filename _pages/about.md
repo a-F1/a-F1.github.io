@@ -38,11 +38,8 @@ redirect_from:
         <span class="news-date">2025.09:</span> 🎉 Two papers accepted to NeurIPS 2025: one first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> and one Spotlight paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a>!
     </div>
     <div class="news-item"><span class="news-date">2025.08:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!</div>
-    <!-- <div class="news-item"><span class="news-date">2025.06:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> has been made public on arXiv!</div> -->
     <div class="news-item"><span class="news-date">2025.06:</span> ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!</div>
     <div class="news-item"><span class="news-date">2025.05:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!</div>
-    <!-- <div class="news-item"><span class="news-date">2025.02:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been made public on arXiv!</div> -->
-    <!-- <div class="news-item"><span class="news-date">2024.10:</span> ✨ One first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> has been made public on arXiv!</div> -->
     <div class="news-item"><span class="news-date">2024.09:</span> 🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> have been accepted in NeurIPS 2024!</div>
     <div class="news-item"><span class="news-date">2024.07:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> has been accepted in ECCV 2024!</div>
     <div class="news-item"><span class="news-date">2024.01:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> has been accepted in ICLR 2024 as spotlight!</div>
@@ -54,63 +51,63 @@ redirect_from:
     <div class="news-item">
         <div class="news-date">2026.01</div>
         <div class="news-content">
-            🎉 3 ICLR 2026 papers: 1st-author reasoning <a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a> & two on unlearning (<a href="https://arxiv.org/abs/2510.00761">Optimizers</a>, <a href="https://arxiv.org/abs/2511.07970">Continual</a>).
+            🎉 Three papers accepted to ICLR 2026, including one first-author paper on reasoning (<a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a>) and two papers on unlearning (<a href="https://arxiv.org/abs/2510.00761">Optimizers</a> and <a href="https://arxiv.org/abs/2511.07970">Continual</a>)!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2025.10</div>
         <div class="news-content">
-            ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626">LLM Unlearning Bench</a> has been made public on arXiv!
+            ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626">LLM Unlearning Bench</a> made public on arXiv!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2025.09</div>
         <div class="news-content">
-            🎉 Two papers accepted to NeurIPS 2025: one first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> and one Spotlight paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a>!
+            🎉 Two papers accepted to NeurIPS 2025, including one first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> and one Spotlight paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a>!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2025.08</div>
         <div class="news-content">
-            🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> has been accepted in EMNLP 2025 Main!
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> accepted to EMNLP 2025 Main!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2025.06</div>
         <div class="news-content">
-            ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> has been made public on arXiv!
+            ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> made public on arXiv!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2025.05</div>
         <div class="news-content">
-            🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> has been accepted in ICML 2025!
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> accepted to ICML 2025!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2024.09</div>
         <div class="news-content">
-            🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> have been accepted in NeurIPS 2024!
+            🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> accepted to NeurIPS 2024!
         </div>
     </div>
 
     <div class="news-item">
         <div class="news-date">2024.07</div>
         <div class="news-content">
-            🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> has been accepted in ECCV 2024!
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> accepted to ECCV 2024!
         </div>
     </div>
     
     <div class="news-item">
         <div class="news-date">2024.01</div>
         <div class="news-content">
-            🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> has been accepted in ICLR 2024 as spotlight!
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> accepted to ICLR 2024 as Spotlight!
         </div>
     </div>
 

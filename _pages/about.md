@@ -45,6 +45,75 @@ redirect_from:
     <div class="news-item"><span class="news-date">2024.01:</span> 🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> has been accepted in ICLR 2024 as spotlight!</div>
 </div> -->
 
+<!-- <h3 class="section-heading"><span>🔥 News</span></h3>
+<div class="news-container">
+    
+    <div class="news-item">
+        <div class="news-date">2026.01</div>
+        <div class="news-content">
+            🎉 Three papers accepted to ICLR 2026, including one first-author paper on reasoning (<a href="https://arxiv.org/abs/2506.11077">CyclicReflex</a>) and two papers on unlearning (<a href="https://arxiv.org/abs/2510.00761">Optimizers</a> and <a href="https://arxiv.org/abs/2511.07970">Continual</a>)!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.10</div>
+        <div class="news-content">
+            ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626">LLM Unlearning Bench</a> made public on arXiv!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.09</div>
+        <div class="news-content">
+            🎉 Two papers accepted to NeurIPS 2025, including one first-author paper <a href="https://arxiv.org/abs/2410.07163">SimNPO</a> and one Spotlight paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/119184">ABO</a>!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.08</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2506.12963">Reasoning Unlearn</a> accepted to EMNLP 2025 Main!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.06</div>
+        <div class="news-content">
+            ✨ One paper <a href="https://arxiv.org/abs/2506.04205">EPiC</a> made public on arXiv!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2025.05</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2502.05374">Smooth Unlearn</a> accepted to ICML 2025!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2024.09</div>
+        <div class="news-content">
+            🎉 Two papers <a href="https://arxiv.org/abs/2402.11846">UnlearnCanvas</a> and <a href="https://arxiv.org/abs/2405.15234">AdvUnlearn</a> accepted to NeurIPS 2024!
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2024.07</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2403.07362">Challenging Forgets</a> accepted to ECCV 2024!
+        </div>
+    </div>
+    
+    <div class="news-item">
+        <div class="news-date">2024.01</div>
+        <div class="news-content">
+            🎉 One first-author paper <a href="https://arxiv.org/abs/2310.12508">SalUn</a> accepted to ICLR 2024 as Spotlight!
+        </div>
+    </div>
+
+</div> -->
+
+
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
     
@@ -495,7 +564,7 @@ body {
   margin-right: 8px;
 } */
 
- /* News Container */
+/* News Container 整体容器 */
 .news-container {
   background: #fff;
   border-radius: 12px;
@@ -508,7 +577,7 @@ body {
   overflow-y: auto;
 }
 
-/* 漂亮的滚动条 (Webkit only) */
+/* 滚动条美化 (Webkit browsers) */
 .news-container::-webkit-scrollbar {
   width: 6px;
 }
@@ -524,13 +593,14 @@ body {
   background: #aaa; 
 }
 
-/* 单条 News Item: 使用 Flexbox 布局 */
+/* 单个新闻条目：使用 Flex 布局 */
 .news-item {
-  display: flex;       /* 核心：弹性布局 */
-  align-items: baseline; /* 文字与日期顶部对齐 */
+  display: flex;
+  /* 关键修改：使用 flex-start 让文字顶部对齐，而不是基线对齐 */
+  align-items: flex-start; 
   margin-bottom: 15px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed #eee; /* 改为虚线更轻量 */
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #e0e0e0;
 }
 
 .news-item:last-child {
@@ -539,29 +609,60 @@ body {
   padding-bottom: 0;
 }
 
-/* 日期样式：固定宽度，不会被压缩 */
+/* 左侧日期样式 */
 .news-date {
-  flex: 0 0 85px;      /* 固定左侧宽度 */
+  flex: 0 0 auto;       /* 禁止伸缩 */
+  width: 85px;          /* 固定宽度，保证整齐 */
+  text-align: center;
   font-weight: 600;
   color: #555;
-  background: #f4f6f8; /* 浅灰色背景 */
-  padding: 2px 8px;
+  background: #f4f6f8;
+  padding: 4px 0;
   border-radius: 4px;
   font-size: 0.9rem;
-  text-align: center;
-  margin-right: 15px;  /* 日期和内容的间距 */
+  line-height: 1;       /* 紧凑行高 */
+  margin-right: 18px;   /* 拉开与内容的间距 */
   border: 1px solid #e1e4e8;
+  height: fit-content;  /* 关键：防止高度被拉伸 */
+  margin-top: 2px;      /* 微调：让方块稍微下沉，视觉上与右侧文字第一行居中对齐 */
 }
 
-/* 内容样式：自适应剩余空间 */
+/* 右侧内容样式 */
 .news-content {
-  flex: 1;             /* 占据剩余宽度 */
-  line-height: 1.6;
+  flex: 1;              /* 占据剩余空间 */
+  line-height: 1.6;     /* 增加行间距，让多行折行更舒服 */
+  color: #333;
 }
 
-/* 移除原来的伪元素小圆点，因为现在有日期块了，不需要圆点 */
-.news-item:before {
-  content: none;
+.news-content a {
+  color: #4485C7;
+  text-decoration: none;
+  border-bottom: 1px dotted #4485C7;
+  transition: all 0.2s;
+}
+
+.news-content a:hover {
+  color: #8244b8;
+  border-bottom: 1px solid #8244b8;
+}
+
+/* 移动端适配：屏幕小于600px时，日期变成独立一行 */
+@media (max-width: 600px) {
+  .news-item {
+    flex-direction: column; /* 垂直排列 */
+  }
+  
+  .news-date {
+    width: auto;         /* 宽度自适应内容 */
+    display: inline-block;
+    padding: 3px 10px;
+    margin-bottom: 8px;  /* 这里的 margin 指向下方的内容 */
+    margin-right: 0;
+  }
+
+  .news-content {
+    padding-left: 2px;
+  }
 }
 
 /* CV Download section */

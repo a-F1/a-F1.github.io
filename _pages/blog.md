@@ -6,101 +6,117 @@ author_profile: true
 ---
 
 <style>
-.blog-section-title {
+.blog-header {
+    margin: 4px 0 28px;
+}
+.blog-header h1 {
     font-family: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 800;
-    font-size: 2.2rem;
-    color: #333;
-    margin: 10px 0 28px;
-    letter-spacing: 0.3px;
-    position: relative;
-    padding-bottom: 0.4em;
+    font-size: 2.1rem;
+    color: #222;
+    margin: 0 0 6px;
+    letter-spacing: 0.2px;
 }
-.blog-section-title::after {
+.blog-header .blog-subtitle {
+    color: #666;
+    font-size: 0.98rem;
+    margin: 0;
+}
+.blog-header::after {
     content: "";
     display: block;
-    width: 80px;
+    width: 64px;
     height: 3px;
     background: #4485C7;
-    margin-top: 10px;
+    margin-top: 14px;
     border-radius: 3px;
 }
 
+.post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.post-list-item {
+    border-bottom: 1px solid #ececec;
+    padding: 18px 0;
+}
+.post-list-item:last-child {
+    border-bottom: none;
+}
+.post-list-item a.post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.post-meta {
+    font-size: 0.82rem;
+    color: #888;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.post-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f3a68;
+    margin: 0 0 6px;
+    line-height: 1.4;
+    transition: color 0.18s;
+}
+.post-list-item:hover .post-title {
+    color: #4485C7;
+}
+.post-excerpt {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 6px;
+}
+.post-tags {
+    margin-top: 4px;
+}
+.post-tag {
+    display: inline-block;
+    color: #4485C7;
+    font-size: 0.78rem;
+    margin-right: 8px;
+}
 .blog-empty {
     color: #777;
     font-style: italic;
     padding: 14px 0;
 }
-
-.blog-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    padding: 22px 26px;
-    margin-bottom: 18px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: transform 0.25s, box-shadow 0.25s;
-}
-.blog-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(68,133,199,0.18);
-    color: inherit;
-    text-decoration: none;
-}
-.blog-card-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1f3a68;
-    margin: 0 0 6px;
-    line-height: 1.4;
-}
-.blog-card-meta {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 8px;
-}
-.blog-card-meta .blog-tag {
-    display: inline-block;
-    background: #f0f6ff;
-    color: #1f4ca7;
-    border-radius: 20px;
-    padding: 2px 10px;
-    margin-right: 6px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    border: 1px solid #d8e4f5;
-}
-.blog-card-excerpt {
-    font-size: 0.98rem;
-    color: #444;
-    line-height: 1.6;
-    margin: 0;
-}
 </style>
 
-<div class="blog-section-title">📝 Blog</div>
+<div class="blog-header">
+  <h1>Blog</h1>
+  <p class="blog-subtitle">Notes on optimization, reasoning, and other things I am working on.</p>
+</div>
 
 {% if site.posts.size == 0 %}
   <p class="blog-empty">No posts yet. Stay tuned.</p>
 {% else %}
+  <ul class="post-list">
   {% for post in site.posts %}
-    <a class="blog-card" href="{{ post.url | relative_url }}">
-      <div class="blog-card-title">{{ post.title }}</div>
-      <div class="blog-card-meta">
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
-        {% if post.tags %}
-          &nbsp;·&nbsp;
-          {% for tag in post.tags %}<span class="blog-tag">{{ tag }}</span>{% endfor %}
+    <li class="post-list-item">
+      <a class="post-link" href="{{ post.url | relative_url }}">
+        <div class="post-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+        </div>
+        <h2 class="post-title">{{ post.title }}</h2>
+        {% if post.excerpt %}
+          <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 45 }}</p>
         {% endif %}
-      </div>
-      {% if post.excerpt %}
-        <p class="blog-card-excerpt">{{ post.excerpt | strip_html | truncatewords: 50 }}</p>
-      {% endif %}
-    </a>
+        {% if post.tags %}
+          <div class="post-tags">
+            {% for tag in post.tags %}<span class="post-tag">#{{ tag }}</span>{% endfor %}
+          </div>
+        {% endif %}
+      </a>
+    </li>
   {% endfor %}
+  </ul>
 {% endif %}
 
 <div style="height: 100px;"></div>

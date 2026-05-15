@@ -1,0 +1,523 @@
+---
+layout: default
+---
+
+{% include base_path %}
+
+<style>
+:root {
+  --proj-primary: #4485C7;
+  --proj-primary-dark: #1f4ca7;
+  --proj-ink: #0f172a;
+  --proj-text: #1f2937;
+  --proj-muted: #64748b;
+  --proj-faint: #94a3b8;
+  --proj-border: #e5e9ef;
+  --proj-bg-soft: #f5f9ff;
+  --proj-bg-softer: #fafbfd;
+  --proj-accent-bg: #f0f6ff;
+}
+
+.project-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 28px 96px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 56px;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--proj-text);
+  line-height: 1.65;
+  letter-spacing: 0.005em;
+}
+@media (max-width: 980px) {
+  .project-wrap {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 20px 18px 60px;
+  }
+}
+
+/* ===== Sidebar TOC (Anthropic / Transformer Circuits style) ===== */
+.project-toc { position: relative; }
+.project-toc-sticky {
+  position: sticky;
+  top: 28px;
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 4px 0 4px 0;
+  scrollbar-width: thin;
+}
+.project-toc-sticky::-webkit-scrollbar { width: 4px; }
+.project-toc-sticky::-webkit-scrollbar-thumb { background: #d8dfe8; border-radius: 4px; }
+.project-toc-label {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--proj-faint);
+  margin: 0 0 10px 14px;
+}
+.project-toc-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--proj-border);
+}
+.project-toc-nav li { margin: 0; }
+.project-toc-nav a {
+  display: block;
+  padding: 5px 14px;
+  margin-left: -1px;
+  font-size: 0.86rem;
+  color: var(--proj-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  line-height: 1.4;
+}
+.project-toc-nav a:hover {
+  color: var(--proj-ink);
+  background: rgba(68, 133, 199, 0.05);
+}
+.project-toc-nav a.active {
+  color: var(--proj-primary-dark);
+  font-weight: 600;
+  border-left-color: var(--proj-primary);
+  background: rgba(68, 133, 199, 0.06);
+}
+@media (max-width: 980px) {
+  .project-toc { display: none; }
+}
+
+/* ===== Hero (InstructPix2Pix style) ===== */
+.project-main { min-width: 0; }
+
+.project-hero {
+  text-align: center;
+  padding: 14px 0 36px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--proj-border);
+}
+.project-title {
+  font-family: 'Source Serif Pro', 'Charter', 'Georgia', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--proj-ink);
+  margin: 0 0 14px;
+  letter-spacing: -0.012em;
+}
+.project-subtitle {
+  font-size: 1.18rem;
+  font-weight: 400;
+  color: #475569;
+  margin: 0 0 24px;
+  line-height: 1.45;
+  font-style: normal;
+}
+.project-authors {
+  font-size: 1rem;
+  color: var(--proj-ink);
+  margin: 0 0 6px;
+  line-height: 1.7;
+}
+.proj-author { white-space: nowrap; }
+.proj-author a {
+  color: var(--proj-ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.proj-author a:hover {
+  color: var(--proj-primary);
+  border-bottom-color: var(--proj-primary);
+}
+.proj-author sup {
+  font-size: 0.7em;
+  color: var(--proj-primary);
+  margin-left: 1px;
+  font-weight: 600;
+}
+.proj-comma { color: var(--proj-faint); margin-right: 4px; }
+.project-affiliations {
+  font-size: 0.92rem;
+  color: var(--proj-muted);
+  margin: 0 0 16px;
+  line-height: 1.65;
+}
+.project-affiliations sup {
+  color: var(--proj-primary);
+  font-weight: 600;
+  margin-right: 2px;
+}
+.project-affiliations .aff-sep {
+  color: #cbd5e1;
+  margin: 0 6px;
+}
+.project-venue {
+  display: inline-block;
+  background: var(--proj-accent-bg);
+  color: var(--proj-primary-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin: 4px 0 4px;
+  border: 1px solid #d5e3f7;
+}
+.project-notes {
+  font-size: 0.85rem;
+  color: var(--proj-faint);
+  margin: 8px 0 4px;
+  font-style: italic;
+}
+
+/* Action buttons */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 22px 0 6px;
+}
+.project-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: var(--proj-ink);
+  color: #fff !important;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  border: 1px solid var(--proj-ink);
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
+}
+.project-btn:hover {
+  background: var(--proj-primary);
+  border-color: var(--proj-primary);
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(68, 133, 199, 0.28);
+  text-decoration: none !important;
+}
+.project-btn .proj-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Teaser */
+.project-teaser {
+  margin: 32px auto 0;
+  max-width: 760px;
+}
+.project-teaser img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 22px rgba(15, 23, 42, 0.10);
+  background: #fff;
+  border: 1px solid var(--proj-border);
+}
+.project-teaser figcaption {
+  font-size: 0.9rem;
+  color: var(--proj-muted);
+  text-align: center;
+  margin-top: 12px;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+/* ===== Content typography ===== */
+.project-content {
+  max-width: 740px;
+  margin: 0 auto;
+  font-size: 1.02rem;
+  color: var(--proj-text);
+}
+.project-content > p,
+.project-content > ul,
+.project-content > ol { margin: 0 0 1.05em; }
+.project-content a {
+  color: var(--proj-primary-dark);
+  text-decoration: underline;
+  text-decoration-color: rgba(68, 133, 199, 0.4);
+  text-underline-offset: 2px;
+}
+.project-content a:hover {
+  color: var(--proj-ink);
+  text-decoration-color: var(--proj-primary-dark);
+}
+
+.project-content h2 {
+  font-family: 'Source Serif Pro', 'Charter', 'Georgia', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--proj-ink);
+  margin: 2.4em 0 0.7em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--proj-border);
+  scroll-margin-top: 24px;
+  letter-spacing: -0.005em;
+}
+.project-content h2:first-child { margin-top: 0; }
+.project-content h3 {
+  font-family: 'Source Serif Pro', 'Charter', 'Georgia', serif;
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--proj-primary-dark);
+  margin: 1.7em 0 0.5em;
+  scroll-margin-top: 24px;
+}
+.project-content ul, .project-content ol { padding-left: 1.4em; }
+.project-content li { margin-bottom: 0.4em; }
+.project-content strong { color: var(--proj-ink); font-weight: 700; }
+
+.project-content code {
+  background: var(--proj-bg-softer);
+  border: 1px solid var(--proj-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.9em;
+  color: var(--proj-ink);
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+.project-content pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 14px 18px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88em;
+  line-height: 1.55;
+}
+.project-content pre code { background: transparent; border: none; color: inherit; padding: 0; }
+
+/* Figures */
+.project-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 14px auto;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+}
+.project-content figure {
+  margin: 1.4em auto;
+  text-align: center;
+}
+.project-content figure img { margin: 0 auto; }
+.project-content figcaption,
+.project-content .fig-caption {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--proj-muted);
+  font-style: italic;
+  max-width: 96%;
+  margin: 10px auto 0;
+  line-height: 1.55;
+}
+
+/* Multi-panel figure row */
+.fig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin: 1.6em 0 0.4em;
+}
+.fig-grid figure { margin: 0; }
+.fig-grid figure img {
+  margin: 0 auto 6px;
+  border: 1px solid var(--proj-border);
+}
+.fig-grid figcaption {
+  font-size: 0.82rem;
+  color: var(--proj-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Callout / takeaway */
+.callout {
+  background: linear-gradient(180deg, #f4f8ff 0%, #ecf3ff 100%);
+  border-left: 4px solid var(--proj-primary);
+  padding: 14px 20px;
+  margin: 1.5em 0;
+  border-radius: 0 8px 8px 0;
+  color: #15315c;
+  font-size: 0.98rem;
+}
+.callout strong { color: #0a1f44; }
+
+/* Tables */
+.project-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.92rem;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.project-content th, .project-content td {
+  border-bottom: 1px solid var(--proj-border);
+  border-right: 1px solid var(--proj-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.project-content th:last-child, .project-content td:last-child { border-right: none; }
+.project-content tr:last-child td { border-bottom: none; }
+.project-content thead th {
+  background: var(--proj-bg-soft);
+  color: #0a1f44;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+.project-content .results-table th,
+.project-content .results-table td { text-align: center; }
+
+/* TL;DR card */
+.tldr {
+  background: var(--proj-bg-softer);
+  border: 1px solid var(--proj-border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 1.6em 0 2em;
+}
+.tldr h2 {
+  margin: 0 0 10px !important;
+  border-bottom: none !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--proj-primary) !important;
+  padding: 0 !important;
+}
+.tldr ul { margin: 0; padding-left: 1.2em; }
+.tldr li { margin-bottom: 0.4em; font-size: 0.97rem; }
+
+/* MathJax overflow */
+mjx-container { overflow-x: auto; max-width: 100%; }
+mjx-container[display="true"] { margin: 1em 0; }
+
+/* Hide author profile sidebar inherited from default site styles, just in case */
+.sidebar.sticky, .author__avatar, .author__content { display: none !important; }
+</style>
+
+<div class="project-wrap">
+  <aside class="project-toc" aria-label="Table of contents">
+    <div class="project-toc-sticky">
+      <div class="project-toc-label">Contents</div>
+      <nav class="project-toc-nav" id="project-toc-nav"></nav>
+    </div>
+  </aside>
+
+  <main class="project-main">
+    <header class="project-hero">
+      <h1 class="project-title">{{ page.title }}</h1>
+      {% if page.subtitle %}
+        <p class="project-subtitle">{{ page.subtitle }}</p>
+      {% endif %}
+
+      {% if page.authors %}
+        <div class="project-authors">
+          {% for author in page.authors -%}
+            <span class="proj-author">{% if author.url %}<a href="{{ author.url }}"{% if author.url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ author.name }}</a>{% else %}{{ author.name }}{% endif %}{% if author.affiliation_id %}<sup>{{ author.affiliation_id }}</sup>{% endif %}{% if author.equal %}<sup>*</sup>{% endif %}</span>{% unless forloop.last %}<span class="proj-comma">,</span> {% endunless %}
+          {%- endfor %}
+        </div>
+      {% endif %}
+
+      {% if page.affiliations %}
+        <div class="project-affiliations">
+          {% for aff in page.affiliations -%}
+            <span><sup>{{ aff.id }}</sup>{{ aff.name }}</span>{% unless forloop.last %}<span class="aff-sep">·</span>{% endunless %}
+          {%- endfor %}
+        </div>
+      {% endif %}
+
+      {% if page.venue %}<div class="project-venue">{{ page.venue }}</div>{% endif %}
+      {% if page.notes %}<div class="project-notes">{{ page.notes }}</div>{% endif %}
+
+      {% if page.links %}
+        <div class="project-links">
+          {% for link in page.links %}
+            <a class="project-btn" href="{{ link.url }}"{% if link.url contains '://' %} target="_blank" rel="noopener"{% endif %}>
+              {% if link.icon %}<span class="proj-btn-icon">{{ link.icon }}</span>{% endif %}
+              <span class="proj-btn-label">{{ link.label }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if page.teaser %}
+        <figure class="project-teaser">
+          <img src="{{ page.teaser | relative_url }}" alt="Teaser figure">
+          {% if page.teaser_caption %}<figcaption>{{ page.teaser_caption }}</figcaption>{% endif %}
+        </figure>
+      {% endif %}
+    </header>
+
+    <article class="project-content">
+      {{ content }}
+    </article>
+  </main>
+</div>
+
+<script>
+(function() {
+  function init() {
+    var content = document.querySelector('.project-content');
+    var nav = document.getElementById('project-toc-nav');
+    if (!content || !nav) return;
+    var headings = content.querySelectorAll('h2');
+    if (headings.length === 0) return;
+
+    var ul = document.createElement('ul');
+    var headingArr = [];
+    headings.forEach(function(h, i) {
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      headingArr.push(h);
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.replace(/^\s*\d+(\.\d+)*\.?\s*/, '');
+      a.dataset.target = h.id;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    nav.appendChild(ul);
+
+    var links = nav.querySelectorAll('a');
+    function update() {
+      var top = window.scrollY + 120;
+      var current = headingArr[0].id;
+      for (var i = 0; i < headingArr.length; i++) {
+        if (headingArr[i].offsetTop <= top) current = headingArr[i].id;
+      }
+      links.forEach(function(a) {
+        if (a.dataset.target === current) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

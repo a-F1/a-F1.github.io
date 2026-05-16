@@ -1,0 +1,1154 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+<meta charset="utf-8">
+
+
+
+<!-- begin SEO -->
+
+
+
+
+
+
+
+
+
+<title>Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR - Chongyu Fan</title>
+
+
+
+
+
+
+
+<meta property="og:locale" content="en-US">
+<meta property="og:site_name" content="Chongyu Fan">
+<meta property="og:title" content="Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR">
+
+
+  <link rel="canonical" href="https://chongyu-fan.netlify.app/posts/pion/">
+  <meta property="og:url" content="https://chongyu-fan.netlify.app/posts/pion/">
+
+
+
+  <meta property="og:description" content="Muon orthogonalizes the momentum matrix and pushes every singular value to one. This works beautifully for LLM pretraining, which is essentially next token classification on text via supervised learning. But what happens when we move along three orthogonal axes: a different modality, a different loss, or a different learning paradigm? Pion is a drop in replacement for Muon’s Newton Schulz iteration that fixes the spectral mismatch we observe along all three axes.">
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-05-15T00:00:00-07:00">
+
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Person",
+      "name" : "Chongyu Fan",
+      "url" : "https://chongyu-fan.netlify.app",
+      "sameAs" : null
+    }
+  </script>
+
+
+
+
+
+
+<!-- end SEO -->
+
+
+<link href="https://chongyu-fan.netlify.app/feed.xml" type="application/atom+xml" rel="alternate" title="Chongyu Fan Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="https://chongyu-fan.netlify.app/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+    
+
+<!-- start custom head snippets -->
+
+<link rel="apple-touch-icon" sizes="57x57" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-57x57.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="60x60" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-60x60.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="72x72" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-72x72.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="76x76" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-76x76.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="114x114" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-114x114.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="120x120" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-120x120.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="144x144" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-144x144.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="152x152" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-152x152.png?v=M44lzPylqQ">
+<link rel="apple-touch-icon" sizes="180x180" href="https://chongyu-fan.netlify.app/images/apple-touch-icon-180x180.png?v=M44lzPylqQ">
+<link rel="icon" type="image/png" href="https://chongyu-fan.netlify.app/images/favicon-32x32.png?v=M44lzPylqQ" sizes="32x32">
+<link rel="icon" type="image/png" href="https://chongyu-fan.netlify.app/images/android-chrome-192x192.png?v=M44lzPylqQ" sizes="192x192">
+<link rel="icon" type="image/png" href="https://chongyu-fan.netlify.app/images/favicon-96x96.png?v=M44lzPylqQ" sizes="96x96">
+<link rel="icon" type="image/png" href="https://chongyu-fan.netlify.app/images/favicon-16x16.png?v=M44lzPylqQ" sizes="16x16">
+<link rel="manifest" href="https://chongyu-fan.netlify.app/images/manifest.json?v=M44lzPylqQ">
+<link rel="mask-icon" href="https://chongyu-fan.netlify.app/images/safari-pinned-tab.svg?v=M44lzPylqQ" color="#000000">
+<link rel="shortcut icon" href="/images/favicon.ico?v=M44lzPylqQ">
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-TileImage" content="https://chongyu-fan.netlify.app/images/mstile-144x144.png?v=M44lzPylqQ">
+<meta name="msapplication-config" content="https://chongyu-fan.netlify.app/images/browserconfig.xml?v=M44lzPylqQ">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="https://chongyu-fan.netlify.app/assets/css/academicons.css"/>
+
+
+<!-- MathJax v3 -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    tags: 'none'
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+    ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process'
+  }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <button><div class="navicon"></div></button>
+        <ul class="visible-links">
+          <li class="masthead__menu-item masthead__menu-item--lg"><a href="https://chongyu-fan.netlify.app/">Chongyu Fan</a></li>
+          
+            
+            <li class="masthead__menu-item"><a href="https://chongyu-fan.netlify.app/blog/">Blog</a></li>
+          
+        </ul>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    
+
+<style>
+:root {
+  --proj-primary: #4485C7;
+  --proj-primary-dark: #1f4ca7;
+  --proj-ink: #0f172a;
+  --proj-text: #1f2937;
+  --proj-muted: #64748b;
+  --proj-faint: #94a3b8;
+  --proj-border: #e5e9ef;
+  --proj-bg-soft: #f5f9ff;
+  --proj-bg-softer: #fafbfd;
+  --proj-accent-bg: #f0f6ff;
+}
+
+.project-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 28px 96px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 56px;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--proj-text);
+  line-height: 1.65;
+  letter-spacing: 0.005em;
+}
+@media (max-width: 980px) {
+  .project-wrap {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 20px 18px 60px;
+  }
+}
+
+/* ===== Sidebar TOC (Anthropic / Transformer Circuits style) ===== */
+.project-toc { position: relative; }
+.project-toc-sticky {
+  position: sticky;
+  top: 28px;
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 4px 0 4px 0;
+  scrollbar-width: thin;
+}
+.project-toc-sticky::-webkit-scrollbar { width: 4px; }
+.project-toc-sticky::-webkit-scrollbar-thumb { background: #d8dfe8; border-radius: 4px; }
+.project-toc-label {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--proj-faint);
+  margin: 0 0 10px 14px;
+}
+.project-toc-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--proj-border);
+}
+.project-toc-nav li { margin: 0; }
+.project-toc-nav a {
+  display: block;
+  padding: 5px 14px;
+  margin-left: -1px;
+  font-size: 0.86rem;
+  color: var(--proj-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  line-height: 1.4;
+}
+.project-toc-nav a:hover {
+  color: var(--proj-ink);
+  background: rgba(68, 133, 199, 0.05);
+}
+.project-toc-nav a.active {
+  color: var(--proj-primary-dark);
+  font-weight: 600;
+  border-left-color: var(--proj-primary);
+  background: rgba(68, 133, 199, 0.06);
+}
+@media (max-width: 980px) {
+  .project-toc { display: none; }
+}
+
+/* ===== Hero (InstructPix2Pix style) ===== */
+.project-main { min-width: 0; }
+
+.project-hero {
+  text-align: center;
+  padding: 14px 0 36px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--proj-border);
+}
+.project-title {
+  font-family: 'Source Serif Pro', 'Charter', 'Georgia', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--proj-ink);
+  margin: 0 0 14px;
+  letter-spacing: -0.012em;
+}
+.project-subtitle {
+  font-size: 1.18rem;
+  font-weight: 400;
+  color: #475569;
+  margin: 0 0 24px;
+  line-height: 1.45;
+  font-style: normal;
+}
+.project-authors {
+  font-size: 1rem;
+  color: var(--proj-ink);
+  margin: 0 0 6px;
+  line-height: 1.7;
+}
+.proj-author { white-space: nowrap; }
+.proj-author a {
+  color: var(--proj-ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.proj-author a:hover {
+  color: var(--proj-primary);
+  border-bottom-color: var(--proj-primary);
+}
+.proj-author sup {
+  font-size: 0.7em;
+  color: var(--proj-primary);
+  margin-left: 1px;
+  font-weight: 600;
+}
+.proj-comma { color: var(--proj-faint); margin-right: 4px; }
+.project-affiliations {
+  font-size: 0.92rem;
+  color: var(--proj-muted);
+  margin: 0 0 16px;
+  line-height: 1.65;
+}
+.project-affiliations sup {
+  color: var(--proj-primary);
+  font-weight: 600;
+  margin-right: 2px;
+}
+.project-affiliations .aff-sep {
+  color: #cbd5e1;
+  margin: 0 6px;
+}
+.project-venue {
+  display: inline-block;
+  background: var(--proj-accent-bg);
+  color: var(--proj-primary-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin: 4px 0 4px;
+  border: 1px solid #d5e3f7;
+}
+.project-notes {
+  font-size: 0.85rem;
+  color: var(--proj-faint);
+  margin: 8px 0 4px;
+  font-style: italic;
+}
+
+/* Action buttons */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 22px 0 6px;
+}
+.project-btn {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  background: var(--proj-ink);
+  color: #fff !important;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  overflow: hidden;
+  border: 1px solid var(--proj-ink);
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
+}
+.project-btn:hover {
+  background: var(--proj-primary);
+  border-color: var(--proj-primary);
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(68, 133, 199, 0.28);
+  text-decoration: none !important;
+}
+.project-btn .proj-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  background: rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.project-btn .proj-btn-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+}
+.project-btn:hover .proj-btn-icon {
+  background: rgba(255, 255, 255, 0.18);
+  border-right-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Teaser */
+.project-teaser {
+  margin: 32px auto 0;
+  max-width: 760px;
+}
+.project-teaser img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 22px rgba(15, 23, 42, 0.10);
+  background: #fff;
+  border: 1px solid var(--proj-border);
+}
+.project-teaser figcaption {
+  font-size: 0.9rem;
+  color: var(--proj-muted);
+  text-align: center;
+  margin-top: 12px;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+/* ===== Content typography ===== */
+.project-content {
+  max-width: 740px;
+  margin: 0 auto;
+  font-size: 1.02rem;
+  color: var(--proj-text);
+}
+.project-content > p,
+.project-content > ul,
+.project-content > ol { margin: 0 0 1.05em; }
+.project-content a {
+  color: var(--proj-primary-dark);
+  text-decoration: underline;
+  text-decoration-color: rgba(68, 133, 199, 0.4);
+  text-underline-offset: 2px;
+}
+.project-content a:hover {
+  color: var(--proj-ink);
+  text-decoration-color: var(--proj-primary-dark);
+}
+
+.project-content h2 {
+  font-family: 'Source Serif Pro', 'Charter', 'Georgia', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--proj-ink);
+  margin: 2.4em 0 0.7em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--proj-border);
+  scroll-margin-top: 24px;
+  letter-spacing: -0.005em;
+}
+.project-content h2:first-child { margin-top: 0; }
+.project-content h3 {
+  font-family: 'Source Serif Pro', 'Charter', 'Georgia', serif;
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--proj-primary-dark);
+  margin: 1.7em 0 0.5em;
+  scroll-margin-top: 24px;
+}
+.project-content ul, .project-content ol { padding-left: 1.4em; }
+.project-content li { margin-bottom: 0.4em; }
+.project-content strong { color: var(--proj-ink); font-weight: 700; }
+
+.project-content code {
+  background: var(--proj-bg-softer);
+  border: 1px solid var(--proj-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.9em;
+  color: var(--proj-ink);
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+.project-content pre,
+.project-content pre.bibtex-block,
+.project-content .highlighter-rouge,
+.project-content .highlight,
+.project-content pre.highlight {
+  background: var(--proj-bg-softer) !important;
+  color: #1f2937 !important;
+  margin: 1.4em 0 !important;
+  padding: 20px 22px 26px !important;
+  border: 1px solid var(--proj-border) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  max-height: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  font-size: 0.84em !important;
+  line-height: 1.7 !important;
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace !important;
+  white-space: pre !important;
+}
+.project-content pre.bibtex-block:before,
+.project-content pre.bibtex-block:after { display: none !important; content: none !important; }
+.project-content pre.bibtex-block,
+.project-content pre.bibtex-block code {
+  white-space: pre-wrap !important;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow-x: hidden !important;
+}
+.project-content .highlighter-rouge .highlight,
+.project-content .highlighter-rouge pre.highlight {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+.project-content .highlighter-rouge {
+  padding: 0 !important;
+}
+.project-content .highlighter-rouge pre.highlight {
+  padding: 16px 20px !important;
+}
+.project-content pre code,
+.project-content .highlight code,
+.project-content pre.bibtex-block code {
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  white-space: pre !important;
+  display: block;
+}
+
+/* Figures */
+.project-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 14px auto;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+}
+.project-content figure {
+  margin: 1.4em auto;
+  text-align: center;
+}
+.project-content figure img { margin: 0 auto; }
+.project-content figcaption,
+.project-content .fig-caption {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--proj-muted);
+  font-style: italic;
+  max-width: 96%;
+  margin: 10px auto 0;
+  line-height: 1.55;
+}
+
+/* Multi-panel figure row: one outer frame around the whole row */
+.fig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 12px;
+  align-items: end;
+  justify-items: center;
+  margin: 1.4em auto 0.3em;
+  padding: 12px 14px 10px;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+.fig-grid figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+}
+.fig-grid figure img {
+  display: block;
+  margin: 0 auto 8px;
+  max-width: 100%;
+  max-height: 220px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: none;
+  background: transparent;
+}
+.fig-grid figcaption {
+  font-size: 0.8rem;
+  color: var(--proj-muted);
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+}
+.fig-grid .fig-legend {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: -4px;
+  margin-bottom: -16px;
+  line-height: 0;
+}
+.fig-grid .fig-legend img {
+  max-width: 60%;
+  height: auto;
+}
+/* Narrower variant for figures that were wrapfigure in the paper */
+.fig-grid.wrap { max-width: 56%; }
+@media (max-width: 1100px) { .fig-grid.wrap { max-width: 70%; } }
+@media (max-width: 900px) { .fig-grid.wrap { max-width: 100%; } }
+
+/* Break out of the 740px content column so wide figure rows fit at full height */
+.fig-grid.fig-breakout {
+  max-width: 1080px;
+  width: calc(100vw - 80px);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+@media (max-width: 1100px) {
+  .fig-grid.fig-breakout { width: calc(100vw - 60px); }
+}
+
+/* Force panels to share an exact image height (used for Figure 5) */
+.fig-grid.equal-height figure img {
+  height: 320px;
+  max-height: 320px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+.fig-grid.equal-height .fig-legend img {
+  max-width: 70%;
+  height: auto;
+}
+
+/* Callout / takeaway */
+.callout {
+  position: relative;
+  background: transparent;
+  border: none;
+  border-left: 2px solid var(--proj-primary);
+  padding: 4px 0 4px 18px;
+  margin: 1.6em 0;
+  color: var(--proj-text);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+.callout p { margin: 0; }
+.callout p + p { margin-top: 0.5em; }
+.callout strong:first-child {
+  color: var(--proj-primary);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Tables */
+.project-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.92rem;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.project-content th, .project-content td {
+  border-bottom: 1px solid var(--proj-border);
+  border-right: 1px solid var(--proj-border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.project-content th:last-child, .project-content td:last-child { border-right: none; }
+.project-content tr:last-child td { border-bottom: none; }
+.project-content thead th {
+  background: var(--proj-bg-soft);
+  color: #0a1f44;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+.project-content .results-table th,
+.project-content .results-table td { text-align: center; }
+
+/* TL;DR card */
+.tldr {
+  background: var(--proj-bg-softer);
+  border: 1px solid var(--proj-border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 1.6em 0 2em;
+}
+.tldr h2 {
+  margin: 0 0 10px !important;
+  border-bottom: none !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--proj-primary) !important;
+  padding: 0 !important;
+}
+.tldr ul { margin: 0; padding-left: 1.2em; }
+.tldr li { margin-bottom: 0.4em; font-size: 0.97rem; }
+
+/* MathJax overflow */
+mjx-container { overflow-x: auto; max-width: 100%; }
+
+/* Hide site footer on project pages so the BibTeX never gets covered */
+.page__footer { display: none !important; }
+.layout--project + .page__footer,
+body.layout--project .page__footer { display: none !important; }
+mjx-container[display="true"] { margin: 1em 0; }
+
+/* Hide author profile sidebar inherited from default site styles, just in case */
+.sidebar.sticky, .author__avatar, .author__content { display: none !important; }
+</style>
+
+<div class="project-wrap">
+  <aside class="project-toc" aria-label="Table of contents">
+    <div class="project-toc-sticky">
+      <div class="project-toc-label">Contents</div>
+      <nav class="project-toc-nav" id="project-toc-nav"></nav>
+    </div>
+  </aside>
+
+  <main class="project-main">
+    <header class="project-hero">
+      <h1 class="project-title">Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</h1>
+      
+
+      
+        <div class="project-authors">
+          <span class="proj-author"><a href="https://chongyu-fan.netlify.app/" target="_blank" rel="noopener">Chongyu Fan</a><sup>1</sup></span><span class="proj-comma">,</span> <span class="proj-author">Gaowen Liu<sup>2</sup></span><span class="proj-comma">,</span> <span class="proj-author">Mingyi Hong<sup>3</sup></span><span class="proj-comma">,</span> <span class="proj-author">Ramana Rao Kompella<sup>2</sup></span><span class="proj-comma">,</span> <span class="proj-author">Sijia Liu<sup>1,4</sup></span>
+        </div>
+      
+
+      
+        <div class="project-affiliations">
+          <span><sup>1</sup>Michigan State University</span><span class="aff-sep">·</span><span><sup>2</sup>Cisco</span><span class="aff-sep">·</span><span><sup>3</sup>University of Minnesota</span><span class="aff-sep">·</span><span><sup>4</sup>IBM Research</span>
+        </div>
+      
+
+      <div class="project-venue">Preprint, 2026</div>
+      
+
+      
+        <div class="project-links">
+          
+            <a class="project-btn" href="#">
+              <span class="proj-btn-icon">📄</span>
+              <span class="proj-btn-label">arXiv</span>
+            </a>
+          
+            <a class="project-btn" href="https://github.com/OPTML-Group/Pion" target="_blank" rel="noopener">
+              <span class="proj-btn-icon">⌨︎</span>
+              <span class="proj-btn-label">Code</span>
+            </a>
+          
+            <a class="project-btn" href="#bibtex">
+              <span class="proj-btn-icon">❝</span>
+              <span class="proj-btn-label">BibTeX</span>
+            </a>
+          
+        </div>
+      
+
+      
+    </header>
+
+    <article class="project-content">
+      <div class="tldr">
+
+  <h2 id="tldr">TL;DR</h2>
+
+  <ul>
+    <li><strong>Muon</strong> is the de facto matrix aware optimizer for <strong>LLM pretraining</strong>, which is basically next token classification on text via supervised learning. Muon orthogonalizes the momentum matrix through a few Newton Schulz (NS) iterations, pushing every singular value of the momentum to one.</li>
+    <li>When we move beyond LLM pretraining along three axes (a different <strong>modality</strong>, a different <strong>loss</strong>, or a different <strong>learning paradigm</strong>), Muon’s uniform spectral whitening turns out to be the wrong inductive bias.</li>
+    <li>We propose <strong>Pion</strong> (s<strong>P</strong>ectral h<strong>I</strong>gh pass <strong>O</strong>ptimization on mome<strong>N</strong>tum), a drop in replacement for Muon’s NS iteration. It changes only the polynomial coefficients used inside NS, keeps the same per step cost, and realizes a sharp spectral high pass that anchors the informative leading singular values at one while suppressing the noisy tail toward zero.</li>
+  </ul>
+
+</div>
+
+<h2 id="background-muon-and-three-axes-beyond-pretraining">Background: Muon and Three Axes Beyond Pretraining</h2>
+
+<p>For a weight matrix \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\), given a stochastic gradient \(\mathbf{G}_t\) and a momentum buffer \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\), Muon performs the steepest descent step under the spectral norm:</p>
+
+\[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
+
+<p>If \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) is the compact SVD, then</p>
+
+\[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
+
+<p>Every nonzero singular value is mapped to one. This is <strong>uniform spectral whitening</strong>. Computing an SVD per step is too expensive at scale, so Muon approximates \(\mathrm{msign}\) by a small number of Newton Schulz (NS) iterations. After normalizing the input as \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\), each NS step applies an odd quintic matrix polynomial,</p>
+
+\[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
+
+<p>with the canonical coefficients \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\). By the identity \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\), an NS step preserves the singular vectors and reshapes each singular value through a <strong>scalar polynomial</strong> on \([0, 1]\):</p>
+
+\[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
+
+<p>So designing an NS iteration reduces to designing \(f\) on \([0, 1]\). Muon’s NS is constructed so that repeated application drives every \(\sigma \in (0, 1]\) toward one. The shape of this scalar map (and Pion’s eventual replacement for it) is the central object we visualize in <a href="#fig-pion-iter">Figure 1</a>.</p>
+
+<p>LLM pretraining is a <strong>classification</strong> task (predict the next token), uses <strong>text</strong> as the only modality, and runs under <strong>supervised learning</strong>. With clean dense supervision and full rank text gradients, Muon’s uniform whitening is a sensible inductive bias. But LLM pretraining occupies just one corner of the design space; three orthogonal axes can move us out of that corner.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Axis</th>
+      <th style="text-align: left">LLM pretraining</th>
+      <th style="text-align: left">Generalization direction</th>
+      <th style="text-align: left">Representative testbed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Modality</strong></td>
+      <td style="text-align: left">text</td>
+      <td style="text-align: left">vision, robot action</td>
+      <td style="text-align: left">VLA training (vision language action)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Loss</strong></td>
+      <td style="text-align: left">classification (next token)</td>
+      <td style="text-align: left">regression, generative (flow matching)</td>
+      <td style="text-align: left">VLA action heads (\(\ell_1\) regression and flow matching)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Paradigm</strong></td>
+      <td style="text-align: left">supervised learning</td>
+      <td style="text-align: left">reinforcement learning</td>
+      <td style="text-align: left">RLVR post training (GRPO, GMPO)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>VLA training combines axes 1 and 2 (it adds the action modality and replaces classification with regression or generative losses), and RLVR isolates axis 3 (it keeps the LLM and its tokenizer but switches from supervised next token loss to policy gradient on a verifiable reward). The rest of the page asks the same question along each axis: <strong>does Muon’s uniform spectral whitening still help, or does it become the wrong inductive bias?</strong></p>
+
+<h2 id="beyond-modality-and-loss-vla">Beyond Modality and Loss: VLA</h2>
+
+<p>A VLA model is factorized into a <strong>vision encoder</strong>, a <strong>language backbone</strong>, and an <strong>action head</strong>. The vision and language modules still consume text and image tokens, but the <strong>action head</strong> is a new modality (it consumes joint actions of robots). The action head also uses non classification losses: either an \(\ell_1\) regression head (e.g., VLA Adapter) or a flow matching generative head (e.g., VLANeXt). These two design choices, the action modality and the regression style loss, are tightly coupled by construction.</p>
+
+<p>We measure the spectral structure of each module’s gradient via the <strong>effective rank</strong> (erank) of \(\mathbf{G} \in \mathbb{R}^{m \times n}\):</p>
+
+\[\mathrm{erank}(\mathbf{G}) \,\triangleq\, \exp\!\Big( H(\mathbf{p}) \Big), \quad H(\mathbf{p}) = -\sum_{i=1}^n p_i \log p_i, \quad p_i = \frac{\sigma_i(\mathbf{G})}{\sum_j \sigma_j(\mathbf{G})}.\]
+
+<p>A higher erank means gradient energy is spread across many singular directions; a lower erank means it concentrates in a few dominant ones.</p>
+
+<div class="fig-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <figure><img src="/images/blog/pion/erank_heatmap_sampled.png" alt="erank" /><figcaption>(a) Per module gradient erank</figcaption></figure>
+  <figure><img src="/images/blog/pion/success_rate.png" alt="success rate" /><figcaption>(b) Test success rate</figcaption></figure>
+  <figure><img src="/images/blog/pion/total_training_time.png" alt="training time" /><figcaption>(c) Total training time (hrs)</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 2. Limitations of Muon in VLA training (VLA Adapter on LIBERO Object). (a) Per module gradient erank along the training trajectory. (b)(c) Test success rate and total training time at 4.5k steps, with vision and language fixed at AdamW; only the action module optimizer differs.</p>
+
+<p>The ordering in panel (a) is stable across training: vision is highest, language is intermediate, the <strong>action gradient is consistently the lowest</strong>. Both the modality switch (rich pixels and tokens become a tiny continuous action vector) and the loss switch (one hot classification becomes regression or generative matching) push the action gradient toward low effective rank. When Muon is applied uniformly to such a low erank gradient, it lifts the noisy tail directions to the same magnitude as the few informative leading directions, and the resulting update is dominated by spectral floor noise. Panel (b) shows Muon underperforming AdamW on the action head. A natural workaround, <strong>Low Rank Muon</strong> (LRMuon), projects the momentum onto a top \(k\) subspace via SVD or Gaussian sketching before NS. LRMuon does close the accuracy gap, but as panel (c) shows, the explicit projection inflates wall clock by about an order of magnitude, and forces a fixed rank \(k\) that cannot adapt across layers and steps.</p>
+
+<div class="callout">
+  <p><strong>Limitation 1 (modality + loss).</strong> Conventional Muon is not adaptive to the rank heterogeneity introduced by new modalities and non classification losses. Explicit low rank projection helps but breaks scalability.</p>
+</div>
+
+<h2 id="beyond-paradigm-rlvr">Beyond Paradigm: RLVR</h2>
+
+<p>RLVR keeps the LLM and the text modality; it changes the <strong>learning paradigm</strong>. Instead of a token level supervised loss, the policy is updated by policy gradient against a rule based, verifiable reward. We use GRPO and GMPO as representative algorithms.</p>
+
+<p>To compare paradigms, we measure the per step gradient signal to noise ratio of a layer’s weight matrix:</p>
+
+\[\mathrm{SNR}(\mathbf{G}) \,\triangleq\, \frac{\|\mathbb{E}[\mathbf{G}]\|_F^2}{\mathbb{E}\big[\,\|\mathbf{G} - \mathbb{E}[\mathbf{G}]\|_F^2\,\big]}.\]
+
+<div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <figure><img src="/images/blog/pion/grad_snr_sft_vs_rl_math3-5_step80.png" alt="SFT vs GRPO SNR" /><figcaption>(a) Gradient SNR: SFT vs GRPO</figcaption></figure>
+  <figure><img src="/images/blog/pion/acc_adamw_muon.png" alt="Accuracy AdamW vs Muon" /><figcaption>(b) MATH500: AdamW vs Muon</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 3. RLVR diagnosis on Qwen3 1.7B (MATH levels 3 to 5). (a) GRPO has substantially lower gradient SNR than SFT throughout training. (b) Under GRPO, AdamW improves steadily while Muon collapses to near zero accuracy within a few steps.</p>
+
+<p>Two structural reasons explain the SNR gap in panel (a). First, <strong>coarser supervision granularity</strong>: SFT receives token level teacher signals, GRPO uses trajectory level rewards, so each token gets a much sparser learning signal. Second, <strong>stabilization mechanisms</strong>: importance sampling, clipping, and group relative normalization reweight or zero out parts of the per token gradients, which inflates variance. When Muon is run on top of these low SNR gradients (panel b), the uniform whitening lifts the noisy directions to the same magnitude as the informative ones, and the policy collapses within a few steps. A second issue specific to the RLVR paradigm is that Muon’s NS treats each weight matrix as a single block, ignoring the per head specialization that pretraining imprints on attention projections.</p>
+
+<div class="callout">
+  <p><strong>Limitation 2 (paradigm).</strong> Muon’s uniform spectral whitening amplifies noisy directions in low SNR RLVR gradients, making it ill suited for noise sensitive post training. It also discards the per head structure inherited from pretraining.</p>
+</div>
+
+<h2 id="pion-a-spectral-high-pass-optimizer">Pion: A Spectral High Pass Optimizer</h2>
+
+<p><strong>A unified spectral diagnosis.</strong> Although Limitations 1 and 2 originate from different sources (low effective rank along the modality and loss axes, low SNR along the paradigm axis), they share <strong>one spectral signature</strong>. In the SVD of \(\mathbf{M}_t\), the few <strong>leading</strong> singular values carry the informative descent direction, while the long <strong>tail</strong> of small singular values is dominated by noise: a spectral floor when erank is low, stochastic estimation noise when SNR is low. Muon’s \(\mathrm{msign}\) lifts the tail to the magnitude of the head and corrupts the update in both regimes. The natural remedy is a <strong>spectral high pass</strong>: anchor the informative head near one, contract the noisy tail toward zero.</p>
+
+<p><strong>A two stage high pass NS iteration.</strong> Since each NS step reshapes \(\sigma \in [0, 1]\) through the scalar polynomial \(f(\sigma; a, b, c) = a\sigma + b\sigma^3 + c\sigma^5\), designing an NS iteration reduces to designing \(f\). A single such polynomial cannot produce a sharp high pass on the unit interval, so Pion splits the default \(k = 5\) NS steps into two stages with different coefficients:</p>
+
+<ul>
+  <li>a <strong>Promotion</strong> polynomial \(f_{\mathrm{p}}\) applied for \(k_{\mathrm{p}}\) steps, which lifts dominant singular values toward one while preserving their relative order;</li>
+  <li>a <strong>Suppression</strong> polynomial \(f_{\mathrm{s}}\) applied for \(k_{\mathrm{s}} = k - k_{\mathrm{p}}\) steps, which pins large singular values near one and contracts smaller ones toward zero.</li>
+</ul>
+
+<p>The cutoff is controlled by the single hyperparameter \(k_{\mathrm{p}} \in \{0, 1, \ldots, 5\}\).</p>
+
+<p>We require three constraints on \(f_{\mathrm{p}}\): <strong>(P1)</strong> fixed point \(f_{\mathrm{p}}(1) = 1\); <strong>(P2)</strong> first order stationarity \(f_{\mathrm{p}}'(1) = 0\); and <strong>(P3)</strong> boundary concavity \(f_{\mathrm{p}}''(1) \leq 0\), which together with (P2) ensures \(\sigma = 1\) is a maximum so that the iteration does not curve upward past one near the boundary. Solving (P1) and (P2) leaves a one parameter family. Combining (P3) with monotonicity on \([0, 1]\) carves out the feasible interval \(a_{\mathrm{p}} \in [0, 1.875]\). Since \(f_{\mathrm{p}}'(0) = a_{\mathrm{p}}\) controls how strongly each step lifts small singular values, we pick the largest feasible slope, which uniquely determines the polynomial:</p>
+
+\[f_{\mathrm{p}}(\sigma) = 1.875\, \sigma \,-\, 1.25\, \sigma^3 \,+\, 0.375\, \sigma^5.\]
+
+<p>A pleasant byproduct is that the derivative becomes a perfect square, \(f_{\mathrm{p}}'(\sigma) = 1.875\, (1 - \sigma^2)^2 \geq 0\), so monotonicity on \([0, 1]\) holds automatically.</p>
+
+<p>The Suppression polynomial inherits \(f_{\mathrm{s}}(1) = 1\) and \(f_{\mathrm{s}}'(1) = 0\), and adds a <strong>spectral filtering</strong> condition \(f_{\mathrm{s}}'(0) = 0\). Removing the linear term near the origin forces small singular values to be driven to zero by the higher order terms. The unique solution is</p>
+
+\[f_{\mathrm{s}}(\sigma) = 2.5\, \sigma^3 \,-\, 1.5\, \sigma^5.\]
+
+<p>Chaining \(k_{\mathrm{p}}\) Promotion steps with \(k_{\mathrm{s}}\) Suppression steps gives Pion’s <strong>high pass NS</strong> iteration. Fixing \(k = 5\) preserves Muon’s per step cost. Panel (d) of Figure 1 below shows the resulting profile: a sharp transition between a pinned region near one and a filtered region near zero, with \(k_{\mathrm{p}}\) controlling the cutoff. Empirically, <strong>suppression dominant</strong> allocations with \(k_{\mathrm{s}} \geq 3\) work best for both VLA and RLVR.</p>
+
+<div id="fig-pion-iter" class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
+  <figure><img src="/images/blog/pion/iter_NS.png" alt="Muon NS" /><figcaption>(a) Muon NS</figcaption></figure>
+  <figure><img src="/images/blog/pion/iter_P.png" alt="Promotion" /><figcaption>(b) Promotion \(f_{\mathrm{p}}\)</figcaption></figure>
+  <figure><img src="/images/blog/pion/iter_S.png" alt="Suppression" /><figcaption>(c) Suppression \(f_{\mathrm{s}}\)</figcaption></figure>
+  <figure><img src="/images/blog/pion/iter_pion_mix.png" alt="High pass NS" /><figcaption>(d) Pion high pass NS</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 1. Visualization of \(f(\sigma)\) on \(\sigma \in [0, 1]\). Muon (a) drives every singular value toward one. Pion combines Promotion (b) with Suppression (c) to obtain the high pass profile in (d).</p>
+
+<p><strong>Per head mode for RLVR.</strong> Pion has two application modes. The default mode applies the iteration to each weight matrix as a single block (mirrors Muon). The per head mode first reshapes each attention projection along its head dimension into multiple per head sub matrices, then runs the iteration independently on each. Since the inner products \(\mathbf{X}^\top \mathbf{X}\) are already batched along the head dimension after the reshape, the per head mode is <strong>free</strong> over the default mode. We use the default mode for VLA (the action head is trained from scratch and has no head structure to preserve) and the per head mode for RLVR. RLVR starts from a pretrained LLM whose attention layers have heterogeneous per head Frobenius norms, and these per head norms govern attention sharpness and gradient magnitudes.</p>
+
+<div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <figure><img src="/images/blog/pion/acc_mh.png" alt="Per head ablation accuracy" /><figcaption>(a) MATH500 accuracy</figcaption></figure>
+  <figure><img src="/images/blog/pion/qwen3_1p7b_Q_headnorm_variance_compact_step80.png" alt="Q headnorm variance" /><figcaption>(b) Cross head Q variance</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 4. Effect of per head high pass NS on RLVR (Qwen3 1.7B, GRPO on MATH levels 3 to 5). (a) Accuracy of AdamW, Muon (default vs per head), and Pion (default vs per head). Per head Pion is the only configuration that beats AdamW; per head mode does not save Muon, since the lack of noise adaptiveness remains the primary issue. (b) Cross head Q projection variance: before RLVR weight (top) and after RLVR update for default vs per head Pion (bottom).</p>
+
+<p>This isolates two complementary findings. The <strong>spectral high pass</strong> is the primary driver of RLVR stability (per head Muon still collapses), and the <strong>per head reshape</strong> is an auxiliary mechanism that preserves head heterogeneity inherited from pretraining and pushes per head Pion past AdamW.</p>
+
+<div class="callout">
+  <p><strong>Takeaway.</strong> Pion is a drop in replacement for Muon’s NS iteration. Same control flow, same per step cost; only the polynomial coefficients change.</p>
+</div>
+
+<h2 id="experiments">Experiments</h2>
+
+<p>Pion is evaluated on two testbeds that span all three axes:</p>
+
+<ul>
+  <li><strong>VLA training</strong> (axes 1 and 2) with two architectures, \(\ell_1\) regression based VLA Adapter and flow matching based VLANeXt, on LIBERO and LIBERO Plus.</li>
+  <li><strong>RLVR post training</strong> (axis 3) with GRPO and GMPO on Qwen3 1.7B and Qwen3 4B over MATH and GSM8K.</li>
+</ul>
+
+<p>Three optimizer configurations are compared in each setting: AdamW, Muon, and Pion.</p>
+
+<div class="fig-grid wrap" style="grid-template-columns: 2fr 1fr; max-width: 72%;">
+  <div class="fig-legend"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
+  <figure><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="max-height: 260px;" /><figcaption>(a) Final success rate on LIBERO</figcaption></figure>
+  <figure><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="max-height: 260px;" /><figcaption>(b) Success rate on Object</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 5. AdamW, Muon, and Pion for VLA Adapter on LIBERO. Pion outperforms Muon on every one of the four LIBERO suites, reaches 95.4% success at 500 steps on Object, and saturates at 100% by 1500 steps.</p>
+
+<p>For VLANeXt (flow matching), Pion not only wins on the clean LIBERO benchmark but also amplifies its advantage on the harder LIBERO Plus split, especially under language (\(+9\) pts), noise (\(+6\) pts), and robot (\(+6\) pts) perturbations. This is consistent with the picture that uniform whitening overamplifies non generalizable noise directions.</p>
+
+<div class="results-table">
+
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align: left">Optimizer</th>
+        <th style="text-align: center">LIBERO</th>
+        <th style="text-align: center">LIBERO Plus</th>
+        <th style="text-align: center">Background</th>
+        <th style="text-align: center">Camera</th>
+        <th style="text-align: center">Language</th>
+        <th style="text-align: center">Layout</th>
+        <th style="text-align: center">Light</th>
+        <th style="text-align: center">Noise</th>
+        <th style="text-align: center">Robot</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: left">AdamW</td>
+        <td style="text-align: center">79.45</td>
+        <td style="text-align: center">64.57</td>
+        <td style="text-align: center">68.97</td>
+        <td style="text-align: center">70.38</td>
+        <td style="text-align: center">54.50</td>
+        <td style="text-align: center">61.80</td>
+        <td style="text-align: center">76.35</td>
+        <td style="text-align: center">66.37</td>
+        <td style="text-align: center">47.04</td>
+      </tr>
+      <tr>
+        <td style="text-align: left">Muon</td>
+        <td style="text-align: center">93.65</td>
+        <td style="text-align: center">72.34</td>
+        <td style="text-align: center">82.72</td>
+        <td style="text-align: center">68.00</td>
+        <td style="text-align: center">77.53</td>
+        <td style="text-align: center">76.21</td>
+        <td style="text-align: center">86.17</td>
+        <td style="text-align: center">69.98</td>
+        <td style="text-align: center">57.36</td>
+      </tr>
+      <tr>
+        <td style="text-align: left"><strong>Pion (Ours)</strong></td>
+        <td style="text-align: center"><strong>96.35</strong></td>
+        <td style="text-align: center"><strong>75.93</strong></td>
+        <td style="text-align: center"><strong>84.53</strong></td>
+        <td style="text-align: center"><strong>70.88</strong></td>
+        <td style="text-align: center"><strong>86.93</strong></td>
+        <td style="text-align: center"><strong>76.71</strong></td>
+        <td style="text-align: center"><strong>90.67</strong></td>
+        <td style="text-align: center"><strong>76.09</strong></td>
+        <td style="text-align: center"><strong>63.18</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+<p class="fig-caption">Table 1. AdamW, Muon, and Pion for VLANeXt on LIBERO and LIBERO Plus. Best in <strong>bold</strong>.</p>
+
+<p>Across eight RLVR settings (GRPO and GMPO times Qwen3 1.7B and Qwen3 4B times MATH and GSM8K), Muon consistently collapses to near zero accuracy. Pion not only recovers a meaningful training signal but also outperforms AdamW with faster convergence.</p>
+
+<div class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_math3-5_qwen3_1.7b.png" alt="" /><figcaption>(a) GRPO, 1.7B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_math3-5_qwen3_4b.png" alt="" /><figcaption>(b) GRPO, 4B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_gsm8k_qwen3_1.7b.png" alt="" /><figcaption>(c) GRPO, 1.7B, GSM8K</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_gsm8k_qwen3_4b.png" alt="" /><figcaption>(d) GRPO, 4B, GSM8K</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_math3-5_qwen3_1.7b.png" alt="" /><figcaption>(e) GMPO, 1.7B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_math3-5_qwen3_4b.png" alt="" /><figcaption>(f) GMPO, 4B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_gsm8k_qwen3_1.7b.png" alt="" /><figcaption>(g) GMPO, 1.7B, GSM8K</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_gsm8k_qwen3_4b.png" alt="" /><figcaption>(h) GMPO, 4B, GSM8K</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 6. AdamW, Muon, and Pion on RLVR: validation accuracy vs training step across eight settings (two algorithms × two model sizes × two benchmarks).</p>
+
+<p><strong>Reverse ablation: direction of spectral shaping matters.</strong> To verify that the gains come specifically from the high pass direction, we construct <strong>Low pass Muon (LPMuon)</strong>, which mirrors Pion in NS structure and per step cost but flips the polynomial coefficients to induce a low pass mapping (contracts large singular values, amplifies small ones). LPMuon fails to train: its accuracy stays at the initial checkpoint.</p>
+
+<div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <figure><img src="/images/blog/pion/pion0_muon_lowrankmuon.png" alt="Low pass profile" /><figcaption>(a) Low pass scalar map</figcaption></figure>
+  <figure><img src="/images/blog/pion/mhlpmuon.png" alt="GSM8K accuracy" /><figcaption>(b) GSM8K accuracy</figcaption></figure>
+</div>
+<p class="fig-caption">Figure 7. (a) Scalar map \(f(\sigma)\) of LPMuon. (b) GSM8K accuracy of AdamW, Pion, and LPMuon (Qwen3 1.7B, GRPO). Combined with Muon's failure (no filtering) in Figure 6, this isolates the direction of spectral shaping as the key factor.</p>
+
+<h2 id="bibtex">BibTeX</h2>
+
+<pre class="bibtex-block"><code>@article{fan2026pion,
+  title   = {Pion: Rethinking Muon Beyond Pretraining:
+             Spectral Failures and High-Pass Remedies
+             for VLA and RLVR},
+  author  = {Fan, Chongyu and Liu, Gaowen and Hong, Mingyi
+             and Kompella, Ramana Rao and Liu, Sijia},
+  journal = {Preprint},
+  year    = {2026}
+}
+</code></pre>
+
+    </article>
+  </main>
+</div>
+
+<script>
+(function() {
+  function init() {
+    var content = document.querySelector('.project-content');
+    var nav = document.getElementById('project-toc-nav');
+    if (!content || !nav) return;
+    var headings = content.querySelectorAll('h2');
+    if (headings.length === 0) return;
+
+    var ul = document.createElement('ul');
+    var headingArr = [];
+    headings.forEach(function(h, i) {
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      headingArr.push(h);
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.replace(/^\s*\d+(\.\d+)*\.?\s*/, '');
+      a.dataset.target = h.id;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    nav.appendChild(ul);
+
+    var links = nav.querySelectorAll('a');
+    function update() {
+      var top = window.scrollY + 120;
+      var current = headingArr[0].id;
+      for (var i = 0; i < headingArr.length; i++) {
+        if (headingArr[i].offsetTop <= top) current = headingArr[i].id;
+      }
+      links.forEach(function(a) {
+        if (a.dataset.target === current) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+<a href="/sitemap/">Sitemap</a>
+<!-- end custom footer snippets -->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="http://github.com/a-F1"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    <li><a href="https://chongyu-fan.netlify.app/feed.xml"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2026 Chongyu Fan. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>, a fork of <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    <script src="https://chongyu-fan.netlify.app/assets/js/main.min.js"></script>
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+  </body>
+</html>
+

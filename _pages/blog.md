@@ -38,11 +38,18 @@ author_profile: true
     padding: 0;
 }
 .post-list-item {
-    border-bottom: 1px solid #ececec;
-    padding: 18px 0;
+    background: #fff;
+    border: 1px solid #e5e9ef;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.post-list-item:last-child {
-    border-bottom: none;
+.post-list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(68,133,199,0.16);
+    border-color: #c5d8ef;
 }
 .post-list-item a.post-link {
     text-decoration: none;
@@ -91,7 +98,7 @@ author_profile: true
 
 <div class="blog-header">
   <h1>Blog</h1>
-  <p class="blog-subtitle">Notes on optimization, reasoning, and other things I am working on.</p>
+  <!-- <p class="blog-subtitle">Notes on optimization, reasoning, and other things I am working on.</p> -->
 </div>
 
 {% if site.posts.size == 0 %}

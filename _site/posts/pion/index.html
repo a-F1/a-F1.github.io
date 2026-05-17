@@ -1227,6 +1227,98 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   .axis-arrow .pulse { display: none; }
 }
 
+/* ===== Algorithm pseudocode boxes ===== */
+.algo-block {
+  margin: 24px 0;
+  background: #ffffff;
+  border: 1px solid var(--proj-border);
+  border-radius: 10px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+.algo-block .algo-header {
+  padding: 11px 18px 10px;
+  border-bottom: 1.6px solid var(--proj-text);
+  background: linear-gradient(180deg, #f7faff 0%, #ffffff 100%);
+  font-size: 0.94rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+.algo-block .algo-num {
+  font-weight: 700;
+  color: var(--proj-ink);
+  letter-spacing: 0.005em;
+}
+.algo-block .algo-title { color: var(--proj-text); font-weight: 500; }
+.algo-block .algo-require {
+  padding: 9px 18px 8px;
+  background: #fcfdff;
+  border-bottom: 1px dashed var(--proj-border);
+  font-size: 0.86rem;
+  color: var(--proj-text);
+  line-height: 1.55;
+}
+.algo-block ol.algo-steps {
+  list-style: none;
+  counter-reset: algo-line;
+  margin: 0;
+  padding: 8px 0 12px;
+}
+.algo-block ol.algo-steps li {
+  counter-increment: algo-line;
+  display: flex;
+  align-items: baseline;
+  padding: 2px 18px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--proj-text);
+}
+.algo-block ol.algo-steps li::before {
+  content: counter(algo-line) ":";
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.74rem;
+  color: var(--proj-faint);
+  width: 26px;
+  flex-shrink: 0;
+  text-align: right;
+  margin-right: 14px;
+}
+.algo-block ol.algo-steps li > .line {
+  flex: 1;
+  min-width: 0;
+}
+.algo-block ol.algo-steps li > .comment {
+  font-style: italic;
+  color: var(--proj-muted);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  text-align: right;
+  padding-left: 18px;
+}
+.algo-block ol.algo-steps li.ind-1 > .line { padding-left: 18px; }
+.algo-block ol.algo-steps li.ind-2 > .line { padding-left: 36px; }
+.algo-block .kw {
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--proj-ink);
+  text-transform: lowercase;
+  font-size: 0.92em;
+}
+.algo-block mjx-container { font-size: 0.96em !important; }
+@media (max-width: 700px) {
+  .algo-block ol.algo-steps li { flex-wrap: wrap; }
+  .algo-block ol.algo-steps li > .comment {
+    width: 100%;
+    text-align: left;
+    padding-left: 40px;
+  }
+}
+
 /* Language toggle */
 .lang-toggle {
   display: inline-flex;
@@ -1475,7 +1567,7 @@ mjx-container[display="true"] { margin: 1em 0; }
           <circle cx="28" cy="14" r="1.6" fill="#4485C7" />
         </svg>
       </div>
-      <div class="ax-cell-label">image patches + robot joint actions</div>
+      <div class="ax-cell-label">image patches + robot actions</div>
     </div>
   </div>
 
@@ -1484,7 +1576,7 @@ mjx-container[display="true"] { margin: 1em 0; }
       <span class="axis-num">2</span>
       <div>
         <div class="axis-name">Loss</div>
-        <div class="axis-hint">classification &nbsp;→&nbsp; regression (incl.&nbsp;flow matching)</div>
+        <div class="axis-hint">classification &nbsp;→&nbsp; regression</div>
       </div>
     </div>
     <div class="axis-from">
@@ -1515,7 +1607,7 @@ mjx-container[display="true"] { margin: 1em 0; }
     <div class="axis-tag">
       <span class="axis-num">3</span>
       <div>
-        <div class="axis-name">Paradigm</div>
+        <div class="axis-name">Learning paradigm</div>
         <div class="axis-hint">supervised learning &nbsp;→&nbsp; reinforcement learning</div>
       </div>
     </div>
@@ -1545,7 +1637,7 @@ mjx-container[display="true"] { margin: 1em 0; }
   </div>
 </div>
 
-  <p>VLA training combines axes 1 and 2 (it adds the action modality and replaces classification with regression or generative losses), and RLVR isolates axis 3 (it keeps the LLM and its tokenizer but switches from supervised next token loss to policy gradient on a verifiable reward). The rest of the page asks the same question along each axis: <strong>does Muon’s uniform spectral whitening still help, or does it become the wrong inductive bias?</strong></p>
+  <p>VLA training combines axes 1 and 2 (adds the vision and action modality and replaces classification with regression loss), and RLVR isolates axis 3 (keeps the LLM and its tokenizer but switches from supervised learning to reinforcement learning). The rest of the page asks the same question along each axis: <strong>does Muon’s uniform spectral whitening still help, or does it become the wrong inductive bias?</strong></p>
 
   <h2 id="beyond-modality-and-loss-vla">Beyond Modality and Loss: VLA</h2>
 
@@ -1632,6 +1724,82 @@ mjx-container[display="true"] { margin: 1em 0; }
   <p class="fig-caption">Figure 4. Effect of per head high pass NS on RLVR (Qwen3 1.7B, GRPO on MATH levels 3 to 5). (a) Accuracy of AdamW, Muon (default vs per head), and Pion (default vs per head). Per head Pion is the only configuration that beats AdamW; per head mode does not save Muon, since the lack of noise adaptiveness remains the primary issue. (b) Cross head Q projection variance: before RLVR weight (top) and after RLVR update for default vs per head Pion (bottom).</p>
 
   <p>This isolates two complementary findings. The <strong>spectral high pass</strong> is the primary driver of RLVR stability (per head Muon still collapses), and the <strong>per head reshape</strong> is an auxiliary mechanism that preserves head heterogeneity inherited from pretraining and pushes per head Pion past AdamW.</p>
+
+  <p><strong>Pseudocode.</strong> For reference, we write out the full procedures below. Algorithm 1 is Muon’s standard NS iteration; Pion only replaces the inner NS loop with a two stage high pass version. Algorithm 2 is the default mode used for VLA training, and Algorithm 3 is the per head mode used for RLVR post training. The total iteration count is fixed to (k = 5), split into (k_{\mathrm{p}}) Promotion steps and (k_{\mathrm{s}} = k - k_{\mathrm{p}}) Suppression steps.</p>
+
+  <div class="algo-block">
+  <div class="algo-header">
+    <span class="algo-num">Algorithm 1</span>
+    <span class="algo-title">Muon Optimizer</span>
+  </div>
+  <div class="algo-require">
+    <span class="kw">Require:</span>&nbsp; learning rate \(\eta\), momentum coefficient \(\mu\), NS iteration count \(k = 5\)
+  </div>
+  <ol class="algo-steps">
+    <li><span class="line">\(\mathbf{M}_0 \leftarrow \mathbf{0}\)</span></li>
+    <li><span class="line"><span class="kw">for</span> \(t = 1, 2, \dots\) <span class="kw">do</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{G}_t \leftarrow \nabla_{\boldsymbol{\Theta}} \mathcal{L}_t(\boldsymbol{\Theta}_{t-1});\quad \mathbf{M}_t \leftarrow \mu\, \mathbf{M}_{t-1} + \mathbf{G}_t\)</span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X} \leftarrow \mathbf{M}_t / (\lVert \mathbf{M}_t \rVert_F + \epsilon)\)</span><span class="comment">spectral pre-normalization</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(i = 1, \dots, k\) <span class="kw">do</span></span><span class="comment">\((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line">\(\boldsymbol{\Theta}_t \leftarrow \boldsymbol{\Theta}_{t-1} - \eta\, \mathbf{X}\)</span></li>
+    <li><span class="line"><span class="kw">end for</span></span></li>
+    <li><span class="line"><span class="kw">return</span> \(\boldsymbol{\Theta}_t\)</span></li>
+  </ol>
+</div>
+
+  <div class="algo-block">
+  <div class="algo-header">
+    <span class="algo-num">Algorithm 2</span>
+    <span class="algo-title">Pion Optimizer (default mode: high pass NS on the whole matrix)</span>
+  </div>
+  <div class="algo-require">
+    <span class="kw">Require:</span>&nbsp; learning rate \(\eta\), momentum coefficient \(\mu\), promotion steps \(k_{\mathrm{p}}\)
+  </div>
+  <ol class="algo-steps">
+    <li><span class="line">\(k_{\mathrm{s}} \leftarrow 5 - k_{\mathrm{p}};\quad \mathbf{M}_0 \leftarrow \mathbf{0}\)</span><span class="comment">total iterations fixed to \(k = 5\)</span></li>
+    <li><span class="line"><span class="kw">for</span> \(t = 1, 2, \dots\) <span class="kw">do</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{G}_t \leftarrow \nabla_{\boldsymbol{\Theta}} \mathcal{L}_t(\boldsymbol{\Theta}_{t-1});\quad \mathbf{M}_t \leftarrow \mu\, \mathbf{M}_{t-1} + \mathbf{G}_t\)</span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X} \leftarrow \mathbf{M}_t / (\lVert \mathbf{M}_t \rVert_F + \epsilon)\)</span><span class="comment">spectral pre-normalization</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(i = 1, \dots, k_{\mathrm{p}}\) <span class="kw">do</span></span><span class="comment">stage 1: Promotion, \((a_{\mathrm{p}}, b_{\mathrm{p}}, c_{\mathrm{p}}) = (1.875,\ -1.25,\ 0.375)\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X} \leftarrow a_{\mathrm{p}}\, \mathbf{X} + b_{\mathrm{p}}\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c_{\mathrm{p}}\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(j = 1, \dots, k_{\mathrm{s}}\) <span class="kw">do</span></span><span class="comment">stage 2: Suppression, \((a_{\mathrm{s}}, b_{\mathrm{s}}, c_{\mathrm{s}}) = (0,\ 2.5,\ -1.5)\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X} \leftarrow a_{\mathrm{s}}\, \mathbf{X} + b_{\mathrm{s}}\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c_{\mathrm{s}}\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line">\(\boldsymbol{\Theta}_t \leftarrow \boldsymbol{\Theta}_{t-1} - \eta\, \mathbf{X}\)</span></li>
+    <li><span class="line"><span class="kw">end for</span></span></li>
+    <li><span class="line"><span class="kw">return</span> \(\boldsymbol{\Theta}_t\)</span></li>
+  </ol>
+</div>
+
+  <div class="algo-block">
+  <div class="algo-header">
+    <span class="algo-num">Algorithm 3</span>
+    <span class="algo-title">Pion Optimizer (per head mode: per head high pass NS on attention projections)</span>
+  </div>
+  <div class="algo-require">
+    <span class="kw">Require:</span>&nbsp; learning rate \(\eta\), momentum coefficient \(\mu\), promotion steps \(k_{\mathrm{p}}\), number of heads \(H\)
+  </div>
+  <ol class="algo-steps">
+    <li><span class="line">\(k_{\mathrm{s}} \leftarrow 5 - k_{\mathrm{p}};\quad \mathbf{M}_0 \leftarrow \mathbf{0}\)</span><span class="comment">total iterations fixed to \(k = 5\)</span></li>
+    <li><span class="line"><span class="kw">for</span> \(t = 1, 2, \dots\) <span class="kw">do</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{G}_t \leftarrow \nabla_{\boldsymbol{\Theta}} \mathcal{L}_t(\boldsymbol{\Theta}_{t-1});\quad \mathbf{M}_t \leftarrow \mu\, \mathbf{M}_{t-1} + \mathbf{G}_t\)</span></li>
+    <li class="ind-1"><span class="line">\(\{\mathbf{M}_t^h\}_{h=1}^{H} \leftarrow \mathrm{Reshape}(\mathbf{M}_t)\)</span><span class="comment">split attention projection along the head dim</span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X}^h \leftarrow \mathbf{M}_t^h / (\lVert \mathbf{M}_t^h \rVert_F + \epsilon),\ \forall\, h \in \{1, \dots, H\}\)</span><span class="comment">per head pre-normalization</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(i = 1, \dots, k_{\mathrm{p}}\) <span class="kw">do</span></span><span class="comment">stage 1: Promotion, batched over \(H\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X}^h \leftarrow a_{\mathrm{p}}\, \mathbf{X}^h + b_{\mathrm{p}}\, \mathbf{X}^h(\mathbf{X}^h)^\top \mathbf{X}^h + c_{\mathrm{p}}\, \mathbf{X}^h\bigl((\mathbf{X}^h)^\top \mathbf{X}^h\bigr)^2,\ \forall\, h\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(j = 1, \dots, k_{\mathrm{s}}\) <span class="kw">do</span></span><span class="comment">stage 2: Suppression, batched over \(H\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X}^h \leftarrow a_{\mathrm{s}}\, \mathbf{X}^h + b_{\mathrm{s}}\, \mathbf{X}^h(\mathbf{X}^h)^\top \mathbf{X}^h + c_{\mathrm{s}}\, \mathbf{X}^h\bigl((\mathbf{X}^h)^\top \mathbf{X}^h\bigr)^2,\ \forall\, h\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X} \leftarrow \mathrm{Reshape}^{-1}\bigl(\{\mathbf{X}^h\}_{h=1}^{H}\bigr) \in \mathbb{R}^{m \times n}\)</span></li>
+    <li class="ind-1"><span class="line">\(\boldsymbol{\Theta}_t \leftarrow \boldsymbol{\Theta}_{t-1} - \eta\, \mathbf{X}\)</span></li>
+    <li><span class="line"><span class="kw">end for</span></span></li>
+    <li><span class="line"><span class="kw">return</span> \(\boldsymbol{\Theta}_t\)</span></li>
+  </ol>
+</div>
 
   <div class="callout">
     <p><strong>Takeaway.</strong> Pion is a drop in replacement for Muon’s NS iteration. Same control flow, same per step cost; only the polynomial coefficients change.</p>
@@ -1761,9 +1929,9 @@ mjx-container[display="true"] { margin: 1em 0; }
     <h2 id="section">一句话版本</h2>
 
     <ul>
-      <li><strong>Muon</strong> 已经是 LLM 预训练里事实上的”矩阵感知”优化器。LLM 预训练说到底就是文本上的下一 token 分类——一种监督学习。Muon 用几步 Newton–Schulz (NS) 迭代正交化动量矩阵，把动量的每一个奇异值都推到 1。</li>
+      <li><strong>Muon</strong> 已经是 LLM 预训练里事实上的”矩阵感知”优化器。LLM 预训练说到底就是文本上的下一 token 分类，一种监督学习任务。Muon 用几步 Newton–Schulz (NS) 迭代正交化动量矩阵，把动量的每一个奇异值都推到 1。</li>
       <li>但只要离开 LLM 预训练这个角落，沿三条正交方向之一往外走（换<strong>模态</strong>、换<strong>损失</strong>、或者换<strong>学习范式</strong>），把所有奇异值都拍平到 1 这种”均匀谱白化”反而成了错误的归纳偏置。</li>
-      <li>我们提出 <strong>Pion</strong>（s<strong>P</strong>ectral h<strong>I</strong>gh-pass <strong>O</strong>ptimization on mome<strong>N</strong>tum），它直接接替 Muon 的 NS 迭代：只换内层多项式的系数，每一步的开销与 Muon 完全相同，但实现了一种锐利的”谱高通”——把信息量集中的几个大奇异值钉在 1 附近，把噪声主导的尾部一路压到 0。</li>
+      <li>我们提出 <strong>Pion</strong>（s<strong>P</strong>ectral h<strong>I</strong>gh-pass <strong>O</strong>ptimization on mome<strong>N</strong>tum），它直接接替 Muon 的 NS 迭代：只换内层多项式的系数，每一步的开销与 Muon 完全相同，但实现了一种锐利的”谱高通”，把信息量集中的几个大奇异值钉在 1 附近，把噪声主导的尾部一路压到 0。</li>
     </ul>
 
   </div>
@@ -1841,7 +2009,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 
 \[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
 
-  <p>所有非零奇异值都被映射到 1——也就是所谓的<strong>均匀谱白化</strong>。问题是，大规模训练里每一步算一次 SVD 太贵，所以 Muon 干脆用几步 NS 迭代来近似 \(\mathrm{msign}\)。先把输入归一化为 \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\)，再让每一步 NS 跑一个奇次五次矩阵多项式：</p>
+  <p>所有非零奇异值都被映射到 1，也就是所谓的<strong>均匀谱白化</strong>。问题是，大规模训练里每一步算一次 SVD 太贵，所以 Muon 干脆用几步 NS 迭代来近似 \(\mathrm{msign}\)。先把输入归一化为 \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\)，再让每一步 NS 跑一个奇次五次矩阵多项式：</p>
 
 \[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
 
@@ -1903,7 +2071,7 @@ mjx-container[display="true"] { margin: 1em 0; }
           <circle cx="28" cy="14" r="1.6" fill="#4485C7" />
         </svg>
       </div>
-      <div class="ax-cell-label">图像 patch + 机械臂关节动作</div>
+      <div class="ax-cell-label">图像 patch + 机器人动作</div>
     </div>
   </div>
 
@@ -1912,7 +2080,7 @@ mjx-container[display="true"] { margin: 1em 0; }
       <span class="axis-num">2</span>
       <div>
         <div class="axis-name">损失</div>
-        <div class="axis-hint">分类 &nbsp;→&nbsp; 回归（含流匹配）</div>
+        <div class="axis-hint">分类 &nbsp;→&nbsp; 回归</div>
       </div>
     </div>
     <div class="axis-from">
@@ -1943,7 +2111,7 @@ mjx-container[display="true"] { margin: 1em 0; }
     <div class="axis-tag">
       <span class="axis-num">3</span>
       <div>
-        <div class="axis-name">范式</div>
+        <div class="axis-name">学习范式</div>
         <div class="axis-hint">监督学习 &nbsp;→&nbsp; 强化学习</div>
       </div>
     </div>
@@ -1977,7 +2145,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 
   <h2 id="vla">跨越模态与损失：VLA</h2>
 
-  <p>一个 VLA 模型由三块构成：<strong>视觉编码器</strong>、<strong>语言主干</strong>，以及一个<strong>动作头（action head）</strong>。视觉与语言模块照常吃 token 和图像；但动作头对应的是一种全新模态——它的输入是机器人的关节动作向量。配套地，动作头用的是非分类损失：要么是 \(\ell_1\) 回归（如 VLA Adapter），要么是流匹配生成（如 VLANeXt）。”动作模态”和”回归式损失”这两个选择天生绑在一起。</p>
+  <p>一个 VLA 模型由三块构成：<strong>视觉编码器</strong>、<strong>语言主干</strong>，以及一个<strong>动作头（action head）</strong>。视觉与语言模块照常吃 token 和图像；但动作头对应的是一种全新模态，它的输入是机器人的关节动作向量。配套地，动作头用的是非分类损失：要么是 \(\ell_1\) 回归（如 VLA Adapter），要么是流匹配生成（如 VLANeXt）。”动作模态”和”回归式损失”这两个选择天生绑在一起。</p>
 
   <p>我们用<strong>有效秩</strong>（effective rank, erank）来刻画各模块梯度 \(\mathbf{G} \in \mathbb{R}^{m \times n}\) 的谱结构：</p>
 
@@ -1990,7 +2158,7 @@ mjx-container[display="true"] { margin: 1em 0; }
   <figure><img src="/images/blog/pion/success_rate.png" alt="success rate" /><figcaption>(b) 测试成功率</figcaption></figure>
   <figure><img src="/images/blog/pion/total_training_time.png" alt="training time" /><figcaption>(c) 总训练时长（小时）</figcaption></figure>
 </div>
-  <p class="fig-caption">图 2. Muon 在 VLA 训练（VLA Adapter + LIBERO Object）中的局限性。(a) 训练轨迹上各模块梯度的 erank。(b)(c) 4.5k 步时的测试成功率与总训练时长——视觉、语言模块都固定为 AdamW，只换动作模块的优化器。</p>
+  <p class="fig-caption">图 2. Muon 在 VLA 训练（VLA Adapter + LIBERO Object）中的局限性。(a) 训练轨迹上各模块梯度的 erank。(b)(c) 4.5k 步时的测试成功率与总训练时长，视觉、语言模块都固定为 AdamW，只换动作模块的优化器。</p>
 
   <p>(a) 中的次序在整段训练里都很稳定：视觉最高、语言居中、<strong>动作梯度始终垫底</strong>。模态切换（图像和 token 这种”信息浓汤”换成几个连续动作分量）和损失切换（one-hot 分类换成回归或生成匹配）联手把动作梯度拽进了低有效秩。在这种低 erank 的梯度上做均匀白化，相当于把噪声尾部抬到和那几个信息主方向一样高，最后产生的更新基本上被谱底噪声拖着走。(b) 显示 Muon 在动作头上甚至打不过 AdamW。一个自然的补救是 <strong>Low-Rank Muon (LRMuon)</strong>：在 NS 之前先用 SVD 或高斯草图把动量投到 top-\(k\) 子空间。这样确实能把精度补回来，但 (c) 显示这种显式投影会让 wall-clock 多出大约一个数量级，而且 \(k\) 必须固定，没法因层因步而变。</p>
 
@@ -2000,7 +2168,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 
   <h2 id="rlvr">换一种范式：RLVR</h2>
 
-  <p>RLVR 不动 LLM、不动文本模态，它换的是<strong>学习范式</strong>——把 token 级监督损失换成针对可验证奖励的策略梯度。我们以 GRPO 和 GMPO 为代表算法。</p>
+  <p>RLVR 不动 LLM、不动文本模态，它换的是<strong>学习范式</strong>：把 token 级监督损失换成针对可验证奖励的策略梯度。我们以 GRPO 和 GMPO 为代表算法。</p>
 
   <p>为了把两种范式放在一起比较，我们看每一步梯度在某层权重上的信噪比：</p>
 
@@ -2020,7 +2188,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 
   <h2 id="pion">Pion：一个谱高通优化器</h2>
 
-  <p><strong>统一的谱诊断。</strong> 局限 1 和局限 2 的来源不同——一个出在模态/损失轴上的低有效秩，一个出在范式轴上的低 SNR——但它们在频谱上长得一模一样：在 \(\mathbf{M}_t\) 的 SVD 里，<strong>前面少数几个</strong>奇异值承载着信息量大的下降方向，<strong>后面长长一串</strong>小奇异值则被噪声主导（erank 低时它表现为谱底，SNR 低时它表现为随机估计噪声）。Muon 的 \(\mathrm{msign}\) 把尾部抬到和头部一样高，在这两种情形下都把更新搅浑了。自然的对策就是<strong>谱高通</strong>：把头部锁在 1 附近，把尾部一路压到 0。</p>
+  <p><strong>统一的谱诊断。</strong> 局限 1 和局限 2 的来源不同：一个出在模态/损失轴上的低有效秩，另一个出在范式轴上的低 SNR；但它们在频谱上长得一模一样。在 \(\mathbf{M}_t\) 的 SVD 里，<strong>前面少数几个</strong>奇异值承载着信息量大的下降方向，<strong>后面长长一串</strong>小奇异值则被噪声主导（erank 低时它表现为谱底，SNR 低时它表现为随机估计噪声）。Muon 的 \(\mathrm{msign}\) 把尾部抬到和头部一样高，在这两种情形下都把更新搅浑了。自然的对策就是<strong>谱高通</strong>：把头部锁在 1 附近，把尾部一路压到 0。</p>
 
   <p><strong>两段式高通 NS。</strong> 既然 NS 每一步都是用 \(f(\sigma; a, b, c) = a\sigma + b\sigma^3 + c\sigma^5\) 去重塑 \(\sigma\)，那 NS 的设计就归结到对 \(f\) 的设计。靠单一的这种五次多项式，做不出我们想要的那种锐利高通；所以 Pion 把默认的 \(k = 5\) 步 NS 拆成两段，用不同的系数：</p>
 
@@ -2057,9 +2225,85 @@ mjx-container[display="true"] { margin: 1em 0; }
   <figure><img src="/images/blog/pion/acc_mh.png" alt="Per head ablation accuracy" /><figcaption>(a) MATH500 精度</figcaption></figure>
   <figure><img src="/images/blog/pion/qwen3_1p7b_Q_headnorm_variance_compact_step80.png" alt="Q headnorm variance" /><figcaption>(b) 跨头 Q 投影方差</figcaption></figure>
 </div>
-  <p class="fig-caption">图 4. Per-head 高通 NS 在 RLVR 上的效果（Qwen3 1.7B，GRPO + MATH 难度 3–5）。(a) AdamW、Muon（default vs per-head）、Pion（default vs per-head）的精度——per-head Pion 是唯一超过 AdamW 的配置；per-head 模式救不了 Muon，因为缺乏对噪声的自适应才是主问题。(b) 跨头 Q 投影方差：RLVR 之前的权重（上）与 RLVR 更新后 default vs per-head Pion 的对比（下）。</p>
+  <p class="fig-caption">图 4. Per-head 高通 NS 在 RLVR 上的效果（Qwen3 1.7B，GRPO + MATH 难度 3 到 5）。(a) AdamW、Muon（default vs per-head）、Pion（default vs per-head）的精度。per-head Pion 是唯一超过 AdamW 的配置；per-head 模式救不了 Muon，因为缺乏对噪声的自适应才是主问题。(b) 跨头 Q 投影方差：RLVR 之前的权重（上）与 RLVR 更新后 default vs per-head Pion 的对比（下）。</p>
 
-  <p>这两条结论刚好互补：<strong>谱高通</strong>是 RLVR 稳定下来的主驱动（per-head Muon 仍然崩），<strong>per-head reshape</strong> 是辅助机制——它把预训练遗留的 head 异质性保住，把 per-head Pion 推到了 AdamW 之上。</p>
+  <p>这两条结论刚好互补：<strong>谱高通</strong>是 RLVR 稳定下来的主驱动（per-head Muon 仍然崩），而 <strong>per-head reshape</strong> 是辅助机制：它把预训练遗留的 head 异质性保住，把 per-head Pion 推到了 AdamW 之上。</p>
+
+  <p><strong>伪代码。</strong> 为方便引用，下面把完整流程写出来。算法 1 是 Muon 标准的 NS 迭代；Pion 只是把内层 NS 换成两段式高通版本。算法 2 是默认模式，用于 VLA 训练；算法 3 是 per-head 模式，用于 RLVR 后训练。总迭代步数严格固定为 (k = 5)，拆成 (k_{\mathrm{p}}) 步 Promotion 和 (k_{\mathrm{s}} = k - k_{\mathrm{p}}) 步 Suppression。</p>
+
+  <div class="algo-block">
+  <div class="algo-header">
+    <span class="algo-num">算法 1</span>
+    <span class="algo-title">Muon 优化器</span>
+  </div>
+  <div class="algo-require">
+    <span class="kw">Require:</span>&nbsp; 学习率 \(\eta\)，动量系数 \(\mu\)，NS 迭代步数 \(k = 5\)
+  </div>
+  <ol class="algo-steps">
+    <li><span class="line">\(\mathbf{M}_0 \leftarrow \mathbf{0}\)</span></li>
+    <li><span class="line"><span class="kw">for</span> \(t = 1, 2, \dots\) <span class="kw">do</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{G}_t \leftarrow \nabla_{\boldsymbol{\Theta}} \mathcal{L}_t(\boldsymbol{\Theta}_{t-1});\quad \mathbf{M}_t \leftarrow \mu\, \mathbf{M}_{t-1} + \mathbf{G}_t\)</span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X} \leftarrow \mathbf{M}_t / (\lVert \mathbf{M}_t \rVert_F + \epsilon)\)</span><span class="comment">谱预归一化</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(i = 1, \dots, k\) <span class="kw">do</span></span><span class="comment">\((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line">\(\boldsymbol{\Theta}_t \leftarrow \boldsymbol{\Theta}_{t-1} - \eta\, \mathbf{X}\)</span></li>
+    <li><span class="line"><span class="kw">end for</span></span></li>
+    <li><span class="line"><span class="kw">return</span> \(\boldsymbol{\Theta}_t\)</span></li>
+  </ol>
+</div>
+
+  <div class="algo-block">
+  <div class="algo-header">
+    <span class="algo-num">算法 2</span>
+    <span class="algo-title">Pion 优化器（默认模式：对整块矩阵跑高通 NS）</span>
+  </div>
+  <div class="algo-require">
+    <span class="kw">Require:</span>&nbsp; 学习率 \(\eta\)，动量系数 \(\mu\)，Promotion 步数 \(k_{\mathrm{p}}\)
+  </div>
+  <ol class="algo-steps">
+    <li><span class="line">\(k_{\mathrm{s}} \leftarrow 5 - k_{\mathrm{p}};\quad \mathbf{M}_0 \leftarrow \mathbf{0}\)</span><span class="comment">总迭代步数严格固定为 \(k = 5\)</span></li>
+    <li><span class="line"><span class="kw">for</span> \(t = 1, 2, \dots\) <span class="kw">do</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{G}_t \leftarrow \nabla_{\boldsymbol{\Theta}} \mathcal{L}_t(\boldsymbol{\Theta}_{t-1});\quad \mathbf{M}_t \leftarrow \mu\, \mathbf{M}_{t-1} + \mathbf{G}_t\)</span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X} \leftarrow \mathbf{M}_t / (\lVert \mathbf{M}_t \rVert_F + \epsilon)\)</span><span class="comment">谱预归一化</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(i = 1, \dots, k_{\mathrm{p}}\) <span class="kw">do</span></span><span class="comment">第一阶段 Promotion，\((a_{\mathrm{p}}, b_{\mathrm{p}}, c_{\mathrm{p}}) = (1.875,\ -1.25,\ 0.375)\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X} \leftarrow a_{\mathrm{p}}\, \mathbf{X} + b_{\mathrm{p}}\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c_{\mathrm{p}}\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(j = 1, \dots, k_{\mathrm{s}}\) <span class="kw">do</span></span><span class="comment">第二阶段 Suppression，\((a_{\mathrm{s}}, b_{\mathrm{s}}, c_{\mathrm{s}}) = (0,\ 2.5,\ -1.5)\)</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X} \leftarrow a_{\mathrm{s}}\, \mathbf{X} + b_{\mathrm{s}}\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c_{\mathrm{s}}\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line">\(\boldsymbol{\Theta}_t \leftarrow \boldsymbol{\Theta}_{t-1} - \eta\, \mathbf{X}\)</span></li>
+    <li><span class="line"><span class="kw">end for</span></span></li>
+    <li><span class="line"><span class="kw">return</span> \(\boldsymbol{\Theta}_t\)</span></li>
+  </ol>
+</div>
+
+  <div class="algo-block">
+  <div class="algo-header">
+    <span class="algo-num">算法 3</span>
+    <span class="algo-title">Pion 优化器（per-head 模式：在 attention 投影上按 head 跑高通 NS）</span>
+  </div>
+  <div class="algo-require">
+    <span class="kw">Require:</span>&nbsp; 学习率 \(\eta\)，动量系数 \(\mu\)，Promotion 步数 \(k_{\mathrm{p}}\)，head 数 \(H\)
+  </div>
+  <ol class="algo-steps">
+    <li><span class="line">\(k_{\mathrm{s}} \leftarrow 5 - k_{\mathrm{p}};\quad \mathbf{M}_0 \leftarrow \mathbf{0}\)</span><span class="comment">总迭代步数严格固定为 \(k = 5\)</span></li>
+    <li><span class="line"><span class="kw">for</span> \(t = 1, 2, \dots\) <span class="kw">do</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{G}_t \leftarrow \nabla_{\boldsymbol{\Theta}} \mathcal{L}_t(\boldsymbol{\Theta}_{t-1});\quad \mathbf{M}_t \leftarrow \mu\, \mathbf{M}_{t-1} + \mathbf{G}_t\)</span></li>
+    <li class="ind-1"><span class="line">\(\{\mathbf{M}_t^h\}_{h=1}^{H} \leftarrow \mathrm{Reshape}(\mathbf{M}_t)\)</span><span class="comment">沿 head 维度切分 attention 投影</span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X}^h \leftarrow \mathbf{M}_t^h / (\lVert \mathbf{M}_t^h \rVert_F + \epsilon),\ \forall\, h \in \{1, \dots, H\}\)</span><span class="comment">per-head 预归一化</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(i = 1, \dots, k_{\mathrm{p}}\) <span class="kw">do</span></span><span class="comment">第一阶段 Promotion，沿 \(H\) 做 batch</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X}^h \leftarrow a_{\mathrm{p}}\, \mathbf{X}^h + b_{\mathrm{p}}\, \mathbf{X}^h(\mathbf{X}^h)^\top \mathbf{X}^h + c_{\mathrm{p}}\, \mathbf{X}^h\bigl((\mathbf{X}^h)^\top \mathbf{X}^h\bigr)^2,\ \forall\, h\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line"><span class="kw">for</span> \(j = 1, \dots, k_{\mathrm{s}}\) <span class="kw">do</span></span><span class="comment">第二阶段 Suppression，沿 \(H\) 做 batch</span></li>
+    <li class="ind-2"><span class="line">\(\mathbf{X}^h \leftarrow a_{\mathrm{s}}\, \mathbf{X}^h + b_{\mathrm{s}}\, \mathbf{X}^h(\mathbf{X}^h)^\top \mathbf{X}^h + c_{\mathrm{s}}\, \mathbf{X}^h\bigl((\mathbf{X}^h)^\top \mathbf{X}^h\bigr)^2,\ \forall\, h\)</span></li>
+    <li class="ind-1"><span class="line"><span class="kw">end for</span></span></li>
+    <li class="ind-1"><span class="line">\(\mathbf{X} \leftarrow \mathrm{Reshape}^{-1}\bigl(\{\mathbf{X}^h\}_{h=1}^{H}\bigr) \in \mathbb{R}^{m \times n}\)</span></li>
+    <li class="ind-1"><span class="line">\(\boldsymbol{\Theta}_t \leftarrow \boldsymbol{\Theta}_{t-1} - \eta\, \mathbf{X}\)</span></li>
+    <li><span class="line"><span class="kw">end for</span></span></li>
+    <li><span class="line"><span class="kw">return</span> \(\boldsymbol{\Theta}_t\)</span></li>
+  </ol>
+</div>
 
   <div class="callout">
     <p><strong>一句话总结。</strong> Pion 是 Muon NS 的即插即用替代方案：控制流不动、每步开销不动，只换多项式系数。</p>
@@ -2070,7 +2314,7 @@ mjx-container[display="true"] { margin: 1em 0; }
   <p>我们在两个测试床上验证 Pion，正好覆盖三条轴：</p>
 
   <ul>
-    <li><strong>VLA 训练</strong>（轴 1+2）：两种结构——\(\ell_1\) 回归式的 VLA Adapter 与流匹配式的 VLANeXt，benchmark 用 LIBERO 和 LIBERO Plus；</li>
+    <li><strong>VLA 训练</strong>（轴 1+2）：两种结构，\(\ell_1\) 回归式的 VLA Adapter 与流匹配式的 VLANeXt，benchmark 用 LIBERO 和 LIBERO Plus；</li>
     <li><strong>RLVR 后训练</strong>（轴 3）：算法选 GRPO 和 GMPO，模型选 Qwen3 1.7B 和 Qwen3 4B，benchmark 选 MATH 和 GSM8K。</li>
   </ul>
 
@@ -2083,7 +2327,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 </div>
   <p class="fig-caption">图 5. AdamW、Muon、Pion 用于 VLA Adapter on LIBERO。Pion 在四个 LIBERO 子集上全部超过 Muon，在 Object 上 500 步达到 95.4% 成功率，1500 步就饱和到 100%。</p>
 
-  <p>对 VLANeXt（流匹配），Pion 不仅在干净的 LIBERO 上拿下第一，在更难的 LIBERO Plus 上优势还被进一步放大——尤其是语言扰动（\(+9\) 分）、噪声扰动（\(+6\) 分）、机器人扰动（\(+6\) 分）这几列。这正好印证了我们之前的图景：均匀白化会把那些没法泛化的噪声方向放得过大。</p>
+  <p>对 VLANeXt（流匹配），Pion 不仅在干净的 LIBERO 上拿下第一，在更难的 LIBERO Plus 上优势还被进一步放大，尤其是语言扰动（\(+9\) 分）、噪声扰动（\(+6\) 分）、机器人扰动（\(+6\) 分）这几列。这正好印证了我们之前的图景：均匀白化会把那些没法泛化的噪声方向放得过大。</p>
 
   <div class="results-table">
 
@@ -2159,7 +2403,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 </div>
   <p class="fig-caption">图 6. RLVR 上 AdamW、Muon、Pion 的验证精度 vs 训练步：8 个设置（两种算法 × 两种模型规模 × 两个 benchmark）。</p>
 
-  <p><strong>反向消融：方向才是关键。</strong> 为了确认增益就来自高通这个方向，我们构造了一个 <strong>Low-pass Muon (LPMuon)</strong>——它和 Pion 共享 NS 结构、共享每步开销，但把多项式系数翻过来，让整形方向变成低通（压大、放小）。结果 LPMuon 完全没法训练，精度始终停在初始 checkpoint。</p>
+  <p><strong>反向消融：方向才是关键。</strong> 为了确认增益就来自高通这个方向，我们构造了一个 <strong>Low-pass Muon (LPMuon)</strong>：它和 Pion 共享 NS 结构、共享每步开销，但把多项式系数翻过来，让整形方向变成低通（压大、放小）。结果 LPMuon 完全没法训练，精度始终停在初始 checkpoint。</p>
 
   <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
   <figure><img src="/images/blog/pion/pion0_muon_lowrankmuon.png" alt="Low pass profile" /><figcaption>(a) 低通标量映射</figcaption></figure>

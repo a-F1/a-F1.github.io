@@ -64,6 +64,10 @@ layout: default
   padding: 0;
   border-left: 1px solid var(--proj-border);
 }
+.project-toc-nav ul ul {
+  border-left: none;
+  margin-left: 4px;
+}
 .project-toc-nav li { margin: 0; }
 .project-toc-nav a {
   display: block;
@@ -76,6 +80,11 @@ layout: default
   transition: color 0.15s, border-color 0.15s, background 0.15s;
   line-height: 1.4;
 }
+.project-toc-nav li.toc-sub > a {
+  padding: 4px 14px 4px 22px;
+  font-size: 0.78rem;
+  color: var(--proj-faint);
+}
 .project-toc-nav a:hover {
   color: var(--proj-ink);
   background: rgba(68, 133, 199, 0.05);
@@ -85,6 +94,10 @@ layout: default
   font-weight: 600;
   border-left-color: var(--proj-primary);
   background: rgba(68, 133, 199, 0.06);
+}
+.project-toc-nav li.toc-sub > a.active {
+  color: var(--proj-primary-dark);
+  background: rgba(68, 133, 199, 0.04);
 }
 @media (max-width: 980px) {
   .project-toc { display: none; }
@@ -409,7 +422,8 @@ layout: default
   width: 100%;
   height: 100%;
 }
-.fig-grid figure img {
+.fig-grid figure img,
+.fig-grid figure video {
   display: block;
   margin: 0 auto 8px;
   max-width: 100%;
@@ -419,6 +433,13 @@ layout: default
   object-fit: contain;
   border: none;
   background: transparent;
+}
+.fig-grid figure video {
+  background: #000;
+  border-radius: 4px;
+  width: 100%;
+  height: auto;
+  max-height: 240px;
 }
 .fig-grid figcaption {
   font-size: 0.8rem;
@@ -560,7 +581,6 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
   flex-wrap: wrap;
 }
 .pion-demo-title {
@@ -577,7 +597,7 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) 240px;
   gap: 22px;
-  align-items: stretch;
+  align-items: start;
 }
 @media (max-width: 760px) {
   .pion-demo-body { grid-template-columns: 1fr; }
@@ -587,8 +607,29 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   display: flex;
   flex-direction: column;
   gap: 14px;
-  height: 100%;
 }
+.pion-demo-intro {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--proj-text);
+  background: rgba(68, 133, 199, 0.05);
+  border: 1px solid rgba(68, 133, 199, 0.18);
+  border-left: 3px solid var(--proj-accent);
+  border-radius: 6px;
+  padding: 11px 13px;
+}
+.pion-demo-intro .kbd {
+  display: inline-block;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.86em;
+  padding: 1px 6px;
+  background: #fff;
+  border: 1px solid rgba(68, 133, 199, 0.28);
+  border-radius: 4px;
+  color: var(--proj-ink);
+  white-space: nowrap;
+}
+.pion-demo-intro .kbd sub { font-size: 0.78em; }
 .pion-demo-slider-row {
   display: flex;
   align-items: center;
@@ -638,11 +679,9 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   text-align: right;
 }
 .pion-demo-outputs {
-  flex: 1 1 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  min-height: 0;
 }
 .pion-demo-output {
   padding: 12px 14px 14px;
@@ -747,7 +786,6 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   display: flex;
   flex-direction: column;
   aspect-ratio: 1 / 1;
-  align-self: start;
   width: 100%;
   box-sizing: border-box;
 }
@@ -1152,6 +1190,151 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   }
 }
 
+/* ---- Side-by-side algorithm row + diff highlighting ---- */
+.algo-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+  align-items: stretch;
+}
+.algo-row .algo-block {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.algo-row .algo-block ol.algo-steps {
+  flex: 1 1 auto;
+}
+.algo-block.compact .algo-header {
+  padding: 9px 12px 7px;
+  font-size: 0.86rem;
+  gap: 4px;
+}
+.algo-block.compact .algo-num { font-size: 0.84rem; }
+.algo-block.compact .algo-title {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  display: block;
+  width: 100%;
+  margin-left: 0;
+}
+.algo-block.compact .algo-require {
+  padding: 7px 12px;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+.algo-block.compact ol.algo-steps {
+  padding: 6px 0 10px;
+}
+.algo-block.compact ol.algo-steps li {
+  padding: 1px 12px 1px 12px;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  flex-wrap: wrap;
+  align-items: baseline;
+  position: relative;
+}
+.algo-block.compact ol.algo-steps li::before {
+  width: 18px;
+  margin-right: 8px;
+  font-size: 0.66rem;
+}
+.algo-block.compact ol.algo-steps li > .line {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.algo-block.compact ol.algo-steps li > .comment {
+  width: 100%;
+  text-align: left;
+  padding-left: 28px;
+  margin-top: 0;
+  font-size: 0.68rem;
+  color: var(--proj-muted);
+  line-height: 1.45;
+}
+.algo-block.compact ol.algo-steps li.ind-1 > .line { padding-left: 12px; }
+.algo-block.compact ol.algo-steps li.ind-2 > .line { padding-left: 24px; }
+.algo-block.compact mjx-container { font-size: 0.86em !important; }
+
+/* Diff highlight: lines in Pion that differ from Muon */
+.algo-block ol.algo-steps li.algo-diff {
+  background: rgba(231, 152, 39, 0.13);
+  box-shadow: inset 3px 0 0 0 rgba(231, 152, 39, 0.75);
+}
+.algo-block ol.algo-steps li.algo-diff::before {
+  color: rgba(180, 110, 18, 0.95);
+  font-weight: 700;
+}
+.algo-block ol.algo-steps li.algo-diff > .comment {
+  color: rgba(140, 90, 20, 0.85);
+}
+
+/* Diff highlight 2: lines unique to per-head Pion */
+.algo-block ol.algo-steps li.algo-diff-2 {
+  background: rgba(46, 138, 148, 0.12);
+  box-shadow: inset 3px 0 0 0 rgba(46, 138, 148, 0.75);
+}
+.algo-block ol.algo-steps li.algo-diff-2::before {
+  color: rgba(22, 100, 110, 0.95);
+  font-weight: 700;
+}
+.algo-block ol.algo-steps li.algo-diff-2 > .comment {
+  color: rgba(22, 100, 110, 0.85);
+}
+.algo-row .algo-legend {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.76rem;
+  color: var(--proj-muted);
+  margin-bottom: -4px;
+  flex-wrap: wrap;
+}
+.algo-row .algo-legend .swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: rgba(231, 152, 39, 0.18);
+  box-shadow: inset 3px 0 0 0 rgba(231, 152, 39, 0.75);
+  vertical-align: -2px;
+  margin-right: 6px;
+}
+.algo-legend-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 4px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  background: rgba(80, 80, 80, 0.04);
+  font-size: 0.86em;
+  color: var(--proj-muted);
+  flex-wrap: wrap;
+}
+.algo-legend-inline .lg-item { display: inline-flex; align-items: center; gap: 5px; }
+.algo-legend-inline .swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  vertical-align: -2px;
+  flex-shrink: 0;
+}
+.algo-legend-inline .swatch.s-1 {
+  background: rgba(231, 152, 39, 0.18);
+  box-shadow: inset 2.5px 0 0 0 rgba(231, 152, 39, 0.75);
+}
+.algo-legend-inline .swatch.s-2 {
+  background: rgba(46, 138, 148, 0.18);
+  box-shadow: inset 2.5px 0 0 0 rgba(46, 138, 148, 0.75);
+}
+@media (max-width: 880px) {
+  .algo-row { grid-template-columns: 1fr; gap: 16px; }
+}
+
 /* Language toggle */
 .lang-toggle {
   display: inline-flex;
@@ -1276,10 +1459,11 @@ mjx-container[display="true"] { margin: 1em 0; }
       }
     }
 
-    var headings = scope.querySelectorAll('h2');
+    var headings = scope.querySelectorAll('h2, h3');
     if (headings.length === 0) return;
 
     var ul = document.createElement('ul');
+    var subUl = null;
     var headingArr = [];
     headings.forEach(function(h, i) {
       if (!h.id) h.id = 'sec-' + (i + 1);
@@ -1290,7 +1474,19 @@ mjx-container[display="true"] { margin: 1em 0; }
       a.textContent = h.textContent.replace(/^\s*\d+(\.\d+)*\.?\s*/, '');
       a.dataset.target = h.id;
       li.appendChild(a);
-      ul.appendChild(li);
+      if (h.tagName === 'H2') {
+        ul.appendChild(li);
+        subUl = null;
+      } else {
+        if (!subUl) {
+          subUl = document.createElement('ul');
+          var lastTopLi = ul.lastElementChild;
+          if (lastTopLi) lastTopLi.appendChild(subUl);
+          else ul.appendChild(subUl);
+        }
+        li.classList.add('toc-sub');
+        subUl.appendChild(li);
+      }
     });
     nav.appendChild(ul);
 

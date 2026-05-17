@@ -1239,16 +1239,29 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 
 /* ---- Side-by-side algorithm row + diff highlighting ---- */
 .algo-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
   gap: 14px;
   margin: 24px 0;
   align-items: stretch;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(68, 133, 199, 0.4) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.algo-row::-webkit-scrollbar { height: 8px; }
+.algo-row::-webkit-scrollbar-track { background: transparent; }
+.algo-row::-webkit-scrollbar-thumb {
+  background: rgba(68, 133, 199, 0.4);
+  border-radius: 999px;
 }
 .algo-row .algo-block {
   margin: 0;
   display: flex;
   flex-direction: column;
+  flex: 1 1 0;
+  min-width: 380px;
 }
 .algo-row .algo-block ol.algo-steps {
   flex: 1 1 auto;
@@ -1290,18 +1303,6 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .algo-block.compact ol.algo-steps li > .line {
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(68, 133, 199, 0.35) transparent;
-  padding-bottom: 1px;
-}
-.algo-block.compact ol.algo-steps li > .line::-webkit-scrollbar { height: 4px; }
-.algo-block.compact ol.algo-steps li > .line::-webkit-scrollbar-track { background: transparent; }
-.algo-block.compact ol.algo-steps li > .line::-webkit-scrollbar-thumb {
-  background: rgba(68, 133, 199, 0.35);
-  border-radius: 999px;
 }
 .algo-block.compact ol.algo-steps li > .comment {
   width: 100%;
@@ -1314,7 +1315,7 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 }
 .algo-block.compact ol.algo-steps li.ind-1 > .line { padding-left: 12px; }
 .algo-block.compact ol.algo-steps li.ind-2 > .line { padding-left: 24px; }
-.algo-block.compact mjx-container { font-size: 0.8em !important; }
+.algo-block.compact mjx-container { font-size: 0.86em !important; }
 
 /* Diff highlight: lines in Pion that differ from Muon */
 .algo-block ol.algo-steps li.algo-diff {
@@ -1389,12 +1390,6 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .algo-legend-inline .swatch.s-2 {
   background: rgba(46, 138, 148, 0.18);
   box-shadow: inset 2.5px 0 0 0 rgba(46, 138, 148, 0.75);
-}
-@media (max-width: 1100px) {
-  .algo-row { grid-template-columns: 1fr 1fr; gap: 14px; }
-}
-@media (max-width: 760px) {
-  .algo-row { grid-template-columns: 1fr; gap: 16px; }
 }
 
 /* Language toggle */

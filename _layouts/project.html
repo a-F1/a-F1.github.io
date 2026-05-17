@@ -515,32 +515,64 @@ layout: default
 /* Tables */
 .project-content table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 1.5em 0;
-  font-size: 0.92rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.8em 0 2em;
+  font-size: 0.9rem;
   background: #fff;
   border: 1px solid var(--proj-border);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  font-variant-numeric: tabular-nums;
 }
-.project-content th, .project-content td {
+.project-content th,
+.project-content td {
+  padding: 10px 14px;
+  text-align: center;
+  vertical-align: middle;
   border-bottom: 1px solid var(--proj-border);
-  border-right: 1px solid var(--proj-border);
-  padding: 10px 12px;
-  text-align: left;
-  vertical-align: top;
+  white-space: nowrap;
 }
-.project-content th:last-child, .project-content td:last-child { border-right: none; }
-.project-content tr:last-child td { border-bottom: none; }
 .project-content thead th {
-  background: var(--proj-bg-soft);
+  background: linear-gradient(to bottom, #f7f9fc, #eef2f7);
   color: #0a1f44;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 2px solid var(--proj-border);
 }
+.project-content thead th:first-child { text-align: left; }
+.project-content tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+  color: var(--proj-ink);
+  background: rgba(248, 250, 253, 0.6);
+}
+.project-content tbody tr:nth-child(even) td:not(:first-child) {
+  background: rgba(248, 250, 253, 0.45);
+}
+.project-content tbody tr:hover td { background: rgba(68, 133, 199, 0.06); }
+.project-content tbody tr:hover td:first-child { background: rgba(68, 133, 199, 0.10); }
+.project-content tbody tr:last-child td { border-bottom: none; }
+/* Best row: any row whose first cell contains <strong> (e.g. "**Pion (Ours)**") */
+.project-content tbody tr:has(td:first-child strong) td,
+.project-content tbody tr:has(td:first-child strong):hover td {
+  background: rgba(68, 133, 199, 0.09);
+  font-weight: 600;
+  color: var(--proj-ink);
+}
+.project-content tbody tr:has(td:first-child strong) td:first-child,
+.project-content tbody tr:has(td:first-child strong):hover td:first-child {
+  background: rgba(68, 133, 199, 0.14);
+}
+.project-content tbody td strong { color: var(--proj-accent); font-weight: 700; }
 .project-content .results-table th,
 .project-content .results-table td { text-align: center; }
+@media (max-width: 760px) {
+  .project-content table { display: block; overflow-x: auto; white-space: nowrap; }
+}
 
 /* TL;DR card */
 .tldr {

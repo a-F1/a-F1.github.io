@@ -753,8 +753,8 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .pion-demo-controls {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 14px;
+  height: 100%;
 }
 .pion-demo-slider-row {
   display: flex;
@@ -805,35 +805,94 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   text-align: right;
 }
 .pion-demo-outputs {
+  flex: 1 1 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  min-height: 0;
 }
 .pion-demo-output {
-  padding: 12px 14px;
+  padding: 12px 14px 14px;
   border-radius: 10px;
   background: #fff;
   border: 1px solid var(--proj-border);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .pion-demo-output.muon { border-top: 3px solid #94a3b8; }
 .pion-demo-output.pion { border-top: 3px solid var(--proj-primary); }
 .pion-demo-output .out-label {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--proj-faint);
-  margin-bottom: 4px;
-}
-.pion-demo-output .out-name {
-  font-size: 0.92rem;
+  margin-bottom: 8px;
   font-weight: 600;
-  color: var(--proj-ink);
-  margin-bottom: 6px;
+}
+.pion-demo-output .out-algo {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--proj-text);
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pion-demo-output .out-algo-step {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.66rem;
+  color: var(--proj-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.pion-demo-output .out-algo-step:first-child { margin-top: 0; }
+.pion-demo-output .out-algo-line {
+  display: block;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: clip;
+  background: transparent;
+  color: var(--proj-text);
+  padding: 0;
+}
+.pion-demo-output .out-algo-cont { padding-left: 14px; }
+.pion-demo-output .out-result-wrap {
+  margin-top: auto;
+  padding-top: 10px;
+}
+.pion-demo-output .out-divider {
+  height: 1px;
+  background: var(--proj-border);
+  margin-bottom: 8px;
+}
+.pion-demo-output .out-result {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pion-demo-output .out-input {
+  font-size: 0.82rem;
+  color: var(--proj-muted);
+  font-family: 'Latin Modern Math', 'Cambria Math', serif;
+}
+.pion-demo-output .out-input .out-sigma-in {
+  font-variant-numeric: tabular-nums;
+  font-style: normal;
+  color: var(--proj-text);
+}
+.pion-demo-output .out-arrow-sym {
+  color: var(--proj-faint);
+  font-size: 0.95rem;
 }
 .pion-demo-output .out-value {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
@@ -843,8 +902,9 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .pion-demo-output.pion .out-value { color: var(--proj-primary-dark); }
 .pion-demo-output .out-tag {
   margin-top: 4px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--proj-muted);
+  line-height: 1.3;
 }
 .pion-demo-plot-wrap {
   background: #fff;
@@ -854,8 +914,9 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   display: flex;
   flex-direction: column;
   aspect-ratio: 1 / 1;
-  align-self: center;
+  align-self: start;
   width: 100%;
+  box-sizing: border-box;
 }
 .pion-demo-plot {
   width: 100%;
@@ -1084,10 +1145,11 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 }
 .ax-mod-pix span { display: block; border-radius: 1px; }
 .ax-mod-arm {
-  position: relative;
-  width: 36px; height: 36px;
+  width: 42px;
+  height: 42px;
+  display: block;
+  flex-shrink: 0;
 }
-.ax-mod-arm svg { display: block; }
 .ax-tok.action {
   background: var(--proj-accent-bg);
   border-color: rgba(68, 133, 199, 0.35);
@@ -1294,14 +1356,40 @@ mjx-container[display="true"] { margin: 1em 0; }
       </div>
       <div class="pion-demo-outputs">
         <div class="pion-demo-output muon">
-          <div class="out-label">Muon NS</div>
-          <div class="out-value">&mdash;</div>
-          <div class="out-tag">&nbsp;</div>
+          <div class="out-label">Muon&nbsp;NS</div>
+          <div class="out-algo">
+            <div class="out-algo-step">5 &times; Newton&ndash;Schulz</div>
+            <code class="out-algo-line">&sigma; &larr; 3.4445&sigma; &minus; 4.7750&sigma;<sup>3</sup></code>
+            <code class="out-algo-line out-algo-cont">+ 2.0315&sigma;<sup>5</sup></code>
+          </div>
+          <div class="out-result-wrap">
+            <div class="out-divider"></div>
+            <div class="out-result">
+              <span class="out-input">&sigma; = <span class="out-sigma-in">0.350</span></span>
+              <span class="out-arrow-sym">&#x21A6;</span>
+              <span class="out-value">&mdash;</span>
+            </div>
+            <div class="out-tag">&nbsp;</div>
+          </div>
         </div>
         <div class="pion-demo-output pion">
-          <div class="out-label">Pion NS</div>
-          <div class="out-value">&mdash;</div>
-          <div class="out-tag">&nbsp;</div>
+          <div class="out-label">Pion&nbsp;NS</div>
+          <div class="out-algo">
+            <div class="out-algo-step">1 &times; Promotion</div>
+            <code class="out-algo-line">&sigma; &larr; 1.875&sigma; &minus; 1.25&sigma;<sup>3</sup></code>
+            <code class="out-algo-line out-algo-cont">+ 0.375&sigma;<sup>5</sup></code>
+            <div class="out-algo-step">+ 4 &times; Suppression</div>
+            <code class="out-algo-line">&sigma; &larr; 2.5&sigma;<sup>3</sup> &minus; 1.5&sigma;<sup>5</sup></code>
+          </div>
+          <div class="out-result-wrap">
+            <div class="out-divider"></div>
+            <div class="out-result">
+              <span class="out-input">&sigma; = <span class="out-sigma-in">0.350</span></span>
+              <span class="out-arrow-sym">&#x21A6;</span>
+              <span class="out-value">&mdash;</span>
+            </div>
+            <div class="out-tag">&nbsp;</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1314,6 +1402,28 @@ mjx-container[display="true"] { margin: 1em 0; }
     </div>
   </div>
 </div>
+
+  <h2 id="background-muon-and-three-axes-beyond-pretraining">Background: Muon and Three Axes Beyond Pretraining</h2>
+
+  <p>For a weight matrix \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\), given a stochastic gradient \(\mathbf{G}_t\) and a momentum buffer \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\), Muon performs the steepest descent step under the spectral norm:</p>
+
+\[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
+
+  <p>If \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) is the compact SVD, then</p>
+
+\[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
+
+  <p>Every nonzero singular value is mapped to one. This is <strong>uniform spectral whitening</strong>. Computing an SVD per step is too expensive at scale, so Muon approximates \(\mathrm{msign}\) by a small number of Newton Schulz (NS) iterations. After normalizing the input as \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\), each NS step applies an odd quintic matrix polynomial,</p>
+
+\[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
+
+  <p>with the canonical coefficients \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\). By the identity \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\), an NS step preserves the singular vectors and reshapes each singular value through a <strong>scalar polynomial</strong> on \([0, 1]\):</p>
+
+\[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
+
+  <p>So designing an NS iteration reduces to designing \(f\) on \([0, 1]\). Muon’s NS is constructed so that repeated application drives every \(\sigma \in (0, 1]\) toward one. The shape of this scalar map (and Pion’s eventual replacement for it) is the central object we visualize in <a href="#fig-pion-iter">Figure 1</a>.</p>
+
+  <p>LLM pretraining is a <strong>classification</strong> task (predict the next token), uses <strong>text</strong> as the only modality, and runs under <strong>supervised learning</strong>. With clean dense supervision and full rank text gradients, Muon’s uniform whitening is a sensible inductive bias. But LLM pretraining occupies just one corner of the design space; three orthogonal axes can move us out of that corner.</p>
 
   <div class="axes-anim">
   <div class="axes-anim-head">
@@ -1342,7 +1452,7 @@ mjx-container[display="true"] { margin: 1em 0; }
     </div>
     <div class="axis-from">
       <div class="ax-tok-row">
-        <span class="ax-tok">x<sub>1</sub></span><span class="ax-tok">x<sub>2</sub></span><span class="ax-tok">x<sub>3</sub></span><span class="ax-tok">x<sub>4</sub></span><span class="ax-tok">x<sub>5</sub></span>
+        <span class="ax-tok">the</span><span class="ax-tok">cat</span><span class="ax-tok">sits</span><span class="ax-tok">on</span><span class="ax-tok">mat</span>
       </div>
       <div class="ax-cell-label">text tokens</div>
     </div>
@@ -1354,11 +1464,18 @@ mjx-container[display="true"] { margin: 1em 0; }
           <span style="background:#c7d2fe"></span><span style="background:#a5b4fc"></span><span style="background:#818cf8"></span>
           <span style="background:#818cf8"></span><span style="background:#a5b4fc"></span><span style="background:#c7d2fe"></span>
         </div>
-        <div class="ax-tok-row">
-          <span class="ax-tok action">a<sub>1</sub></span><span class="ax-tok action">a<sub>2</sub></span><span class="ax-tok action">a<sub>3</sub></span>
-        </div>
+        <svg class="ax-mod-arm" viewBox="0 0 42 42" aria-hidden="true">
+          <rect x="13" y="34" width="16" height="6" rx="1.5" fill="rgba(68,133,199,0.18)" stroke="#4485C7" stroke-width="1.4" />
+          <line x1="21" y1="34" x2="14" y2="22" stroke="#4485C7" stroke-width="2.4" stroke-linecap="round" />
+          <circle cx="21" cy="34" r="2" fill="#4485C7" />
+          <line x1="14" y1="22" x2="28" y2="14" stroke="#4485C7" stroke-width="2.4" stroke-linecap="round" />
+          <circle cx="14" cy="22" r="2" fill="#4485C7" />
+          <line x1="28" y1="14" x2="33" y2="9" stroke="#4485C7" stroke-width="2.2" stroke-linecap="round" />
+          <line x1="28" y1="14" x2="33" y2="19" stroke="#4485C7" stroke-width="2.2" stroke-linecap="round" />
+          <circle cx="28" cy="14" r="1.6" fill="#4485C7" />
+        </svg>
       </div>
-      <div class="ax-cell-label">image patches + joint actions</div>
+      <div class="ax-cell-label">image patches + robot joint actions</div>
     </div>
   </div>
 
@@ -1367,7 +1484,7 @@ mjx-container[display="true"] { margin: 1em 0; }
       <span class="axis-num">2</span>
       <div>
         <div class="axis-name">Loss</div>
-        <div class="axis-hint">classification &nbsp;→&nbsp; regression / flow matching</div>
+        <div class="axis-hint">classification &nbsp;→&nbsp; regression (incl.&nbsp;flow matching)</div>
       </div>
     </div>
     <div class="axis-from">
@@ -1399,7 +1516,7 @@ mjx-container[display="true"] { margin: 1em 0; }
       <span class="axis-num">3</span>
       <div>
         <div class="axis-name">Paradigm</div>
-        <div class="axis-hint">supervised &nbsp;→&nbsp; reinforcement learning</div>
+        <div class="axis-hint">supervised learning &nbsp;→&nbsp; reinforcement learning</div>
       </div>
     </div>
     <div class="axis-from">
@@ -1423,63 +1540,10 @@ mjx-container[display="true"] { margin: 1em 0; }
           <span class="arr dot">·</span><span class="arr dot">·</span><span class="arr dot">·</span><span class="arr dot">·</span><span class="arr reward">↓</span>
         </div>
       </div>
-      <div class="ax-cell-label">trajectory-level verifiable reward</div>
+      <div class="ax-cell-label">trajectory-level reward</div>
     </div>
   </div>
 </div>
-
-  <h2 id="background-muon-and-three-axes-beyond-pretraining">Background: Muon and Three Axes Beyond Pretraining</h2>
-
-  <p>For a weight matrix \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\), given a stochastic gradient \(\mathbf{G}_t\) and a momentum buffer \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\), Muon performs the steepest descent step under the spectral norm:</p>
-
-\[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
-
-  <p>If \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) is the compact SVD, then</p>
-
-\[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
-
-  <p>Every nonzero singular value is mapped to one. This is <strong>uniform spectral whitening</strong>. Computing an SVD per step is too expensive at scale, so Muon approximates \(\mathrm{msign}\) by a small number of Newton Schulz (NS) iterations. After normalizing the input as \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\), each NS step applies an odd quintic matrix polynomial,</p>
-
-\[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
-
-  <p>with the canonical coefficients \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\). By the identity \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\), an NS step preserves the singular vectors and reshapes each singular value through a <strong>scalar polynomial</strong> on \([0, 1]\):</p>
-
-\[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
-
-  <p>So designing an NS iteration reduces to designing \(f\) on \([0, 1]\). Muon’s NS is constructed so that repeated application drives every \(\sigma \in (0, 1]\) toward one. The shape of this scalar map (and Pion’s eventual replacement for it) is the central object we visualize in <a href="#fig-pion-iter">Figure 1</a>.</p>
-
-  <p>LLM pretraining is a <strong>classification</strong> task (predict the next token), uses <strong>text</strong> as the only modality, and runs under <strong>supervised learning</strong>. With clean dense supervision and full rank text gradients, Muon’s uniform whitening is a sensible inductive bias. But LLM pretraining occupies just one corner of the design space; three orthogonal axes can move us out of that corner.</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align: left">Axis</th>
-        <th style="text-align: left">LLM pretraining</th>
-        <th style="text-align: left">Generalization direction</th>
-        <th style="text-align: left">Representative testbed</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: left"><strong>Modality</strong></td>
-        <td style="text-align: left">text</td>
-        <td style="text-align: left">vision, robot action</td>
-        <td style="text-align: left">VLA training (vision language action)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left"><strong>Loss</strong></td>
-        <td style="text-align: left">classification (next token)</td>
-        <td style="text-align: left">regression, generative (flow matching)</td>
-        <td style="text-align: left">VLA action heads (\(\ell_1\) regression and flow matching)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left"><strong>Paradigm</strong></td>
-        <td style="text-align: left">supervised learning</td>
-        <td style="text-align: left">reinforcement learning</td>
-        <td style="text-align: left">RLVR post training (GRPO, GMPO)</td>
-      </tr>
-    </tbody>
-  </table>
 
   <p>VLA training combines axes 1 and 2 (it adds the action modality and replaces classification with regression or generative losses), and RLVR isolates axis 3 (it keeps the LLM and its tokenizer but switches from supervised next token loss to policy gradient on a verifiable reward). The rest of the page asks the same question along each axis: <strong>does Muon’s uniform spectral whitening still help, or does it become the wrong inductive bias?</strong></p>
 
@@ -1720,14 +1784,40 @@ mjx-container[display="true"] { margin: 1em 0; }
       </div>
       <div class="pion-demo-outputs">
         <div class="pion-demo-output muon">
-          <div class="out-label">Muon NS</div>
-          <div class="out-value">&mdash;</div>
-          <div class="out-tag">&nbsp;</div>
+          <div class="out-label">Muon&nbsp;NS</div>
+          <div class="out-algo">
+            <div class="out-algo-step">5 &times; Newton&ndash;Schulz</div>
+            <code class="out-algo-line">&sigma; &larr; 3.4445&sigma; &minus; 4.7750&sigma;<sup>3</sup></code>
+            <code class="out-algo-line out-algo-cont">+ 2.0315&sigma;<sup>5</sup></code>
+          </div>
+          <div class="out-result-wrap">
+            <div class="out-divider"></div>
+            <div class="out-result">
+              <span class="out-input">&sigma; = <span class="out-sigma-in">0.350</span></span>
+              <span class="out-arrow-sym">&#x21A6;</span>
+              <span class="out-value">&mdash;</span>
+            </div>
+            <div class="out-tag">&nbsp;</div>
+          </div>
         </div>
         <div class="pion-demo-output pion">
-          <div class="out-label">Pion NS</div>
-          <div class="out-value">&mdash;</div>
-          <div class="out-tag">&nbsp;</div>
+          <div class="out-label">Pion&nbsp;NS</div>
+          <div class="out-algo">
+            <div class="out-algo-step">1 &times; Promotion</div>
+            <code class="out-algo-line">&sigma; &larr; 1.875&sigma; &minus; 1.25&sigma;<sup>3</sup></code>
+            <code class="out-algo-line out-algo-cont">+ 0.375&sigma;<sup>5</sup></code>
+            <div class="out-algo-step">+ 4 &times; Suppression</div>
+            <code class="out-algo-line">&sigma; &larr; 2.5&sigma;<sup>3</sup> &minus; 1.5&sigma;<sup>5</sup></code>
+          </div>
+          <div class="out-result-wrap">
+            <div class="out-divider"></div>
+            <div class="out-result">
+              <span class="out-input">&sigma; = <span class="out-sigma-in">0.350</span></span>
+              <span class="out-arrow-sym">&#x21A6;</span>
+              <span class="out-value">&mdash;</span>
+            </div>
+            <div class="out-tag">&nbsp;</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1740,6 +1830,28 @@ mjx-container[display="true"] { margin: 1em 0; }
     </div>
   </div>
 </div>
+
+  <h2 id="muon-">背景：Muon 与”超出预训练”的三条轴</h2>
+
+  <p>记权重矩阵为 \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\)，随机梯度为 \(\mathbf{G}_t\)，动量缓冲为 \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\)。Muon 在谱范数下做最速下降：</p>
+
+\[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
+
+  <p>如果 \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) 是它的紧凑 SVD，那么</p>
+
+\[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
+
+  <p>所有非零奇异值都被映射到 1——也就是所谓的<strong>均匀谱白化</strong>。问题是，大规模训练里每一步算一次 SVD 太贵，所以 Muon 干脆用几步 NS 迭代来近似 \(\mathrm{msign}\)。先把输入归一化为 \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\)，再让每一步 NS 跑一个奇次五次矩阵多项式：</p>
+
+\[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
+
+  <p>经典系数取 \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\)。借助恒等式 \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\)，每一步 NS 都不动奇异向量，只通过 \([0, 1]\) 上的一个<strong>标量多项式</strong>重塑奇异值：</p>
+
+\[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
+
+  <p>也就是说，设计一套 NS 迭代等价于在 \([0, 1]\) 上设计 \(f\)。Muon 的 NS 被特意构造成：迭代几次之后，能把任意 \(\sigma \in (0, 1]\) 都赶到 1 附近。这条标量曲线长什么样（以及 Pion 拿什么把它换掉），正是 <a href="#fig-pion-iter">Figure 1</a> 想画清楚的事。</p>
+
+  <p>LLM 预训练有三个默认设定：任务是<strong>分类</strong>（预测下一个 token），模态只有<strong>文本</strong>，范式是<strong>监督学习</strong>。当 token 级监督密集、文本梯度满秩时，把所有奇异值都拍到 1 是个挺合理的归纳偏置。可是 LLM 预训练只占据整个设计空间的一个小角落，下面这三条正交轴随便拨一条都能把我们送出去：</p>
 
   <div class="axes-anim">
   <div class="axes-anim-head">
@@ -1768,7 +1880,7 @@ mjx-container[display="true"] { margin: 1em 0; }
     </div>
     <div class="axis-from">
       <div class="ax-tok-row">
-        <span class="ax-tok">x<sub>1</sub></span><span class="ax-tok">x<sub>2</sub></span><span class="ax-tok">x<sub>3</sub></span><span class="ax-tok">x<sub>4</sub></span><span class="ax-tok">x<sub>5</sub></span>
+        <span class="ax-tok">the</span><span class="ax-tok">cat</span><span class="ax-tok">sits</span><span class="ax-tok">on</span><span class="ax-tok">mat</span>
       </div>
       <div class="ax-cell-label">文本 token</div>
     </div>
@@ -1780,11 +1892,18 @@ mjx-container[display="true"] { margin: 1em 0; }
           <span style="background:#c7d2fe"></span><span style="background:#a5b4fc"></span><span style="background:#818cf8"></span>
           <span style="background:#818cf8"></span><span style="background:#a5b4fc"></span><span style="background:#c7d2fe"></span>
         </div>
-        <div class="ax-tok-row">
-          <span class="ax-tok action">a<sub>1</sub></span><span class="ax-tok action">a<sub>2</sub></span><span class="ax-tok action">a<sub>3</sub></span>
-        </div>
+        <svg class="ax-mod-arm" viewBox="0 0 42 42" aria-hidden="true">
+          <rect x="13" y="34" width="16" height="6" rx="1.5" fill="rgba(68,133,199,0.18)" stroke="#4485C7" stroke-width="1.4" />
+          <line x1="21" y1="34" x2="14" y2="22" stroke="#4485C7" stroke-width="2.4" stroke-linecap="round" />
+          <circle cx="21" cy="34" r="2" fill="#4485C7" />
+          <line x1="14" y1="22" x2="28" y2="14" stroke="#4485C7" stroke-width="2.4" stroke-linecap="round" />
+          <circle cx="14" cy="22" r="2" fill="#4485C7" />
+          <line x1="28" y1="14" x2="33" y2="9" stroke="#4485C7" stroke-width="2.2" stroke-linecap="round" />
+          <line x1="28" y1="14" x2="33" y2="19" stroke="#4485C7" stroke-width="2.2" stroke-linecap="round" />
+          <circle cx="28" cy="14" r="1.6" fill="#4485C7" />
+        </svg>
       </div>
-      <div class="ax-cell-label">图像 patch + 关节动作</div>
+      <div class="ax-cell-label">图像 patch + 机械臂关节动作</div>
     </div>
   </div>
 
@@ -1793,7 +1912,7 @@ mjx-container[display="true"] { margin: 1em 0; }
       <span class="axis-num">2</span>
       <div>
         <div class="axis-name">损失</div>
-        <div class="axis-hint">分类 &nbsp;→&nbsp; 回归 / 流匹配</div>
+        <div class="axis-hint">分类 &nbsp;→&nbsp; 回归（含流匹配）</div>
       </div>
     </div>
     <div class="axis-from">
@@ -1849,63 +1968,10 @@ mjx-container[display="true"] { margin: 1em 0; }
           <span class="arr dot">·</span><span class="arr dot">·</span><span class="arr dot">·</span><span class="arr dot">·</span><span class="arr reward">↓</span>
         </div>
       </div>
-      <div class="ax-cell-label">轨迹级可验证奖励</div>
+      <div class="ax-cell-label">轨迹级奖励</div>
     </div>
   </div>
 </div>
-
-  <h2 id="muon-">背景：Muon 与”超出预训练”的三条轴</h2>
-
-  <p>记权重矩阵为 \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\)，随机梯度为 \(\mathbf{G}_t\)，动量缓冲为 \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\)。Muon 在谱范数下做最速下降：</p>
-
-\[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
-
-  <p>如果 \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) 是它的紧凑 SVD，那么</p>
-
-\[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
-
-  <p>所有非零奇异值都被映射到 1——也就是所谓的<strong>均匀谱白化</strong>。问题是，大规模训练里每一步算一次 SVD 太贵，所以 Muon 干脆用几步 NS 迭代来近似 \(\mathrm{msign}\)。先把输入归一化为 \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\)，再让每一步 NS 跑一个奇次五次矩阵多项式：</p>
-
-\[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
-
-  <p>经典系数取 \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\)。借助恒等式 \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\)，每一步 NS 都不动奇异向量，只通过 \([0, 1]\) 上的一个<strong>标量多项式</strong>重塑奇异值：</p>
-
-\[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
-
-  <p>也就是说，设计一套 NS 迭代等价于在 \([0, 1]\) 上设计 \(f\)。Muon 的 NS 被特意构造成：迭代几次之后，能把任意 \(\sigma \in (0, 1]\) 都赶到 1 附近。这条标量曲线长什么样（以及 Pion 拿什么把它换掉），正是 <a href="#fig-pion-iter">Figure 1</a> 想画清楚的事。</p>
-
-  <p>LLM 预训练有三个默认设定：任务是<strong>分类</strong>（预测下一个 token），模态只有<strong>文本</strong>，范式是<strong>监督学习</strong>。当 token 级监督密集、文本梯度满秩时，把所有奇异值都拍到 1 是个挺合理的归纳偏置。可是 LLM 预训练只占据整个设计空间的一个小角落，下面这三条正交轴随便拨一条都能把我们送出去：</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align: left">维度</th>
-        <th style="text-align: left">LLM 预训练</th>
-        <th style="text-align: left">走出去的方向</th>
-        <th style="text-align: left">代表性场景</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: left"><strong>模态</strong></td>
-        <td style="text-align: left">文本</td>
-        <td style="text-align: left">视觉、机器人动作</td>
-        <td style="text-align: left">VLA 训练（视觉–语言–动作）</td>
-      </tr>
-      <tr>
-        <td style="text-align: left"><strong>损失</strong></td>
-        <td style="text-align: left">分类（下一 token）</td>
-        <td style="text-align: left">回归、生成（流匹配）</td>
-        <td style="text-align: left">VLA action head（\(\ell_1\) 回归与流匹配）</td>
-      </tr>
-      <tr>
-        <td style="text-align: left"><strong>范式</strong></td>
-        <td style="text-align: left">监督学习</td>
-        <td style="text-align: left">强化学习</td>
-        <td style="text-align: left">RLVR 后训练（GRPO、GMPO）</td>
-      </tr>
-    </tbody>
-  </table>
 
   <p>VLA 同时改变了模态和损失（多了一种动作模态，又把分类损失换成回归或生成损失）；RLVR 则单独改变了范式（仍然用 LLM 和它的 tokenizer，只把 token 级监督换成了基于可验证奖励的策略梯度）。下面我们沿每条轴问同一个问题：<strong>Muon 那种”把所有奇异值都拍平”的均匀白化，到底还有用，还是已经成了错误的归纳偏置？</strong></p>
 
@@ -2297,6 +2363,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 
       var muonLabels = (el.dataset.muonLabels || 'whitened|near zero|overshoot').split('|');
       var pionLabels = (el.dataset.pionLabels || 'kept (high-pass)|suppressed|kept (high-pass)').split('|');
+      var sigmaInputs = el.querySelectorAll('.out-sigma-in');
 
       if (plot && !plot.dataset.built) {
         plot.setAttribute('viewBox', '0 0 ' + PLOT_W + ' ' + PLOT_H);
@@ -2358,6 +2425,9 @@ mjx-container[display="true"] { margin: 1em 0; }
         if (pionVal) pionVal.textContent = fmt(p);
         if (muonTag) muonTag.textContent = classify(m, muonLabels);
         if (pionTag) pionTag.textContent = classify(p, pionLabels);
+        if (sigmaInputs && sigmaInputs.length) {
+          for (var si = 0; si < sigmaInputs.length; si++) sigmaInputs[si].textContent = s.toFixed(3);
+        }
         if (plot) {
           var mDot = plot.querySelector('.pion-demo-dot-muon');
           var pDot = plot.querySelector('.pion-demo-dot-pion');

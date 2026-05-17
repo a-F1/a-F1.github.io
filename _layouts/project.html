@@ -586,8 +586,8 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .pion-demo-controls {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 14px;
+  height: 100%;
 }
 .pion-demo-slider-row {
   display: flex;
@@ -638,35 +638,94 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   text-align: right;
 }
 .pion-demo-outputs {
+  flex: 1 1 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  min-height: 0;
 }
 .pion-demo-output {
-  padding: 12px 14px;
+  padding: 12px 14px 14px;
   border-radius: 10px;
   background: #fff;
   border: 1px solid var(--proj-border);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .pion-demo-output.muon { border-top: 3px solid #94a3b8; }
 .pion-demo-output.pion { border-top: 3px solid var(--proj-primary); }
 .pion-demo-output .out-label {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--proj-faint);
-  margin-bottom: 4px;
-}
-.pion-demo-output .out-name {
-  font-size: 0.92rem;
+  margin-bottom: 8px;
   font-weight: 600;
-  color: var(--proj-ink);
-  margin-bottom: 6px;
+}
+.pion-demo-output .out-algo {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--proj-text);
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pion-demo-output .out-algo-step {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.66rem;
+  color: var(--proj-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.pion-demo-output .out-algo-step:first-child { margin-top: 0; }
+.pion-demo-output .out-algo-line {
+  display: block;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: clip;
+  background: transparent;
+  color: var(--proj-text);
+  padding: 0;
+}
+.pion-demo-output .out-algo-cont { padding-left: 14px; }
+.pion-demo-output .out-result-wrap {
+  margin-top: auto;
+  padding-top: 10px;
+}
+.pion-demo-output .out-divider {
+  height: 1px;
+  background: var(--proj-border);
+  margin-bottom: 8px;
+}
+.pion-demo-output .out-result {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pion-demo-output .out-input {
+  font-size: 0.82rem;
+  color: var(--proj-muted);
+  font-family: 'Latin Modern Math', 'Cambria Math', serif;
+}
+.pion-demo-output .out-input .out-sigma-in {
+  font-variant-numeric: tabular-nums;
+  font-style: normal;
+  color: var(--proj-text);
+}
+.pion-demo-output .out-arrow-sym {
+  color: var(--proj-faint);
+  font-size: 0.95rem;
 }
 .pion-demo-output .out-value {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
@@ -676,8 +735,9 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .pion-demo-output.pion .out-value { color: var(--proj-primary-dark); }
 .pion-demo-output .out-tag {
   margin-top: 4px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--proj-muted);
+  line-height: 1.3;
 }
 .pion-demo-plot-wrap {
   background: #fff;
@@ -687,8 +747,9 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   display: flex;
   flex-direction: column;
   aspect-ratio: 1 / 1;
-  align-self: center;
+  align-self: start;
   width: 100%;
+  box-sizing: border-box;
 }
 .pion-demo-plot {
   width: 100%;
@@ -917,10 +978,11 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 }
 .ax-mod-pix span { display: block; border-radius: 1px; }
 .ax-mod-arm {
-  position: relative;
-  width: 36px; height: 36px;
+  width: 42px;
+  height: 42px;
+  display: block;
+  flex-shrink: 0;
 }
-.ax-mod-arm svg { display: block; }
 .ax-tok.action {
   background: var(--proj-accent-bg);
   border-color: rgba(68, 133, 199, 0.35);
@@ -1280,6 +1342,7 @@ mjx-container[display="true"] { margin: 1em 0; }
 
       var muonLabels = (el.dataset.muonLabels || 'whitened|near zero|overshoot').split('|');
       var pionLabels = (el.dataset.pionLabels || 'kept (high-pass)|suppressed|kept (high-pass)').split('|');
+      var sigmaInputs = el.querySelectorAll('.out-sigma-in');
 
       if (plot && !plot.dataset.built) {
         plot.setAttribute('viewBox', '0 0 ' + PLOT_W + ' ' + PLOT_H);
@@ -1341,6 +1404,9 @@ mjx-container[display="true"] { margin: 1em 0; }
         if (pionVal) pionVal.textContent = fmt(p);
         if (muonTag) muonTag.textContent = classify(m, muonLabels);
         if (pionTag) pionTag.textContent = classify(p, pionLabels);
+        if (sigmaInputs && sigmaInputs.length) {
+          for (var si = 0; si < sigmaInputs.length; si++) sigmaInputs[si].textContent = s.toFixed(3);
+        }
         if (plot) {
           var mDot = plot.querySelector('.pion-demo-dot-muon');
           var pDot = plot.querySelector('.pion-demo-dot-pion');

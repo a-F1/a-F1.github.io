@@ -513,22 +513,38 @@ layout: default
 }
 
 /* Tables */
+.project-content .table-scroll {
+  margin: 1.8em 0 2em;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(68, 133, 199, 0.35) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.project-content .table-scroll::-webkit-scrollbar { height: 6px; }
+.project-content .table-scroll::-webkit-scrollbar-track { background: transparent; }
+.project-content .table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(68, 133, 199, 0.35);
+  border-radius: 999px;
+}
 .project-content table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin: 1.8em 0 2em;
-  font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.88rem;
   background: #fff;
-  border: 1px solid var(--proj-border);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
   font-variant-numeric: tabular-nums;
 }
+.project-content .table-scroll > table { min-width: max-content; }
 .project-content th,
 .project-content td {
-  padding: 10px 14px;
+  padding: 9px 12px;
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid var(--proj-border);
@@ -538,10 +554,12 @@ layout: default
   background: linear-gradient(to bottom, #f7f9fc, #eef2f7);
   color: #0a1f44;
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   border-bottom: 2px solid var(--proj-border);
+  position: sticky;
+  top: 0;
 }
 .project-content thead th:first-child { text-align: left; }
 .project-content tbody td:first-child {
@@ -570,9 +588,6 @@ layout: default
 .project-content tbody td strong { color: var(--proj-accent); font-weight: 700; }
 .project-content .results-table th,
 .project-content .results-table td { text-align: center; }
-@media (max-width: 760px) {
-  .project-content table { display: block; overflow-x: auto; white-space: nowrap; }
-}
 
 /* TL;DR card */
 .tldr {
@@ -1275,6 +1290,18 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 .algo-block.compact ol.algo-steps li > .line {
   flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(68, 133, 199, 0.35) transparent;
+  padding-bottom: 1px;
+}
+.algo-block.compact ol.algo-steps li > .line::-webkit-scrollbar { height: 4px; }
+.algo-block.compact ol.algo-steps li > .line::-webkit-scrollbar-track { background: transparent; }
+.algo-block.compact ol.algo-steps li > .line::-webkit-scrollbar-thumb {
+  background: rgba(68, 133, 199, 0.35);
+  border-radius: 999px;
 }
 .algo-block.compact ol.algo-steps li > .comment {
   width: 100%;
@@ -1287,7 +1314,7 @@ mjx-container { overflow-x: auto; max-width: 100%; }
 }
 .algo-block.compact ol.algo-steps li.ind-1 > .line { padding-left: 12px; }
 .algo-block.compact ol.algo-steps li.ind-2 > .line { padding-left: 24px; }
-.algo-block.compact mjx-container { font-size: 0.86em !important; }
+.algo-block.compact mjx-container { font-size: 0.8em !important; }
 
 /* Diff highlight: lines in Pion that differ from Muon */
 .algo-block ol.algo-steps li.algo-diff {
@@ -1363,7 +1390,10 @@ mjx-container { overflow-x: auto; max-width: 100%; }
   background: rgba(46, 138, 148, 0.18);
   box-shadow: inset 2.5px 0 0 0 rgba(46, 138, 148, 0.75);
 }
-@media (max-width: 880px) {
+@media (max-width: 1100px) {
+  .algo-row { grid-template-columns: 1fr 1fr; gap: 14px; }
+}
+@media (max-width: 760px) {
   .algo-row { grid-template-columns: 1fr; gap: 16px; }
 }
 
@@ -1595,8 +1625,22 @@ mjx-container[display="true"] { margin: 1em 0; }
     });
   }
 
+  function wrapTablesForScroll() {
+    var content = document.querySelector('.project-content');
+    if (!content) return;
+    var tables = content.querySelectorAll('table');
+    tables.forEach(function(t) {
+      if (t.parentElement && t.parentElement.classList.contains('table-scroll')) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'table-scroll';
+      t.parentNode.insertBefore(wrap, t);
+      wrap.appendChild(t);
+    });
+  }
+
   function init() {
     initLangToggle();
+    wrapTablesForScroll();
     buildTOC();
     PionDemo.initAll();
   }

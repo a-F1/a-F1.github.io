@@ -546,6 +546,161 @@ layout: default
 /* MathJax overflow */
 mjx-container { overflow-x: auto; max-width: 100%; }
 
+/* ===== Interactive Pion vs Muon demo ===== */
+.pion-demo {
+  margin: 28px 0 32px;
+  padding: 22px 24px 20px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  border: 1px solid var(--proj-border);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+.pion-demo-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.pion-demo-title {
+  font-weight: 600;
+  color: var(--proj-ink);
+  font-size: 0.98rem;
+  letter-spacing: 0.005em;
+}
+.pion-demo-sub {
+  color: var(--proj-muted);
+  font-size: 0.84rem;
+}
+.pion-demo-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 22px;
+  align-items: stretch;
+}
+@media (max-width: 760px) {
+  .pion-demo-body { grid-template-columns: 1fr; }
+}
+.pion-demo-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pion-demo-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  color: var(--proj-text);
+}
+.pion-demo-slider-row .sigma-label {
+  font-family: 'Latin Modern Math', 'Cambria Math', serif;
+  font-style: italic;
+  color: var(--proj-ink);
+  font-size: 1.05rem;
+  min-width: 24px;
+}
+.pion-demo-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: linear-gradient(to right, #e5e9ef, #cfd8e3);
+  border-radius: 999px;
+  outline: none;
+}
+.pion-demo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--proj-primary);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(68, 133, 199, 0.4);
+  cursor: grab;
+}
+.pion-demo-slider::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--proj-primary);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(68, 133, 199, 0.4);
+  cursor: grab;
+}
+.pion-demo-sigma {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--proj-primary-dark);
+  min-width: 56px;
+  text-align: right;
+}
+.pion-demo-outputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.pion-demo-output {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--proj-border);
+  position: relative;
+  overflow: hidden;
+}
+.pion-demo-output.muon { border-top: 3px solid #94a3b8; }
+.pion-demo-output.pion { border-top: 3px solid var(--proj-primary); }
+.pion-demo-output .out-label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--proj-faint);
+  margin-bottom: 4px;
+}
+.pion-demo-output .out-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--proj-ink);
+  margin-bottom: 6px;
+}
+.pion-demo-output .out-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: var(--proj-text);
+  line-height: 1.1;
+}
+.pion-demo-output.pion .out-value { color: var(--proj-primary-dark); }
+.pion-demo-output .out-tag {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--proj-muted);
+}
+.pion-demo-plot-wrap {
+  background: #fff;
+  border: 1px solid var(--proj-border);
+  border-radius: 10px;
+  padding: 10px 12px 6px;
+  display: flex;
+  flex-direction: column;
+}
+.pion-demo-plot { width: 100%; height: auto; display: block; }
+.pion-demo-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--proj-muted);
+}
+.pion-demo-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+.pion-demo-legend .swatch {
+  width: 16px; height: 2px; border-radius: 2px;
+}
+.pion-demo-legend .lg-muon .swatch { background: #94a3b8; }
+.pion-demo-legend .lg-pion .swatch { background: var(--proj-primary); }
+
 /* Language toggle */
 .lang-toggle {
   display: inline-flex;
@@ -709,13 +864,33 @@ mjx-container[display="true"] { margin: 1em 0; }
     update();
   }
 
+  function retypesetMath(visible) {
+    if (!visible) return;
+    function go() {
+      try {
+        if (window.MathJax.typesetClear) window.MathJax.typesetClear([visible]);
+      } catch (e) {}
+      window.MathJax.typesetPromise([visible]).catch(function() {});
+    }
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax.startup && window.MathJax.startup.promise) {
+        window.MathJax.startup.promise.then(go).catch(go);
+      } else {
+        go();
+      }
+    }
+  }
+
   function setLang(lang) {
     var content = document.querySelector('.project-content');
     if (!content) return;
     var blocks = content.querySelectorAll('.post-lang');
     if (blocks.length === 0) return;
+    var visible = null;
     blocks.forEach(function(el) {
-      el.hidden = !el.classList.contains('post-lang-' + lang);
+      var on = el.classList.contains('post-lang-' + lang);
+      el.hidden = !on;
+      if (on) visible = el;
     });
     document.querySelectorAll('.lang-toggle .lang-btn').forEach(function(btn) {
       var on = btn.dataset.lang === lang;
@@ -726,10 +901,8 @@ mjx-container[display="true"] { margin: 1em 0; }
     document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
 
     buildTOC();
-
-    if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise([content]).catch(function() {});
-    }
+    retypesetMath(visible);
+    if (window.PionDemo && window.PionDemo.refreshAll) window.PionDemo.refreshAll();
   }
 
   function initLangToggle() {
@@ -746,7 +919,144 @@ mjx-container[display="true"] { margin: 1em 0; }
   function init() {
     initLangToggle();
     buildTOC();
+    PionDemo.initAll();
   }
+
+  // ===== Pion vs Muon interactive demo =====
+  function muonNS(sigma, k) {
+    var x = sigma;
+    for (var i = 0; i < k; i++) {
+      var x2 = x*x, x3 = x2*x, x5 = x3*x2;
+      x = 3.4445*x - 4.7750*x3 + 2.0315*x5;
+    }
+    return x;
+  }
+  function pionNS(sigma, kp, ks) {
+    var x = sigma;
+    for (var i = 0; i < kp; i++) {
+      var x2 = x*x, x3 = x2*x, x5 = x3*x2;
+      x = 1.875*x - 1.25*x3 + 0.375*x5;
+    }
+    for (var i = 0; i < ks; i++) {
+      var x2 = x*x, x3 = x2*x, x5 = x3*x2;
+      x = 2.5*x3 - 1.5*x5;
+    }
+    return x;
+  }
+
+  var PLOT_W = 320, PLOT_H = 170;
+  var PAD_L = 30, PAD_R = 10, PAD_T = 12, PAD_B = 22;
+  function pX(s) { return PAD_L + s * (PLOT_W - PAD_L - PAD_R); }
+  function pY(v) {
+    // y range [-0.1, 1.4] mapped to plot height (Muon can overshoot a bit)
+    var yMin = -0.1, yMax = 1.4;
+    var t = (v - yMin) / (yMax - yMin);
+    return PAD_T + (1 - t) * (PLOT_H - PAD_T - PAD_B);
+  }
+  function buildPath(fn) {
+    var d = '';
+    var N = 121;
+    for (var i = 0; i < N; i++) {
+      var s = i / (N - 1);
+      var v = fn(s);
+      if (!isFinite(v)) continue;
+      d += (i === 0 ? 'M' : 'L') + pX(s).toFixed(2) + ' ' + pY(v).toFixed(2) + ' ';
+    }
+    return d.trim();
+  }
+
+  var PionDemo = {
+    instances: [],
+    initAll: function() {
+      var self = this;
+      var els = document.querySelectorAll('.pion-demo');
+      els.forEach(function(el) { self.initOne(el); });
+    },
+    initOne: function(el) {
+      var slider = el.querySelector('.pion-demo-slider');
+      var sigmaOut = el.querySelector('.pion-demo-sigma');
+      var muonVal = el.querySelector('.pion-demo-output.muon .out-value');
+      var pionVal = el.querySelector('.pion-demo-output.pion .out-value');
+      var muonTag = el.querySelector('.pion-demo-output.muon .out-tag');
+      var pionTag = el.querySelector('.pion-demo-output.pion .out-tag');
+      var plot = el.querySelector('.pion-demo-plot');
+      if (!slider) return;
+
+      var muonLabels = (el.dataset.muonLabels || 'whitened|near zero|overshoot').split('|');
+      var pionLabels = (el.dataset.pionLabels || 'kept (high-pass)|suppressed|kept (high-pass)').split('|');
+
+      // Build SVG once
+      if (plot && !plot.dataset.built) {
+        plot.setAttribute('viewBox', '0 0 ' + PLOT_W + ' ' + PLOT_H);
+        var svgNS = 'http://www.w3.org/2000/svg';
+        function add(tag, attrs) {
+          var n = document.createElementNS(svgNS, tag);
+          for (var k in attrs) n.setAttribute(k, attrs[k]);
+          plot.appendChild(n);
+          return n;
+        }
+        // axes
+        add('line', { x1: PAD_L, y1: pY(0), x2: PLOT_W - PAD_R, y2: pY(0), stroke: '#cbd5e1', 'stroke-width': 1 });
+        add('line', { x1: PAD_L, y1: pY(1), x2: PLOT_W - PAD_R, y2: pY(1), stroke: '#e2e8f0', 'stroke-width': 1, 'stroke-dasharray': '3 3' });
+        add('line', { x1: PAD_L, y1: PAD_T, x2: PAD_L, y2: PLOT_H - PAD_B, stroke: '#cbd5e1', 'stroke-width': 1 });
+        // y labels
+        var t0 = add('text', { x: PAD_L - 6, y: pY(0) + 3, 'text-anchor': 'end', fill: '#94a3b8', 'font-size': '9' }); t0.textContent = '0';
+        var t1 = add('text', { x: PAD_L - 6, y: pY(1) + 3, 'text-anchor': 'end', fill: '#94a3b8', 'font-size': '9' }); t1.textContent = '1';
+        // x labels
+        var xt0 = add('text', { x: pX(0), y: PLOT_H - 6, 'text-anchor': 'middle', fill: '#94a3b8', 'font-size': '9' }); xt0.textContent = '0';
+        var xt1 = add('text', { x: pX(1), y: PLOT_H - 6, 'text-anchor': 'middle', fill: '#94a3b8', 'font-size': '9' }); xt1.textContent = '1';
+        var xLabel = add('text', { x: (PAD_L + PLOT_W - PAD_R) / 2, y: PLOT_H - 4, 'text-anchor': 'middle', fill: '#64748b', 'font-size': '10', 'font-style': 'italic' }); xLabel.textContent = 'σ';
+        // curves
+        add('path', { d: buildPath(function(s) { return muonNS(s, 5); }), fill: 'none', stroke: '#94a3b8', 'stroke-width': 1.6, 'stroke-dasharray': '4 3' });
+        add('path', { d: buildPath(function(s) { return pionNS(s, 1, 4); }), fill: 'none', stroke: '#4485C7', 'stroke-width': 2 });
+        // markers
+        var muonDot = add('circle', { cx: 0, cy: 0, r: 3.5, fill: '#94a3b8' });
+        muonDot.setAttribute('class', 'pion-demo-dot-muon');
+        var pionDot = add('circle', { cx: 0, cy: 0, r: 3.5, fill: '#4485C7' });
+        pionDot.setAttribute('class', 'pion-demo-dot-pion');
+        // vertical line at sigma
+        var vline = add('line', { x1: 0, y1: PAD_T, x2: 0, y2: PLOT_H - PAD_B, stroke: '#cbd5e1', 'stroke-width': 1, 'stroke-dasharray': '2 3' });
+        vline.setAttribute('class', 'pion-demo-vline');
+        plot.dataset.built = '1';
+      }
+
+      function fmt(v) {
+        if (Math.abs(v) < 0.0005) return '0.000';
+        return v.toFixed(3);
+      }
+      function classify(v, labels) {
+        if (v > 1.05) return labels[2] || '';
+        if (v > 0.6) return labels[0];
+        return labels[1];
+      }
+      function update() {
+        var s = parseFloat(slider.value);
+        var m = muonNS(s, 5);
+        var p = pionNS(s, 1, 4);
+        if (sigmaOut) sigmaOut.textContent = s.toFixed(3);
+        if (muonVal) muonVal.textContent = fmt(m);
+        if (pionVal) pionVal.textContent = fmt(p);
+        if (muonTag) muonTag.textContent = classify(m, muonLabels);
+        if (pionTag) pionTag.textContent = classify(p, pionLabels);
+        if (plot) {
+          var mDot = plot.querySelector('.pion-demo-dot-muon');
+          var pDot = plot.querySelector('.pion-demo-dot-pion');
+          var vLine = plot.querySelector('.pion-demo-vline');
+          if (mDot) { mDot.setAttribute('cx', pX(s)); mDot.setAttribute('cy', pY(m)); }
+          if (pDot) { pDot.setAttribute('cx', pX(s)); pDot.setAttribute('cy', pY(p)); }
+          if (vLine) { vLine.setAttribute('x1', pX(s)); vLine.setAttribute('x2', pX(s)); }
+        }
+      }
+      slider.addEventListener('input', update);
+      el._update = update;
+      update();
+      this.instances.push(el);
+    },
+    refreshAll: function() {
+      this.instances.forEach(function(el) { if (el._update) el._update(); });
+    }
+  };
+  window.PionDemo = PionDemo;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

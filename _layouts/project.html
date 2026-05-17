@@ -546,6 +546,37 @@ layout: default
 /* MathJax overflow */
 mjx-container { overflow-x: auto; max-width: 100%; }
 
+/* Language toggle */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  margin-top: 18px;
+  border: 1px solid var(--proj-border);
+  border-radius: 999px;
+  background: #fff;
+}
+.lang-toggle .lang-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 4px 14px;
+  font: inherit;
+  font-size: 0.86rem;
+  color: var(--proj-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-toggle .lang-btn:hover { color: var(--proj-ink); }
+.lang-toggle .lang-btn.active {
+  background: var(--proj-ink);
+  color: #fff;
+  font-weight: 500;
+}
+.post-lang[hidden] { display: none; }
+
 /* Hide site footer on project pages so the BibTeX never gets covered */
 .page__footer { display: none !important; }
 .layout--project + .page__footer,
@@ -607,6 +638,11 @@ mjx-container[display="true"] { margin: 1em 0; }
           {% if page.teaser_caption %}<figcaption>{{ page.teaser_caption }}</figcaption>{% endif %}
         </figure>
       {% endif %}
+
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="zh" aria-pressed="false">中文</button>
+      </div>
     </header>
 
     <article class="project-content">
@@ -617,11 +653,24 @@ mjx-container[display="true"] { margin: 1em 0; }
 
 <script>
 (function() {
-  function init() {
+  var scrollHandler = null;
+  var resizeHandler = null;
+
+  function buildTOC() {
     var content = document.querySelector('.project-content');
     var nav = document.getElementById('project-toc-nav');
     if (!content || !nav) return;
-    var headings = content.querySelectorAll('h2');
+    nav.innerHTML = '';
+
+    var langs = content.querySelectorAll('.post-lang');
+    var scope = content;
+    if (langs.length > 0) {
+      for (var i = 0; i < langs.length; i++) {
+        if (!langs[i].hidden) { scope = langs[i]; break; }
+      }
+    }
+
+    var headings = scope.querySelectorAll('h2');
     if (headings.length === 0) return;
 
     var ul = document.createElement('ul');
@@ -651,10 +700,54 @@ mjx-container[display="true"] { margin: 1em 0; }
         else a.classList.remove('active');
       });
     }
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
+    if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
+    if (resizeHandler) window.removeEventListener('resize', resizeHandler);
+    scrollHandler = update;
+    resizeHandler = update;
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    window.addEventListener('resize', resizeHandler, { passive: true });
     update();
   }
+
+  function setLang(lang) {
+    var content = document.querySelector('.project-content');
+    if (!content) return;
+    var blocks = content.querySelectorAll('.post-lang');
+    if (blocks.length === 0) return;
+    blocks.forEach(function(el) {
+      el.hidden = !el.classList.contains('post-lang-' + lang);
+    });
+    document.querySelectorAll('.lang-toggle .lang-btn').forEach(function(btn) {
+      var on = btn.dataset.lang === lang;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try { localStorage.setItem('project-post-lang', lang); } catch (e) {}
+    document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+
+    buildTOC();
+
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([content]).catch(function() {});
+    }
+  }
+
+  function initLangToggle() {
+    var btns = document.querySelectorAll('.lang-toggle .lang-btn');
+    if (btns.length === 0) return;
+    var saved = 'en';
+    try { saved = localStorage.getItem('project-post-lang') || 'en'; } catch (e) {}
+    setLang(saved);
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() { setLang(btn.dataset.lang); });
+    });
+  }
+
+  function init() {
+    initLangToggle();
+    buildTOC();
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

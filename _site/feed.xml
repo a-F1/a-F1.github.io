@@ -1,243 +1,245 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://chongyu-fan.netlify.app/feed.xml" rel="self" type="application/atom+xml" /><link href="https://chongyu-fan.netlify.app/" rel="alternate" type="text/html" /><updated>2026-05-15T17:59:40-07:00</updated><id>https://chongyu-fan.netlify.app/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="https://chongyu-fan.netlify.app/posts/pion/" rel="alternate" type="text/html" title="Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>https://chongyu-fan.netlify.app/posts/pion</id><content type="html" xml:base="https://chongyu-fan.netlify.app/posts/pion/"><![CDATA[<div class="tldr">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://chongyu-fan.netlify.app/feed.xml" rel="self" type="application/atom+xml" /><link href="https://chongyu-fan.netlify.app/" rel="alternate" type="text/html" /><updated>2026-05-17T08:22:59-07:00</updated><id>https://chongyu-fan.netlify.app/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="https://chongyu-fan.netlify.app/posts/pion/" rel="alternate" type="text/html" title="Pion: Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>https://chongyu-fan.netlify.app/posts/pion</id><content type="html" xml:base="https://chongyu-fan.netlify.app/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
 
-  <h2 id="tldr">TL;DR</h2>
+  <div class="tldr">
 
-  <ul>
-    <li><strong>Muon</strong> is the de facto matrix aware optimizer for <strong>LLM pretraining</strong>, which is basically next token classification on text via supervised learning. Muon orthogonalizes the momentum matrix through a few Newton Schulz (NS) iterations, pushing every singular value of the momentum to one.</li>
-    <li>When we move beyond LLM pretraining along three axes (a different <strong>modality</strong>, a different <strong>loss</strong>, or a different <strong>learning paradigm</strong>), Muon’s uniform spectral whitening turns out to be the wrong inductive bias.</li>
-    <li>We propose <strong>Pion</strong> (s<strong>P</strong>ectral h<strong>I</strong>gh pass <strong>O</strong>ptimization on mome<strong>N</strong>tum), a drop in replacement for Muon’s NS iteration. It changes only the polynomial coefficients used inside NS, keeps the same per step cost, and realizes a sharp spectral high pass that anchors the informative leading singular values at one while suppressing the noisy tail toward zero.</li>
-  </ul>
+    <h2 id="tldr">TL;DR</h2>
 
-</div>
+    <ul>
+      <li><strong>Muon</strong> is the de facto matrix aware optimizer for <strong>LLM pretraining</strong>, which is basically next token classification on text via supervised learning. Muon orthogonalizes the momentum matrix through a few Newton Schulz (NS) iterations, pushing every singular value of the momentum to one.</li>
+      <li>When we move beyond LLM pretraining along three axes (a different <strong>modality</strong>, a different <strong>loss</strong>, or a different <strong>learning paradigm</strong>), Muon’s uniform spectral whitening turns out to be the wrong inductive bias.</li>
+      <li>We propose <strong>Pion</strong> (s<strong>P</strong>ectral h<strong>I</strong>gh pass <strong>O</strong>ptimization on mome<strong>N</strong>tum), a drop in replacement for Muon’s NS iteration. It changes only the polynomial coefficients used inside NS, keeps the same per step cost, and realizes a sharp spectral high pass that anchors the informative leading singular values at one while suppressing the noisy tail toward zero.</li>
+    </ul>
 
-<h2 id="background-muon-and-three-axes-beyond-pretraining">Background: Muon and Three Axes Beyond Pretraining</h2>
+  </div>
 
-<p>For a weight matrix \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\), given a stochastic gradient \(\mathbf{G}_t\) and a momentum buffer \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\), Muon performs the steepest descent step under the spectral norm:</p>
+  <h2 id="background-muon-and-three-axes-beyond-pretraining">Background: Muon and Three Axes Beyond Pretraining</h2>
+
+  <p>For a weight matrix \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\), given a stochastic gradient \(\mathbf{G}_t\) and a momentum buffer \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\), Muon performs the steepest descent step under the spectral norm:</p>
 
 \[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
 
-<p>If \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) is the compact SVD, then</p>
+  <p>If \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) is the compact SVD, then</p>
 
 \[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
 
-<p>Every nonzero singular value is mapped to one. This is <strong>uniform spectral whitening</strong>. Computing an SVD per step is too expensive at scale, so Muon approximates \(\mathrm{msign}\) by a small number of Newton Schulz (NS) iterations. After normalizing the input as \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\), each NS step applies an odd quintic matrix polynomial,</p>
+  <p>Every nonzero singular value is mapped to one. This is <strong>uniform spectral whitening</strong>. Computing an SVD per step is too expensive at scale, so Muon approximates \(\mathrm{msign}\) by a small number of Newton Schulz (NS) iterations. After normalizing the input as \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\), each NS step applies an odd quintic matrix polynomial,</p>
 
 \[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
 
-<p>with the canonical coefficients \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\). By the identity \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\), an NS step preserves the singular vectors and reshapes each singular value through a <strong>scalar polynomial</strong> on \([0, 1]\):</p>
+  <p>with the canonical coefficients \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\). By the identity \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\), an NS step preserves the singular vectors and reshapes each singular value through a <strong>scalar polynomial</strong> on \([0, 1]\):</p>
 
 \[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
 
-<p>So designing an NS iteration reduces to designing \(f\) on \([0, 1]\). Muon’s NS is constructed so that repeated application drives every \(\sigma \in (0, 1]\) toward one. The shape of this scalar map (and Pion’s eventual replacement for it) is the central object we visualize in <a href="#fig-pion-iter">Figure 1</a>.</p>
+  <p>So designing an NS iteration reduces to designing \(f\) on \([0, 1]\). Muon’s NS is constructed so that repeated application drives every \(\sigma \in (0, 1]\) toward one. The shape of this scalar map (and Pion’s eventual replacement for it) is the central object we visualize in <a href="#fig-pion-iter">Figure 1</a>.</p>
 
-<p>LLM pretraining is a <strong>classification</strong> task (predict the next token), uses <strong>text</strong> as the only modality, and runs under <strong>supervised learning</strong>. With clean dense supervision and full rank text gradients, Muon’s uniform whitening is a sensible inductive bias. But LLM pretraining occupies just one corner of the design space; three orthogonal axes can move us out of that corner.</p>
+  <p>LLM pretraining is a <strong>classification</strong> task (predict the next token), uses <strong>text</strong> as the only modality, and runs under <strong>supervised learning</strong>. With clean dense supervision and full rank text gradients, Muon’s uniform whitening is a sensible inductive bias. But LLM pretraining occupies just one corner of the design space; three orthogonal axes can move us out of that corner.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Axis</th>
-      <th style="text-align: left">LLM pretraining</th>
-      <th style="text-align: left">Generalization direction</th>
-      <th style="text-align: left">Representative testbed</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><strong>Modality</strong></td>
-      <td style="text-align: left">text</td>
-      <td style="text-align: left">vision, robot action</td>
-      <td style="text-align: left">VLA training (vision language action)</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Loss</strong></td>
-      <td style="text-align: left">classification (next token)</td>
-      <td style="text-align: left">regression, generative (flow matching)</td>
-      <td style="text-align: left">VLA action heads (\(\ell_1\) regression and flow matching)</td>
-    </tr>
-    <tr>
-      <td style="text-align: left"><strong>Paradigm</strong></td>
-      <td style="text-align: left">supervised learning</td>
-      <td style="text-align: left">reinforcement learning</td>
-      <td style="text-align: left">RLVR post training (GRPO, GMPO)</td>
-    </tr>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align: left">Axis</th>
+        <th style="text-align: left">LLM pretraining</th>
+        <th style="text-align: left">Generalization direction</th>
+        <th style="text-align: left">Representative testbed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: left"><strong>Modality</strong></td>
+        <td style="text-align: left">text</td>
+        <td style="text-align: left">vision, robot action</td>
+        <td style="text-align: left">VLA training (vision language action)</td>
+      </tr>
+      <tr>
+        <td style="text-align: left"><strong>Loss</strong></td>
+        <td style="text-align: left">classification (next token)</td>
+        <td style="text-align: left">regression, generative (flow matching)</td>
+        <td style="text-align: left">VLA action heads (\(\ell_1\) regression and flow matching)</td>
+      </tr>
+      <tr>
+        <td style="text-align: left"><strong>Paradigm</strong></td>
+        <td style="text-align: left">supervised learning</td>
+        <td style="text-align: left">reinforcement learning</td>
+        <td style="text-align: left">RLVR post training (GRPO, GMPO)</td>
+      </tr>
+    </tbody>
+  </table>
 
-<p>VLA training combines axes 1 and 2 (it adds the action modality and replaces classification with regression or generative losses), and RLVR isolates axis 3 (it keeps the LLM and its tokenizer but switches from supervised next token loss to policy gradient on a verifiable reward). The rest of the page asks the same question along each axis: <strong>does Muon’s uniform spectral whitening still help, or does it become the wrong inductive bias?</strong></p>
+  <p>VLA training combines axes 1 and 2 (it adds the action modality and replaces classification with regression or generative losses), and RLVR isolates axis 3 (it keeps the LLM and its tokenizer but switches from supervised next token loss to policy gradient on a verifiable reward). The rest of the page asks the same question along each axis: <strong>does Muon’s uniform spectral whitening still help, or does it become the wrong inductive bias?</strong></p>
 
-<h2 id="beyond-modality-and-loss-vla">Beyond Modality and Loss: VLA</h2>
+  <h2 id="beyond-modality-and-loss-vla">Beyond Modality and Loss: VLA</h2>
 
-<p>A VLA model is factorized into a <strong>vision encoder</strong>, a <strong>language backbone</strong>, and an <strong>action head</strong>. The vision and language modules still consume text and image tokens, but the <strong>action head</strong> is a new modality (it consumes joint actions of robots). The action head also uses non classification losses: either an \(\ell_1\) regression head (e.g., VLA Adapter) or a flow matching generative head (e.g., VLANeXt). These two design choices, the action modality and the regression style loss, are tightly coupled by construction.</p>
+  <p>A VLA model is factorized into a <strong>vision encoder</strong>, a <strong>language backbone</strong>, and an <strong>action head</strong>. The vision and language modules still consume text and image tokens, but the <strong>action head</strong> is a new modality (it consumes joint actions of robots). The action head also uses non classification losses: either an \(\ell_1\) regression head (e.g., VLA Adapter) or a flow matching generative head (e.g., VLANeXt). These two design choices, the action modality and the regression style loss, are tightly coupled by construction.</p>
 
-<p>We measure the spectral structure of each module’s gradient via the <strong>effective rank</strong> (erank) of \(\mathbf{G} \in \mathbb{R}^{m \times n}\):</p>
+  <p>We measure the spectral structure of each module’s gradient via the <strong>effective rank</strong> (erank) of \(\mathbf{G} \in \mathbb{R}^{m \times n}\):</p>
 
 \[\mathrm{erank}(\mathbf{G}) \,\triangleq\, \exp\!\Big( H(\mathbf{p}) \Big), \quad H(\mathbf{p}) = -\sum_{i=1}^n p_i \log p_i, \quad p_i = \frac{\sigma_i(\mathbf{G})}{\sum_j \sigma_j(\mathbf{G})}.\]
 
-<p>A higher erank means gradient energy is spread across many singular directions; a lower erank means it concentrates in a few dominant ones.</p>
+  <p>A higher erank means gradient energy is spread across many singular directions; a lower erank means it concentrates in a few dominant ones.</p>
 
-<div class="fig-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="fig-grid" style="grid-template-columns: repeat(3, 1fr);">
   <figure><img src="/images/blog/pion/erank_heatmap_sampled.png" alt="erank" /><figcaption>(a) Per module gradient erank</figcaption></figure>
   <figure><img src="/images/blog/pion/success_rate.png" alt="success rate" /><figcaption>(b) Test success rate</figcaption></figure>
   <figure><img src="/images/blog/pion/total_training_time.png" alt="training time" /><figcaption>(c) Total training time (hrs)</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 2. Limitations of Muon in VLA training (VLA Adapter on LIBERO Object). (a) Per module gradient erank along the training trajectory. (b)(c) Test success rate and total training time at 4.5k steps, with vision and language fixed at AdamW; only the action module optimizer differs.</p>
+  <p class="fig-caption">Figure 2. Limitations of Muon in VLA training (VLA Adapter on LIBERO Object). (a) Per module gradient erank along the training trajectory. (b)(c) Test success rate and total training time at 4.5k steps, with vision and language fixed at AdamW; only the action module optimizer differs.</p>
 
-<p>The ordering in panel (a) is stable across training: vision is highest, language is intermediate, the <strong>action gradient is consistently the lowest</strong>. Both the modality switch (rich pixels and tokens become a tiny continuous action vector) and the loss switch (one hot classification becomes regression or generative matching) push the action gradient toward low effective rank. When Muon is applied uniformly to such a low erank gradient, it lifts the noisy tail directions to the same magnitude as the few informative leading directions, and the resulting update is dominated by spectral floor noise. Panel (b) shows Muon underperforming AdamW on the action head. A natural workaround, <strong>Low Rank Muon</strong> (LRMuon), projects the momentum onto a top \(k\) subspace via SVD or Gaussian sketching before NS. LRMuon does close the accuracy gap, but as panel (c) shows, the explicit projection inflates wall clock by about an order of magnitude, and forces a fixed rank \(k\) that cannot adapt across layers and steps.</p>
+  <p>The ordering in panel (a) is stable across training: vision is highest, language is intermediate, the <strong>action gradient is consistently the lowest</strong>. Both the modality switch (rich pixels and tokens become a tiny continuous action vector) and the loss switch (one hot classification becomes regression or generative matching) push the action gradient toward low effective rank. When Muon is applied uniformly to such a low erank gradient, it lifts the noisy tail directions to the same magnitude as the few informative leading directions, and the resulting update is dominated by spectral floor noise. Panel (b) shows Muon underperforming AdamW on the action head. A natural workaround, <strong>Low Rank Muon</strong> (LRMuon), projects the momentum onto a top \(k\) subspace via SVD or Gaussian sketching before NS. LRMuon does close the accuracy gap, but as panel (c) shows, the explicit projection inflates wall clock by about an order of magnitude, and forces a fixed rank \(k\) that cannot adapt across layers and steps.</p>
 
-<div class="callout">
-  <p><strong>Limitation 1 (modality + loss).</strong> Conventional Muon is not adaptive to the rank heterogeneity introduced by new modalities and non classification losses. Explicit low rank projection helps but breaks scalability.</p>
-</div>
+  <div class="callout">
+    <p><strong>Limitation 1 (modality + loss).</strong> Conventional Muon is not adaptive to the rank heterogeneity introduced by new modalities and non classification losses. Explicit low rank projection helps but breaks scalability.</p>
+  </div>
 
-<h2 id="beyond-paradigm-rlvr">Beyond Paradigm: RLVR</h2>
+  <h2 id="beyond-paradigm-rlvr">Beyond Paradigm: RLVR</h2>
 
-<p>RLVR keeps the LLM and the text modality; it changes the <strong>learning paradigm</strong>. Instead of a token level supervised loss, the policy is updated by policy gradient against a rule based, verifiable reward. We use GRPO and GMPO as representative algorithms.</p>
+  <p>RLVR keeps the LLM and the text modality; it changes the <strong>learning paradigm</strong>. Instead of a token level supervised loss, the policy is updated by policy gradient against a rule based, verifiable reward. We use GRPO and GMPO as representative algorithms.</p>
 
-<p>To compare paradigms, we measure the per step gradient signal to noise ratio of a layer’s weight matrix:</p>
+  <p>To compare paradigms, we measure the per step gradient signal to noise ratio of a layer’s weight matrix:</p>
 
 \[\mathrm{SNR}(\mathbf{G}) \,\triangleq\, \frac{\|\mathbb{E}[\mathbf{G}]\|_F^2}{\mathbb{E}\big[\,\|\mathbf{G} - \mathbb{E}[\mathbf{G}]\|_F^2\,\big]}.\]
 
-<div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
   <figure><img src="/images/blog/pion/grad_snr_sft_vs_rl_math3-5_step80.png" alt="SFT vs GRPO SNR" /><figcaption>(a) Gradient SNR: SFT vs GRPO</figcaption></figure>
   <figure><img src="/images/blog/pion/acc_adamw_muon.png" alt="Accuracy AdamW vs Muon" /><figcaption>(b) MATH500: AdamW vs Muon</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 3. RLVR diagnosis on Qwen3 1.7B (MATH levels 3 to 5). (a) GRPO has substantially lower gradient SNR than SFT throughout training. (b) Under GRPO, AdamW improves steadily while Muon collapses to near zero accuracy within a few steps.</p>
+  <p class="fig-caption">Figure 3. RLVR diagnosis on Qwen3 1.7B (MATH levels 3 to 5). (a) GRPO has substantially lower gradient SNR than SFT throughout training. (b) Under GRPO, AdamW improves steadily while Muon collapses to near zero accuracy within a few steps.</p>
 
-<p>Two structural reasons explain the SNR gap in panel (a). First, <strong>coarser supervision granularity</strong>: SFT receives token level teacher signals, GRPO uses trajectory level rewards, so each token gets a much sparser learning signal. Second, <strong>stabilization mechanisms</strong>: importance sampling, clipping, and group relative normalization reweight or zero out parts of the per token gradients, which inflates variance. When Muon is run on top of these low SNR gradients (panel b), the uniform whitening lifts the noisy directions to the same magnitude as the informative ones, and the policy collapses within a few steps. A second issue specific to the RLVR paradigm is that Muon’s NS treats each weight matrix as a single block, ignoring the per head specialization that pretraining imprints on attention projections.</p>
+  <p>Two structural reasons explain the SNR gap in panel (a). First, <strong>coarser supervision granularity</strong>: SFT receives token level teacher signals, GRPO uses trajectory level rewards, so each token gets a much sparser learning signal. Second, <strong>stabilization mechanisms</strong>: importance sampling, clipping, and group relative normalization reweight or zero out parts of the per token gradients, which inflates variance. When Muon is run on top of these low SNR gradients (panel b), the uniform whitening lifts the noisy directions to the same magnitude as the informative ones, and the policy collapses within a few steps. A second issue specific to the RLVR paradigm is that Muon’s NS treats each weight matrix as a single block, ignoring the per head specialization that pretraining imprints on attention projections.</p>
 
-<div class="callout">
-  <p><strong>Limitation 2 (paradigm).</strong> Muon’s uniform spectral whitening amplifies noisy directions in low SNR RLVR gradients, making it ill suited for noise sensitive post training. It also discards the per head structure inherited from pretraining.</p>
-</div>
+  <div class="callout">
+    <p><strong>Limitation 2 (paradigm).</strong> Muon’s uniform spectral whitening amplifies noisy directions in low SNR RLVR gradients, making it ill suited for noise sensitive post training. It also discards the per head structure inherited from pretraining.</p>
+  </div>
 
-<h2 id="pion-a-spectral-high-pass-optimizer">Pion: A Spectral High Pass Optimizer</h2>
+  <h2 id="pion-a-spectral-high-pass-optimizer">Pion: A Spectral High Pass Optimizer</h2>
 
-<p><strong>A unified spectral diagnosis.</strong> Although Limitations 1 and 2 originate from different sources (low effective rank along the modality and loss axes, low SNR along the paradigm axis), they share <strong>one spectral signature</strong>. In the SVD of \(\mathbf{M}_t\), the few <strong>leading</strong> singular values carry the informative descent direction, while the long <strong>tail</strong> of small singular values is dominated by noise: a spectral floor when erank is low, stochastic estimation noise when SNR is low. Muon’s \(\mathrm{msign}\) lifts the tail to the magnitude of the head and corrupts the update in both regimes. The natural remedy is a <strong>spectral high pass</strong>: anchor the informative head near one, contract the noisy tail toward zero.</p>
+  <p><strong>A unified spectral diagnosis.</strong> Although Limitations 1 and 2 originate from different sources (low effective rank along the modality and loss axes, low SNR along the paradigm axis), they share <strong>one spectral signature</strong>. In the SVD of \(\mathbf{M}_t\), the few <strong>leading</strong> singular values carry the informative descent direction, while the long <strong>tail</strong> of small singular values is dominated by noise: a spectral floor when erank is low, stochastic estimation noise when SNR is low. Muon’s \(\mathrm{msign}\) lifts the tail to the magnitude of the head and corrupts the update in both regimes. The natural remedy is a <strong>spectral high pass</strong>: anchor the informative head near one, contract the noisy tail toward zero.</p>
 
-<p><strong>A two stage high pass NS iteration.</strong> Since each NS step reshapes \(\sigma \in [0, 1]\) through the scalar polynomial \(f(\sigma; a, b, c) = a\sigma + b\sigma^3 + c\sigma^5\), designing an NS iteration reduces to designing \(f\). A single such polynomial cannot produce a sharp high pass on the unit interval, so Pion splits the default \(k = 5\) NS steps into two stages with different coefficients:</p>
+  <p><strong>A two stage high pass NS iteration.</strong> Since each NS step reshapes \(\sigma \in [0, 1]\) through the scalar polynomial \(f(\sigma; a, b, c) = a\sigma + b\sigma^3 + c\sigma^5\), designing an NS iteration reduces to designing \(f\). A single such polynomial cannot produce a sharp high pass on the unit interval, so Pion splits the default \(k = 5\) NS steps into two stages with different coefficients:</p>
 
-<ul>
-  <li>a <strong>Promotion</strong> polynomial \(f_{\mathrm{p}}\) applied for \(k_{\mathrm{p}}\) steps, which lifts dominant singular values toward one while preserving their relative order;</li>
-  <li>a <strong>Suppression</strong> polynomial \(f_{\mathrm{s}}\) applied for \(k_{\mathrm{s}} = k - k_{\mathrm{p}}\) steps, which pins large singular values near one and contracts smaller ones toward zero.</li>
-</ul>
+  <ul>
+    <li>a <strong>Promotion</strong> polynomial \(f_{\mathrm{p}}\) applied for \(k_{\mathrm{p}}\) steps, which lifts dominant singular values toward one while preserving their relative order;</li>
+    <li>a <strong>Suppression</strong> polynomial \(f_{\mathrm{s}}\) applied for \(k_{\mathrm{s}} = k - k_{\mathrm{p}}\) steps, which pins large singular values near one and contracts smaller ones toward zero.</li>
+  </ul>
 
-<p>The cutoff is controlled by the single hyperparameter \(k_{\mathrm{p}} \in \{0, 1, \ldots, 5\}\).</p>
+  <p>The cutoff is controlled by the single hyperparameter \(k_{\mathrm{p}} \in \{0, 1, \ldots, 5\}\).</p>
 
-<p>We require three constraints on \(f_{\mathrm{p}}\): <strong>(P1)</strong> fixed point \(f_{\mathrm{p}}(1) = 1\); <strong>(P2)</strong> first order stationarity \(f_{\mathrm{p}}'(1) = 0\); and <strong>(P3)</strong> boundary concavity \(f_{\mathrm{p}}''(1) \leq 0\), which together with (P2) ensures \(\sigma = 1\) is a maximum so that the iteration does not curve upward past one near the boundary. Solving (P1) and (P2) leaves a one parameter family. Combining (P3) with monotonicity on \([0, 1]\) carves out the feasible interval \(a_{\mathrm{p}} \in [0, 1.875]\). Since \(f_{\mathrm{p}}'(0) = a_{\mathrm{p}}\) controls how strongly each step lifts small singular values, we pick the largest feasible slope, which uniquely determines the polynomial:</p>
+  <p>We require three constraints on \(f_{\mathrm{p}}\): <strong>(P1)</strong> fixed point \(f_{\mathrm{p}}(1) = 1\); <strong>(P2)</strong> first order stationarity \(f_{\mathrm{p}}'(1) = 0\); and <strong>(P3)</strong> boundary concavity \(f_{\mathrm{p}}''(1) \leq 0\), which together with (P2) ensures \(\sigma = 1\) is a maximum so that the iteration does not curve upward past one near the boundary. Solving (P1) and (P2) leaves a one parameter family. Combining (P3) with monotonicity on \([0, 1]\) carves out the feasible interval \(a_{\mathrm{p}} \in [0, 1.875]\). Since \(f_{\mathrm{p}}'(0) = a_{\mathrm{p}}\) controls how strongly each step lifts small singular values, we pick the largest feasible slope, which uniquely determines the polynomial:</p>
 
 \[f_{\mathrm{p}}(\sigma) = 1.875\, \sigma \,-\, 1.25\, \sigma^3 \,+\, 0.375\, \sigma^5.\]
 
-<p>A pleasant byproduct is that the derivative becomes a perfect square, \(f_{\mathrm{p}}'(\sigma) = 1.875\, (1 - \sigma^2)^2 \geq 0\), so monotonicity on \([0, 1]\) holds automatically.</p>
+  <p>A pleasant byproduct is that the derivative becomes a perfect square, \(f_{\mathrm{p}}'(\sigma) = 1.875\, (1 - \sigma^2)^2 \geq 0\), so monotonicity on \([0, 1]\) holds automatically.</p>
 
-<p>The Suppression polynomial inherits \(f_{\mathrm{s}}(1) = 1\) and \(f_{\mathrm{s}}'(1) = 0\), and adds a <strong>spectral filtering</strong> condition \(f_{\mathrm{s}}'(0) = 0\). Removing the linear term near the origin forces small singular values to be driven to zero by the higher order terms. The unique solution is</p>
+  <p>The Suppression polynomial inherits \(f_{\mathrm{s}}(1) = 1\) and \(f_{\mathrm{s}}'(1) = 0\), and adds a <strong>spectral filtering</strong> condition \(f_{\mathrm{s}}'(0) = 0\). Removing the linear term near the origin forces small singular values to be driven to zero by the higher order terms. The unique solution is</p>
 
 \[f_{\mathrm{s}}(\sigma) = 2.5\, \sigma^3 \,-\, 1.5\, \sigma^5.\]
 
-<p>Chaining \(k_{\mathrm{p}}\) Promotion steps with \(k_{\mathrm{s}}\) Suppression steps gives Pion’s <strong>high pass NS</strong> iteration. Fixing \(k = 5\) preserves Muon’s per step cost. Panel (d) of Figure 1 below shows the resulting profile: a sharp transition between a pinned region near one and a filtered region near zero, with \(k_{\mathrm{p}}\) controlling the cutoff. Empirically, <strong>suppression dominant</strong> allocations with \(k_{\mathrm{s}} \geq 3\) work best for both VLA and RLVR.</p>
+  <p>Chaining \(k_{\mathrm{p}}\) Promotion steps with \(k_{\mathrm{s}}\) Suppression steps gives Pion’s <strong>high pass NS</strong> iteration. Fixing \(k = 5\) preserves Muon’s per step cost. Panel (d) of Figure 1 below shows the resulting profile: a sharp transition between a pinned region near one and a filtered region near zero, with \(k_{\mathrm{p}}\) controlling the cutoff. Empirically, <strong>suppression dominant</strong> allocations with \(k_{\mathrm{s}} \geq 3\) work best for both VLA and RLVR.</p>
 
-<div id="fig-pion-iter" class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
+  <div id="fig-pion-iter" class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
   <figure><img src="/images/blog/pion/iter_NS.png" alt="Muon NS" /><figcaption>(a) Muon NS</figcaption></figure>
   <figure><img src="/images/blog/pion/iter_P.png" alt="Promotion" /><figcaption>(b) Promotion \(f_{\mathrm{p}}\)</figcaption></figure>
   <figure><img src="/images/blog/pion/iter_S.png" alt="Suppression" /><figcaption>(c) Suppression \(f_{\mathrm{s}}\)</figcaption></figure>
   <figure><img src="/images/blog/pion/iter_pion_mix.png" alt="High pass NS" /><figcaption>(d) Pion high pass NS</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 1. Visualization of \(f(\sigma)\) on \(\sigma \in [0, 1]\). Muon (a) drives every singular value toward one. Pion combines Promotion (b) with Suppression (c) to obtain the high pass profile in (d).</p>
+  <p class="fig-caption">Figure 1. Visualization of \(f(\sigma)\) on \(\sigma \in [0, 1]\). Muon (a) drives every singular value toward one. Pion combines Promotion (b) with Suppression (c) to obtain the high pass profile in (d).</p>
 
-<p><strong>Per head mode for RLVR.</strong> Pion has two application modes. The default mode applies the iteration to each weight matrix as a single block (mirrors Muon). The per head mode first reshapes each attention projection along its head dimension into multiple per head sub matrices, then runs the iteration independently on each. Since the inner products \(\mathbf{X}^\top \mathbf{X}\) are already batched along the head dimension after the reshape, the per head mode is <strong>free</strong> over the default mode. We use the default mode for VLA (the action head is trained from scratch and has no head structure to preserve) and the per head mode for RLVR. RLVR starts from a pretrained LLM whose attention layers have heterogeneous per head Frobenius norms, and these per head norms govern attention sharpness and gradient magnitudes.</p>
+  <p><strong>Per head mode for RLVR.</strong> Pion has two application modes. The default mode applies the iteration to each weight matrix as a single block (mirrors Muon). The per head mode first reshapes each attention projection along its head dimension into multiple per head sub matrices, then runs the iteration independently on each. Since the inner products \(\mathbf{X}^\top \mathbf{X}\) are already batched along the head dimension after the reshape, the per head mode is <strong>free</strong> over the default mode. We use the default mode for VLA (the action head is trained from scratch and has no head structure to preserve) and the per head mode for RLVR. RLVR starts from a pretrained LLM whose attention layers have heterogeneous per head Frobenius norms, and these per head norms govern attention sharpness and gradient magnitudes.</p>
 
-<div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
   <figure><img src="/images/blog/pion/acc_mh.png" alt="Per head ablation accuracy" /><figcaption>(a) MATH500 accuracy</figcaption></figure>
   <figure><img src="/images/blog/pion/qwen3_1p7b_Q_headnorm_variance_compact_step80.png" alt="Q headnorm variance" /><figcaption>(b) Cross head Q variance</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 4. Effect of per head high pass NS on RLVR (Qwen3 1.7B, GRPO on MATH levels 3 to 5). (a) Accuracy of AdamW, Muon (default vs per head), and Pion (default vs per head). Per head Pion is the only configuration that beats AdamW; per head mode does not save Muon, since the lack of noise adaptiveness remains the primary issue. (b) Cross head Q projection variance: before RLVR weight (top) and after RLVR update for default vs per head Pion (bottom).</p>
+  <p class="fig-caption">Figure 4. Effect of per head high pass NS on RLVR (Qwen3 1.7B, GRPO on MATH levels 3 to 5). (a) Accuracy of AdamW, Muon (default vs per head), and Pion (default vs per head). Per head Pion is the only configuration that beats AdamW; per head mode does not save Muon, since the lack of noise adaptiveness remains the primary issue. (b) Cross head Q projection variance: before RLVR weight (top) and after RLVR update for default vs per head Pion (bottom).</p>
 
-<p>This isolates two complementary findings. The <strong>spectral high pass</strong> is the primary driver of RLVR stability (per head Muon still collapses), and the <strong>per head reshape</strong> is an auxiliary mechanism that preserves head heterogeneity inherited from pretraining and pushes per head Pion past AdamW.</p>
+  <p>This isolates two complementary findings. The <strong>spectral high pass</strong> is the primary driver of RLVR stability (per head Muon still collapses), and the <strong>per head reshape</strong> is an auxiliary mechanism that preserves head heterogeneity inherited from pretraining and pushes per head Pion past AdamW.</p>
 
-<div class="callout">
-  <p><strong>Takeaway.</strong> Pion is a drop in replacement for Muon’s NS iteration. Same control flow, same per step cost; only the polynomial coefficients change.</p>
-</div>
+  <div class="callout">
+    <p><strong>Takeaway.</strong> Pion is a drop in replacement for Muon’s NS iteration. Same control flow, same per step cost; only the polynomial coefficients change.</p>
+  </div>
 
-<h2 id="experiments">Experiments</h2>
+  <h2 id="experiments">Experiments</h2>
 
-<p>Pion is evaluated on two testbeds that span all three axes:</p>
+  <p>Pion is evaluated on two testbeds that span all three axes:</p>
 
-<ul>
-  <li><strong>VLA training</strong> (axes 1 and 2) with two architectures, \(\ell_1\) regression based VLA Adapter and flow matching based VLANeXt, on LIBERO and LIBERO Plus.</li>
-  <li><strong>RLVR post training</strong> (axis 3) with GRPO and GMPO on Qwen3 1.7B and Qwen3 4B over MATH and GSM8K.</li>
-</ul>
+  <ul>
+    <li><strong>VLA training</strong> (axes 1 and 2) with two architectures, \(\ell_1\) regression based VLA Adapter and flow matching based VLANeXt, on LIBERO and LIBERO Plus.</li>
+    <li><strong>RLVR post training</strong> (axis 3) with GRPO and GMPO on Qwen3 1.7B and Qwen3 4B over MATH and GSM8K.</li>
+  </ul>
 
-<p>Three optimizer configurations are compared in each setting: AdamW, Muon, and Pion.</p>
+  <p>Three optimizer configurations are compared in each setting: AdamW, Muon, and Pion.</p>
 
-<div class="fig-grid wrap" style="grid-template-columns: 2fr 1fr; max-width: 72%;">
+  <div class="fig-grid wrap" style="grid-template-columns: 2fr 1fr; max-width: 72%;">
   <div class="fig-legend"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
   <figure><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="max-height: 260px;" /><figcaption>(a) Final success rate on LIBERO</figcaption></figure>
   <figure><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="max-height: 260px;" /><figcaption>(b) Success rate on Object</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 5. AdamW, Muon, and Pion for VLA Adapter on LIBERO. Pion outperforms Muon on every one of the four LIBERO suites, reaches 95.4% success at 500 steps on Object, and saturates at 100% by 1500 steps.</p>
+  <p class="fig-caption">Figure 5. AdamW, Muon, and Pion for VLA Adapter on LIBERO. Pion outperforms Muon on every one of the four LIBERO suites, reaches 95.4% success at 500 steps on Object, and saturates at 100% by 1500 steps.</p>
 
-<p>For VLANeXt (flow matching), Pion not only wins on the clean LIBERO benchmark but also amplifies its advantage on the harder LIBERO Plus split, especially under language (\(+9\) pts), noise (\(+6\) pts), and robot (\(+6\) pts) perturbations. This is consistent with the picture that uniform whitening overamplifies non generalizable noise directions.</p>
+  <p>For VLANeXt (flow matching), Pion not only wins on the clean LIBERO benchmark but also amplifies its advantage on the harder LIBERO Plus split, especially under language (\(+9\) pts), noise (\(+6\) pts), and robot (\(+6\) pts) perturbations. This is consistent with the picture that uniform whitening overamplifies non generalizable noise directions.</p>
 
-<div class="results-table">
+  <div class="results-table">
 
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align: left">Optimizer</th>
-        <th style="text-align: center">LIBERO</th>
-        <th style="text-align: center">LIBERO Plus</th>
-        <th style="text-align: center">Background</th>
-        <th style="text-align: center">Camera</th>
-        <th style="text-align: center">Language</th>
-        <th style="text-align: center">Layout</th>
-        <th style="text-align: center">Light</th>
-        <th style="text-align: center">Noise</th>
-        <th style="text-align: center">Robot</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: left">AdamW</td>
-        <td style="text-align: center">79.45</td>
-        <td style="text-align: center">64.57</td>
-        <td style="text-align: center">68.97</td>
-        <td style="text-align: center">70.38</td>
-        <td style="text-align: center">54.50</td>
-        <td style="text-align: center">61.80</td>
-        <td style="text-align: center">76.35</td>
-        <td style="text-align: center">66.37</td>
-        <td style="text-align: center">47.04</td>
-      </tr>
-      <tr>
-        <td style="text-align: left">Muon</td>
-        <td style="text-align: center">93.65</td>
-        <td style="text-align: center">72.34</td>
-        <td style="text-align: center">82.72</td>
-        <td style="text-align: center">68.00</td>
-        <td style="text-align: center">77.53</td>
-        <td style="text-align: center">76.21</td>
-        <td style="text-align: center">86.17</td>
-        <td style="text-align: center">69.98</td>
-        <td style="text-align: center">57.36</td>
-      </tr>
-      <tr>
-        <td style="text-align: left"><strong>Pion (Ours)</strong></td>
-        <td style="text-align: center"><strong>96.35</strong></td>
-        <td style="text-align: center"><strong>75.93</strong></td>
-        <td style="text-align: center"><strong>84.53</strong></td>
-        <td style="text-align: center"><strong>70.88</strong></td>
-        <td style="text-align: center"><strong>86.93</strong></td>
-        <td style="text-align: center"><strong>76.71</strong></td>
-        <td style="text-align: center"><strong>90.67</strong></td>
-        <td style="text-align: center"><strong>76.09</strong></td>
-        <td style="text-align: center"><strong>63.18</strong></td>
-      </tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left">Optimizer</th>
+          <th style="text-align: center">LIBERO</th>
+          <th style="text-align: center">LIBERO Plus</th>
+          <th style="text-align: center">Background</th>
+          <th style="text-align: center">Camera</th>
+          <th style="text-align: center">Language</th>
+          <th style="text-align: center">Layout</th>
+          <th style="text-align: center">Light</th>
+          <th style="text-align: center">Noise</th>
+          <th style="text-align: center">Robot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">AdamW</td>
+          <td style="text-align: center">79.45</td>
+          <td style="text-align: center">64.57</td>
+          <td style="text-align: center">68.97</td>
+          <td style="text-align: center">70.38</td>
+          <td style="text-align: center">54.50</td>
+          <td style="text-align: center">61.80</td>
+          <td style="text-align: center">76.35</td>
+          <td style="text-align: center">66.37</td>
+          <td style="text-align: center">47.04</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Muon</td>
+          <td style="text-align: center">93.65</td>
+          <td style="text-align: center">72.34</td>
+          <td style="text-align: center">82.72</td>
+          <td style="text-align: center">68.00</td>
+          <td style="text-align: center">77.53</td>
+          <td style="text-align: center">76.21</td>
+          <td style="text-align: center">86.17</td>
+          <td style="text-align: center">69.98</td>
+          <td style="text-align: center">57.36</td>
+        </tr>
+        <tr>
+          <td style="text-align: left"><strong>Pion (Ours)</strong></td>
+          <td style="text-align: center"><strong>96.35</strong></td>
+          <td style="text-align: center"><strong>75.93</strong></td>
+          <td style="text-align: center"><strong>84.53</strong></td>
+          <td style="text-align: center"><strong>70.88</strong></td>
+          <td style="text-align: center"><strong>86.93</strong></td>
+          <td style="text-align: center"><strong>76.71</strong></td>
+          <td style="text-align: center"><strong>90.67</strong></td>
+          <td style="text-align: center"><strong>76.09</strong></td>
+          <td style="text-align: center"><strong>63.18</strong></td>
+        </tr>
+      </tbody>
+    </table>
 
-</div>
-<p class="fig-caption">Table 1. AdamW, Muon, and Pion for VLANeXt on LIBERO and LIBERO Plus. Best in <strong>bold</strong>.</p>
+  </div>
+  <p class="fig-caption">Table 1. AdamW, Muon, and Pion for VLANeXt on LIBERO and LIBERO Plus. Best in <strong>bold</strong>.</p>
 
-<p>Across eight RLVR settings (GRPO and GMPO times Qwen3 1.7B and Qwen3 4B times MATH and GSM8K), Muon consistently collapses to near zero accuracy. Pion not only recovers a meaningful training signal but also outperforms AdamW with faster convergence.</p>
+  <p>Across eight RLVR settings (GRPO and GMPO times Qwen3 1.7B and Qwen3 4B times MATH and GSM8K), Muon consistently collapses to near zero accuracy. Pion not only recovers a meaningful training signal but also outperforms AdamW with faster convergence.</p>
 
-<div class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
+  <div class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
   <figure><img src="/images/blog/pion/rl_val_core_grpo_math3-5_qwen3_1.7b.png" alt="" /><figcaption>(a) GRPO, 1.7B, MATH</figcaption></figure>
   <figure><img src="/images/blog/pion/rl_val_core_grpo_math3-5_qwen3_4b.png" alt="" /><figcaption>(b) GRPO, 4B, MATH</figcaption></figure>
   <figure><img src="/images/blog/pion/rl_val_core_grpo_gsm8k_qwen3_1.7b.png" alt="" /><figcaption>(c) GRPO, 1.7B, GSM8K</figcaption></figure>
@@ -247,19 +249,19 @@
   <figure><img src="/images/blog/pion/rl_val_core_gmpo_gsm8k_qwen3_1.7b.png" alt="" /><figcaption>(g) GMPO, 1.7B, GSM8K</figcaption></figure>
   <figure><img src="/images/blog/pion/rl_val_core_gmpo_gsm8k_qwen3_4b.png" alt="" /><figcaption>(h) GMPO, 4B, GSM8K</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 6. AdamW, Muon, and Pion on RLVR: validation accuracy vs training step across eight settings (two algorithms × two model sizes × two benchmarks).</p>
+  <p class="fig-caption">Figure 6. AdamW, Muon, and Pion on RLVR: validation accuracy vs training step across eight settings (two algorithms × two model sizes × two benchmarks).</p>
 
-<p><strong>Reverse ablation: direction of spectral shaping matters.</strong> To verify that the gains come specifically from the high pass direction, we construct <strong>Low pass Muon (LPMuon)</strong>, which mirrors Pion in NS structure and per step cost but flips the polynomial coefficients to induce a low pass mapping (contracts large singular values, amplifies small ones). LPMuon fails to train: its accuracy stays at the initial checkpoint.</p>
+  <p><strong>Reverse ablation: direction of spectral shaping matters.</strong> To verify that the gains come specifically from the high pass direction, we construct <strong>Low pass Muon (LPMuon)</strong>, which mirrors Pion in NS structure and per step cost but flips the polynomial coefficients to induce a low pass mapping (contracts large singular values, amplifies small ones). LPMuon fails to train: its accuracy stays at the initial checkpoint.</p>
 
-<div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
   <figure><img src="/images/blog/pion/pion0_muon_lowrankmuon.png" alt="Low pass profile" /><figcaption>(a) Low pass scalar map</figcaption></figure>
   <figure><img src="/images/blog/pion/mhlpmuon.png" alt="GSM8K accuracy" /><figcaption>(b) GSM8K accuracy</figcaption></figure>
 </div>
-<p class="fig-caption">Figure 7. (a) Scalar map \(f(\sigma)\) of LPMuon. (b) GSM8K accuracy of AdamW, Pion, and LPMuon (Qwen3 1.7B, GRPO). Combined with Muon's failure (no filtering) in Figure 6, this isolates the direction of spectral shaping as the key factor.</p>
+  <p class="fig-caption">Figure 7. (a) Scalar map \(f(\sigma)\) of LPMuon. (b) GSM8K accuracy of AdamW, Pion, and LPMuon (Qwen3 1.7B, GRPO). Combined with Muon's failure (no filtering) in Figure 6, this isolates the direction of spectral shaping as the key factor.</p>
 
-<h2 id="bibtex">BibTeX</h2>
+  <h2 id="bibtex">BibTeX</h2>
 
-<pre class="bibtex-block"><code>@article{fan2026pion,
+  <pre class="bibtex-block"><code>@article{fan2026pion,
   title   = {Pion: Rethinking Muon Beyond Pretraining:
              Spectral Failures and High-Pass Remedies
              for VLA and RLVR},
@@ -268,4 +270,282 @@
   journal = {Preprint},
   year    = {2026}
 }
-</code></pre>]]></content><author><name>Chongyu Fan</name></author><category term="optimizer" /><category term="vla" /><category term="rlvr" /><summary type="html"><![CDATA[Muon orthogonalizes the momentum matrix and pushes every singular value to one. This works beautifully for LLM pretraining, which is essentially next token classification on text via supervised learning. But what happens when we move along three orthogonal axes: a different modality, a different loss, or a different learning paradigm? Pion is a drop in replacement for Muon's Newton Schulz iteration that fixes the spectral mismatch we observe along all three axes.]]></summary></entry></feed>
+</code></pre>
+
+</div>
+
+<div class="post-lang post-lang-zh" hidden="">
+
+  <div class="tldr">
+
+    <h2 id="section">核心概要</h2>
+
+    <ul>
+      <li><strong>Muon</strong> 是当前 <strong>LLM 预训练</strong>事实上的 matrix-aware 优化器，而 LLM 预训练本质上是文本模态、监督学习下的下一 token 分类任务。Muon 通过若干步 Newton-Schulz (NS) 迭代正交化动量矩阵，把动量的每一个奇异值都推向 1。</li>
+      <li>一旦走出 LLM 预训练的舒适区，沿三条正交方向之一前进（不同<strong>模态</strong>、不同<strong>损失</strong>、或不同<strong>学习范式</strong>），Muon 这种<strong>均匀谱白化</strong>就成了错误的归纳偏置。</li>
+      <li>我们提出 <strong>Pion</strong>（s<strong>P</strong>ectral h<strong>I</strong>gh-pass <strong>O</strong>ptimization on mome<strong>N</strong>tum），它是 Muon NS 迭代的即插即用替换：只改 NS 内部多项式的系数，每步开销与 Muon 完全相同，但实现一种锐利的<strong>谱高通</strong>——把信息量集中的前几个奇异值锚定在 1，把噪声主导的尾部压向 0。</li>
+    </ul>
+
+  </div>
+
+  <h2 id="muon-">背景：Muon 与超越预训练的三条轴</h2>
+
+  <p>设权重矩阵 \(\boldsymbol{\Theta} \in \mathbb{R}^{m \times n}\)，记随机梯度为 \(\mathbf{G}_t\)，动量缓冲为 \(\mathbf{M}_t = \mu \mathbf{M}_{t-1} + \mathbf{G}_t\)，Muon 在谱范数下做最速下降：</p>
+
+\[\boldsymbol{\Theta}_t = \boldsymbol{\Theta}_{t-1} - \eta \, \mathrm{msign}(\mathbf{M}_t).\]
+
+  <p>若 \(\mathbf{M} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top\) 是紧凑 SVD，则</p>
+
+\[\mathrm{msign}(\mathbf{M}) = \mathbf{U}\, \mathrm{sign}(\boldsymbol{\Sigma})\, \mathbf{V}^\top = \mathbf{U} \mathbf{V}^\top.\]
+
+  <p>每个非零奇异值都被映射到 1，这就是<strong>均匀谱白化</strong>。在大规模训练里每步做 SVD 太贵，所以 Muon 用少数几次 NS 迭代逼近 \(\mathrm{msign}\)。先把输入归一化为 \(\mathbf{X} \leftarrow \mathbf{X} / (\|\mathbf{X}\|_F + \epsilon)\)，每一步 NS 应用一个奇次五次矩阵多项式：</p>
+
+\[\mathbf{X} \leftarrow a\, \mathbf{X} + b\, \mathbf{X}\mathbf{X}^\top \mathbf{X} + c\, \mathbf{X}(\mathbf{X}^\top \mathbf{X})^2,\]
+
+  <p>标准系数为 \((a, b, c) = (3.4445,\ -4.7750,\ 2.0315)\)。利用恒等式 \(\mathbf{X}(\mathbf{X}^\top \mathbf{X})^j = \mathbf{U}\, \boldsymbol{\Sigma}^{2j+1}\, \mathbf{V}^\top\)，每一步 NS 保留奇异向量、并通过一个 \([0, 1]\) 上的<strong>标量多项式</strong>重塑奇异值：</p>
+
+\[f(\sigma;\, a, b, c) \,\triangleq\, a\sigma + b\sigma^3 + c\sigma^5.\]
+
+  <p>所以 NS 迭代的设计就归结为 \([0, 1]\) 上 \(f\) 的设计。Muon 的 NS 被构造成：反复迭代之后把每一个 \(\sigma \in (0, 1]\) 都驱向 1。这条标量映射的形状（以及 Pion 最终的替代版本）正是我们在 <a href="#fig-pion-iter">Figure 1</a> 中可视化的核心对象。</p>
+
+  <p>LLM 预训练是一种<strong>分类</strong>任务（预测下一个 token），仅使用<strong>文本</strong>模态，并且在<strong>监督学习</strong>范式下。在干净、密集的 token 级监督和满秩文本梯度下，Muon 的均匀白化是合理的归纳偏置。但 LLM 预训练只占据设计空间的一个角落；三条正交轴可以把我们带离这个角落：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align: left">方向</th>
+        <th style="text-align: left">LLM 预训练</th>
+        <th style="text-align: left">泛化方向</th>
+        <th style="text-align: left">代表性测试床</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: left"><strong>模态</strong></td>
+        <td style="text-align: left">文本</td>
+        <td style="text-align: left">视觉、机器人动作</td>
+        <td style="text-align: left">VLA 训练（视觉-语言-动作）</td>
+      </tr>
+      <tr>
+        <td style="text-align: left"><strong>损失</strong></td>
+        <td style="text-align: left">分类（下一 token）</td>
+        <td style="text-align: left">回归、生成（流匹配）</td>
+        <td style="text-align: left">VLA action head（\(\ell_1\) 回归与流匹配）</td>
+      </tr>
+      <tr>
+        <td style="text-align: left"><strong>范式</strong></td>
+        <td style="text-align: left">监督学习</td>
+        <td style="text-align: left">强化学习</td>
+        <td style="text-align: left">RLVR 后训练（GRPO、GMPO）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>VLA 训练同时变化了模态和损失（轴 1+2），RLVR 则单独变化范式（轴 3，仍用 LLM 和原 tokenizer，但把 token 级监督损失换成针对可验证奖励的 policy gradient）。下文沿每条轴问同一个问题：<strong>Muon 的均匀谱白化是否仍然有效，还是变成了错误的归纳偏置？</strong></p>
+
+  <h2 id="vla">走出模态与损失：VLA</h2>
+
+  <p>VLA 模型由<strong>视觉编码器</strong>、<strong>语言主干</strong>和<strong>action head</strong> 三部分构成。视觉与语言模块仍然吃文本/图像 token，但 <strong>action head</strong> 是一种新模态（输入是机器人关节动作向量），并且使用非分类损失：要么是 \(\ell_1\) 回归（如 VLA Adapter），要么是流匹配生成（如 VLANeXt）。这两个设计选择——动作模态和回归式损失——在结构上是耦合的。</p>
+
+  <p>我们用<strong>有效秩</strong>（effective rank, erank）刻画各模块梯度 \(\mathbf{G} \in \mathbb{R}^{m \times n}\) 的谱结构：</p>
+
+\[\mathrm{erank}(\mathbf{G}) \,\triangleq\, \exp\!\Big( H(\mathbf{p}) \Big), \quad H(\mathbf{p}) = -\sum_{i=1}^n p_i \log p_i, \quad p_i = \frac{\sigma_i(\mathbf{G})}{\sum_j \sigma_j(\mathbf{G})}.\]
+
+  <p>erank 越大表示梯度能量分散在多个奇异方向，越小表示集中在少数几个主方向。</p>
+
+  <div class="fig-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <figure><img src="/images/blog/pion/erank_heatmap_sampled.png" alt="erank" /><figcaption>(a) 各模块梯度的 erank</figcaption></figure>
+  <figure><img src="/images/blog/pion/success_rate.png" alt="success rate" /><figcaption>(b) 测试成功率</figcaption></figure>
+  <figure><img src="/images/blog/pion/total_training_time.png" alt="training time" /><figcaption>(c) 总训练时长（小时）</figcaption></figure>
+</div>
+  <p class="fig-caption">图 2. Muon 在 VLA 训练（VLA Adapter + LIBERO Object）中的局限性。(a) 训练轨迹上各模块梯度的 erank。(b)(c) 4.5k 步时的测试成功率与总训练时长，视觉/语言模块均固定为 AdamW，仅替换 action 模块的优化器。</p>
+
+  <p>(a) 中的顺序在整段训练里都很稳定：视觉最高、语言居中、<strong>动作梯度始终最低</strong>。模态切换（丰富的像素和 token 变成一个微小的连续动作向量）以及损失切换（one-hot 分类变成回归或生成匹配）都把动作梯度推向低有效秩。当 Muon 把这种低 erank 梯度均匀白化时，会把噪声尾部方向抬到与少数几个信息主方向相同的量级，结果更新被谱底噪声主导。(b) 显示 Muon 在 action head 上甚至跑不过 AdamW。一个自然的补救——<strong>Low Rank Muon (LRMuon)</strong>——在 NS 之前用 SVD 或高斯草图把动量投到 top-\(k\) 子空间，确实能补回精度，但 (c) 显示这种显式投影把 wall-clock 拉高了大约一个数量级，并且强制 \(k\) 在所有层和所有训练步上保持一致，无法自适应。</p>
+
+  <div class="callout">
+    <p><strong>局限 1（模态 + 损失）。</strong> 常规 Muon 不适配新模态和非分类损失带来的秩异质性；显式低秩投影虽然有效，但会破坏可扩展性。</p>
+  </div>
+
+  <h2 id="rlvr">走出范式：RLVR</h2>
+
+  <p>RLVR 保留 LLM 与文本模态，改变的是<strong>学习范式</strong>：把 token 级监督损失换成针对规则化、可验证奖励的 policy gradient。我们以 GRPO 与 GMPO 为代表算法。</p>
+
+  <p>为比较两种范式，我们度量某层权重每步梯度的信噪比：</p>
+
+\[\mathrm{SNR}(\mathbf{G}) \,\triangleq\, \frac{\|\mathbb{E}[\mathbf{G}]\|_F^2}{\mathbb{E}\big[\,\|\mathbf{G} - \mathbb{E}[\mathbf{G}]\|_F^2\,\big]}.\]
+
+  <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <figure><img src="/images/blog/pion/grad_snr_sft_vs_rl_math3-5_step80.png" alt="SFT vs GRPO SNR" /><figcaption>(a) 梯度 SNR：SFT vs GRPO</figcaption></figure>
+  <figure><img src="/images/blog/pion/acc_adamw_muon.png" alt="Accuracy AdamW vs Muon" /><figcaption>(b) MATH500：AdamW vs Muon</figcaption></figure>
+</div>
+  <p class="fig-caption">图 3. RLVR 诊断（Qwen3 1.7B，MATH 难度 3-5）。(a) 整段训练中 GRPO 的梯度 SNR 显著低于 SFT。(b) 在 GRPO 下，AdamW 稳步提升，而 Muon 在数步之内就崩到接近零的精度。</p>
+
+  <p>(a) 里的 SNR 差距来自两个结构性原因。其一，<strong>监督粒度变粗</strong>：SFT 接收 token 级教师信号，而 GRPO 用轨迹级奖励，每个 token 拿到的学习信号稀疏得多。其二，<strong>稳定化机制</strong>：重要性采样、裁剪、组内相对归一化都会重新加权或清零部分 per-token 梯度，进一步抬高方差。当 Muon 直接施加在这种低 SNR 梯度上 (b)，均匀白化把噪声方向抬到与信息方向同等量级，策略在数步之内就崩了。RLVR 还有一个特有问题：Muon 的 NS 把每个权重矩阵当成单一 block 处理，丢掉了预训练在 attention 投影上烙下的 per-head 特化结构。</p>
+
+  <div class="callout">
+    <p><strong>局限 2（范式）。</strong> Muon 的均匀谱白化会放大低 SNR RLVR 梯度中的噪声方向，不适合对噪声敏感的后训练；同时它丢弃了预训练遗留下来的 per-head 结构。</p>
+  </div>
+
+  <h2 id="pion">Pion：一个谱高通优化器</h2>
+
+  <p><strong>统一的谱诊断。</strong> 局限 1 与局限 2 来源不同（模态/损失轴上是低有效秩，范式轴上是低 SNR），但有<strong>同一个谱签名</strong>：在 \(\mathbf{M}_t\) 的 SVD 中，少数<strong>主</strong>奇异值承载信息量大的下降方向，长长的小奇异值<strong>尾部</strong>被噪声主导（erank 低时表现为谱底，SNR 低时表现为随机估计噪声）。Muon 的 \(\mathrm{msign}\) 把尾部抬到与主部同样量级，在两种情形下都污染了更新。自然的补救就是<strong>谱高通</strong>：把主部锚定在 1 附近，把噪声尾部压向 0。</p>
+
+  <p><strong>两阶段高通 NS 迭代。</strong> 既然每步 NS 都通过 \(f(\sigma; a, b, c) = a\sigma + b\sigma^3 + c\sigma^5\) 重塑 \(\sigma \in [0, 1]\)，那 NS 迭代的设计就是 \(f\) 的设计。单一这样的多项式无法在单位区间产生锐利的高通，所以 Pion 把默认 \(k = 5\) 步 NS 拆成两阶段，使用不同的系数：</p>
+
+  <ul>
+    <li>一个 <strong>Promotion</strong> 多项式 \(f_{\mathrm{p}}\) 应用 \(k_{\mathrm{p}}\) 步：把主奇异值推向 1，同时保持它们的相对顺序；</li>
+    <li>一个 <strong>Suppression</strong> 多项式 \(f_{\mathrm{s}}\) 应用 \(k_{\mathrm{s}} = k - k_{\mathrm{p}}\) 步：把已经接近 1 的大奇异值钉在 1 附近，同时把较小的奇异值压向 0。</li>
+  </ul>
+
+  <p>截止位置由唯一的超参数 \(k_{\mathrm{p}} \in \{0, 1, \ldots, 5\}\) 控制。</p>
+
+  <p>我们对 \(f_{\mathrm{p}}\) 施加三条约束：<strong>(P1)</strong> 不动点 \(f_{\mathrm{p}}(1) = 1\)；<strong>(P2)</strong> 一阶平稳 \(f_{\mathrm{p}}'(1) = 0\)；<strong>(P3)</strong> 边界凹性 \(f_{\mathrm{p}}''(1) \leq 0\)，与 (P2) 一起保证 \(\sigma = 1\) 是极大点，迭代不会在边界附近翻越 1 向上发散。(P1) + (P2) 留下一个单参数族，再叠加 (P3) 与 \([0, 1]\) 上的单调性，得到可行区间 \(a_{\mathrm{p}} \in [0, 1.875]\)。由于 \(f_{\mathrm{p}}'(0) = a_{\mathrm{p}}\) 控制每一步对小奇异值的提升强度，我们取最大可行斜率，由此唯一确定多项式：</p>
+
+\[f_{\mathrm{p}}(\sigma) = 1.875\, \sigma \,-\, 1.25\, \sigma^3 \,+\, 0.375\, \sigma^5.\]
+
+  <p>一个意外的好处：导数变成完全平方 \(f_{\mathrm{p}}'(\sigma) = 1.875\, (1 - \sigma^2)^2 \geq 0\)，所以 \([0, 1]\) 上的单调性自动成立。</p>
+
+  <p>Suppression 多项式继承 \(f_{\mathrm{s}}(1) = 1\) 与 \(f_{\mathrm{s}}'(1) = 0\)，并新增<strong>谱过滤</strong>条件 \(f_{\mathrm{s}}'(0) = 0\)。在原点附近移除线性项后，小奇异值被高阶项强制驱向零。唯一解为：</p>
+
+\[f_{\mathrm{s}}(\sigma) = 2.5\, \sigma^3 \,-\, 1.5\, \sigma^5.\]
+
+  <p>把 \(k_{\mathrm{p}}\) 步 Promotion 与 \(k_{\mathrm{s}}\) 步 Suppression 串起来，就得到 Pion 的<strong>高通 NS</strong> 迭代。固定 \(k = 5\) 保证每步开销与 Muon 完全一致。下方图 1 panel (d) 展示了由此得到的曲线：在 1 附近有一个被锁定的平台，在 0 附近有一个被过滤的区域，二者之间有一道锐利的过渡，截止位置由 \(k_{\mathrm{p}}\) 控制。经验上，<strong>抑制为主</strong>的分配（\(k_{\mathrm{s}} \geq 3\)）在 VLA 与 RLVR 上都最佳。</p>
+
+  <div class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
+  <figure><img src="/images/blog/pion/iter_NS.png" alt="Muon NS" /><figcaption>(a) Muon NS</figcaption></figure>
+  <figure><img src="/images/blog/pion/iter_P.png" alt="Promotion" /><figcaption>(b) Promotion \(f_{\mathrm{p}}\)</figcaption></figure>
+  <figure><img src="/images/blog/pion/iter_S.png" alt="Suppression" /><figcaption>(c) Suppression \(f_{\mathrm{s}}\)</figcaption></figure>
+  <figure><img src="/images/blog/pion/iter_pion_mix.png" alt="High pass NS" /><figcaption>(d) Pion 高通 NS</figcaption></figure>
+</div>
+  <p class="fig-caption">图 1. \(\sigma \in [0, 1]\) 上 \(f(\sigma)\) 的可视化。Muon (a) 把每一个奇异值都推向 1。Pion 把 Promotion (b) 与 Suppression (c) 组合起来，得到 (d) 中的高通形态。</p>
+
+  <p><strong>面向 RLVR 的 per-head 模式。</strong> Pion 有两种应用模式。默认模式把每个权重矩阵当作单一 block 跑迭代（与 Muon 一致）。Per-head 模式先沿头维度把每个 attention 投影 reshape 成多个 per-head 子矩阵，再独立地在每一个上跑迭代。由于 reshape 之后 \(\mathbf{X}^\top \mathbf{X}\) 已经天然按 head 维度做了批处理，per-head 模式相对默认模式<strong>零额外开销</strong>。我们对 VLA 用默认模式（action head 从零开始训练，没有 head 结构需要保留），对 RLVR 用 per-head 模式（RLVR 起点是预训练 LLM，attention 层的 per-head Frobenius 范数本就异质，控制着 attention 锐度和梯度量级）。</p>
+
+  <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <figure><img src="/images/blog/pion/acc_mh.png" alt="Per head ablation accuracy" /><figcaption>(a) MATH500 精度</figcaption></figure>
+  <figure><img src="/images/blog/pion/qwen3_1p7b_Q_headnorm_variance_compact_step80.png" alt="Q headnorm variance" /><figcaption>(b) 跨头 Q 投影方差</figcaption></figure>
+</div>
+  <p class="fig-caption">图 4. Per-head 高通 NS 在 RLVR 上的效果（Qwen3 1.7B，GRPO + MATH 难度 3-5）。(a) AdamW、Muon（default vs per-head）、Pion（default vs per-head）的精度。Per-head Pion 是唯一超过 AdamW 的配置；per-head 模式救不了 Muon，因为缺乏对噪声的自适应才是主问题。(b) 跨头 Q 投影方差：RLVR 之前的权重（上）与 RLVR 更新后 default vs per-head Pion 的对比（下）。</p>
+
+  <p>这两条结论互补：<strong>谱高通</strong>是 RLVR 稳定性的主驱动（per-head Muon 仍然崩），<strong>per-head reshape</strong> 是辅助机制，保留预训练带来的 head 异质性，把 per-head Pion 推过 AdamW。</p>
+
+  <div class="callout">
+    <p><strong>核心结论。</strong> Pion 是 Muon NS 迭代的即插即用替换。同样的控制流，同样的每步开销，只换多项式系数。</p>
+  </div>
+
+  <h2 id="section-1">实验</h2>
+
+  <p>Pion 在两个跨越所有三条轴的 testbed 上评估：</p>
+
+  <ul>
+    <li><strong>VLA 训练</strong>（轴 1+2），两种架构：基于 \(\ell_1\) 回归的 VLA Adapter 和基于流匹配的 VLANeXt，benchmark 为 LIBERO 和 LIBERO Plus。</li>
+    <li><strong>RLVR 后训练</strong>（轴 3），算法为 GRPO 和 GMPO，模型为 Qwen3 1.7B 和 Qwen3 4B，benchmark 为 MATH 和 GSM8K。</li>
+  </ul>
+
+  <p>每个设置中比较三种优化器配置：AdamW、Muon、Pion。</p>
+
+  <div class="fig-grid wrap" style="grid-template-columns: 2fr 1fr; max-width: 72%;">
+  <div class="fig-legend"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
+  <figure><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="max-height: 260px;" /><figcaption>(a) LIBERO 上的最终成功率</figcaption></figure>
+  <figure><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="max-height: 260px;" /><figcaption>(b) Object 上的成功率</figcaption></figure>
+</div>
+  <p class="fig-caption">图 5. AdamW、Muon、Pion 用于 VLA Adapter on LIBERO。Pion 在四个 LIBERO suite 上全部超过 Muon，在 Object 上 500 步达到 95.4% 成功率，1500 步饱和到 100%。</p>
+
+  <p>对 VLANeXt（流匹配），Pion 不仅在干净的 LIBERO 上获胜，在更难的 LIBERO Plus 划分上优势进一步放大，尤其是语言扰动（\(+9\) 分）、噪声扰动（\(+6\) 分）、机器人扰动（\(+6\) 分）。这与”均匀白化过度放大不可泛化噪声方向”的图景一致。</p>
+
+  <div class="results-table">
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left">优化器</th>
+          <th style="text-align: center">LIBERO</th>
+          <th style="text-align: center">LIBERO Plus</th>
+          <th style="text-align: center">Background</th>
+          <th style="text-align: center">Camera</th>
+          <th style="text-align: center">Language</th>
+          <th style="text-align: center">Layout</th>
+          <th style="text-align: center">Light</th>
+          <th style="text-align: center">Noise</th>
+          <th style="text-align: center">Robot</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">AdamW</td>
+          <td style="text-align: center">79.45</td>
+          <td style="text-align: center">64.57</td>
+          <td style="text-align: center">68.97</td>
+          <td style="text-align: center">70.38</td>
+          <td style="text-align: center">54.50</td>
+          <td style="text-align: center">61.80</td>
+          <td style="text-align: center">76.35</td>
+          <td style="text-align: center">66.37</td>
+          <td style="text-align: center">47.04</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Muon</td>
+          <td style="text-align: center">93.65</td>
+          <td style="text-align: center">72.34</td>
+          <td style="text-align: center">82.72</td>
+          <td style="text-align: center">68.00</td>
+          <td style="text-align: center">77.53</td>
+          <td style="text-align: center">76.21</td>
+          <td style="text-align: center">86.17</td>
+          <td style="text-align: center">69.98</td>
+          <td style="text-align: center">57.36</td>
+        </tr>
+        <tr>
+          <td style="text-align: left"><strong>Pion (Ours)</strong></td>
+          <td style="text-align: center"><strong>96.35</strong></td>
+          <td style="text-align: center"><strong>75.93</strong></td>
+          <td style="text-align: center"><strong>84.53</strong></td>
+          <td style="text-align: center"><strong>70.88</strong></td>
+          <td style="text-align: center"><strong>86.93</strong></td>
+          <td style="text-align: center"><strong>76.71</strong></td>
+          <td style="text-align: center"><strong>90.67</strong></td>
+          <td style="text-align: center"><strong>76.09</strong></td>
+          <td style="text-align: center"><strong>63.18</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <p class="fig-caption">表 1. AdamW、Muon、Pion 用于 VLANeXt on LIBERO 和 LIBERO Plus。每列最优用<strong>粗体</strong>。</p>
+
+  <p>在 8 个 RLVR 设置（GRPO/GMPO × Qwen3 1.7B/4B × MATH/GSM8K）下，Muon 一致性地崩到接近零的精度。Pion 不仅恢复出有意义的训练信号，还在更快的收敛速度下超过 AdamW。</p>
+
+  <div class="fig-grid" style="grid-template-columns: repeat(4, 1fr);">
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_math3-5_qwen3_1.7b.png" alt="" /><figcaption>(a) GRPO, 1.7B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_math3-5_qwen3_4b.png" alt="" /><figcaption>(b) GRPO, 4B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_gsm8k_qwen3_1.7b.png" alt="" /><figcaption>(c) GRPO, 1.7B, GSM8K</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_grpo_gsm8k_qwen3_4b.png" alt="" /><figcaption>(d) GRPO, 4B, GSM8K</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_math3-5_qwen3_1.7b.png" alt="" /><figcaption>(e) GMPO, 1.7B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_math3-5_qwen3_4b.png" alt="" /><figcaption>(f) GMPO, 4B, MATH</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_gsm8k_qwen3_1.7b.png" alt="" /><figcaption>(g) GMPO, 1.7B, GSM8K</figcaption></figure>
+  <figure><img src="/images/blog/pion/rl_val_core_gmpo_gsm8k_qwen3_4b.png" alt="" /><figcaption>(h) GMPO, 4B, GSM8K</figcaption></figure>
+</div>
+  <p class="fig-caption">图 6. RLVR 上 AdamW、Muon、Pion 的验证精度 vs 训练步：8 个设置（两种算法 × 两种模型规模 × 两个 benchmark）。</p>
+
+  <p><strong>反向消融：谱整形方向至关重要。</strong> 为了确认增益确实来自高通方向，我们构造 <strong>Low-pass Muon (LPMuon)</strong>：与 Pion 共享 NS 结构和每步开销，但翻转多项式系数，使整形方向变成低通（压缩大奇异值，放大小奇异值）。LPMuon 完全无法训练，精度始终停留在初始 checkpoint。</p>
+
+  <div class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
+  <figure><img src="/images/blog/pion/pion0_muon_lowrankmuon.png" alt="Low pass profile" /><figcaption>(a) 低通标量映射</figcaption></figure>
+  <figure><img src="/images/blog/pion/mhlpmuon.png" alt="GSM8K accuracy" /><figcaption>(b) GSM8K 精度</figcaption></figure>
+</div>
+  <p class="fig-caption">图 7. (a) LPMuon 的标量映射 \(f(\sigma)\)。(b) AdamW、Pion、LPMuon 的 GSM8K 精度（Qwen3 1.7B，GRPO）。结合图 6 中 Muon 的失败（无过滤），这条对照实验把"谱整形方向"单独剥离出来作为关键因素。</p>
+
+  <h2 id="bibtex-zh">BibTeX</h2>
+
+  <pre class="bibtex-block"><code>@article{fan2026pion,
+  title   = {Pion: Rethinking Muon Beyond Pretraining:
+             Spectral Failures and High-Pass Remedies
+             for VLA and RLVR},
+  author  = {Fan, Chongyu and Liu, Gaowen and Hong, Mingyi
+             and Kompella, Ramana Rao and Liu, Sijia},
+  journal = {Preprint},
+  year    = {2026}
+}
+</code></pre>
+
+</div>]]></content><author><name>Chongyu Fan</name></author><category term="optimizer" /><category term="vla" /><category term="rlvr" /><summary type="html"><![CDATA[Muon orthogonalizes the momentum matrix and pushes every singular value to one. This works beautifully for LLM pretraining, which is essentially next token classification on text via supervised learning. But what happens when we move along three orthogonal axes: a different modality, a different loss, or a different learning paradigm? Pion is a drop in replacement for Muon's Newton Schulz iteration that fixes the spectral mismatch we observe along all three axes.]]></summary></entry></feed>

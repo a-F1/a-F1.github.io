@@ -116,18 +116,18 @@ redirect_from:
 
 <h3 class="section-heading"><span>🔥 News</span></h3>
 <div class="news-container">
- 
-    <div class="news-item">
-        <div class="news-date">2024.09</div>
-        <div class="news-content">
-            🎉 One paper on <a href="https://icml.cc/virtual/2026/poster/67039">zero-order optimization</a> accepted to ICML 2026 as Spotlight!
-        </div>
-    </div>
 
     <div class="news-item">
         <div class="news-date">2026.05</div>
         <div class="news-content">
             🏅 Recognized as a <strong>Gold Reviewer</strong> for ICML 2026!
+        </div>
+    </div>
+ 
+    <div class="news-item">
+        <div class="news-date">2026.05</div>
+        <div class="news-content">
+            🎉 One paper on <a href="https://icml.cc/virtual/2026/poster/67039">zero-order optimization</a> accepted to ICML 2026 as Spotlight!
         </div>
     </div>
     
@@ -347,7 +347,7 @@ redirect_from:
   <div class="service-category">
     <h3>Conferences</h3>
     <ul>
-      <li>The International Conference on Machine Learning (ICML): ICML25, 26 (Gold Reviewer)</li>
+      <li>The International Conference on Machine Learning (ICML): ICML25, 26 (<strong>Gold Reviewer</strong>)</li>
       <li>The International Conference on Learning Representations (ICLR): ICLR25, R26</li>
       <li>The Annual Conference on Neural Information Processing Systems (NeurIPS): NeurIPS25, 26</li>
       <li>IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR): CVPR26</li>

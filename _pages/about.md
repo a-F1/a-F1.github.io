@@ -120,7 +120,7 @@ redirect_from:
     <div class="news-item">
         <div class="news-date">2026.05</div>
         <div class="news-content">
-            ✨ One first-author paper <a href="https://arxiv.org/abs/2605.19282">Pion, a sPectral hIgh pass Optimization on momeNtum for VLA and RLVR</a> on arXiv! See its <a href="/posts/pion/">blog</a>.
+            ✨ One first-author paper <a href="https://arxiv.org/abs/2605.19282">Pion</a>, a sPectral hIgh-pass Optimizer for VLA and RLVR, on arXiv! See its <a href="/posts/pion/">blog</a>.
         </div>
     </div>
 

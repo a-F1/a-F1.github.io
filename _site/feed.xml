@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-05-20T10:51:48-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="http://localhost:4000/posts/pion/" rel="alternate" type="text/html" title="Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>http://localhost:4000/posts/pion</id><content type="html" xml:base="http://localhost:4000/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-05-20T10:58:38-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="http://localhost:4000/posts/pion/" rel="alternate" type="text/html" title="Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>http://localhost:4000/posts/pion</id><content type="html" xml:base="http://localhost:4000/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
 
   <div class="tldr">
 
@@ -811,13 +811,13 @@
 
 \[\mathrm{SNR}(\mathbf{G}) \,\triangleq\, \frac{\|\mathbb{E}[\mathbf{G}]\|_F^2}{\mathbb{E}\big[\,\|\mathbf{G} - \mathbb{E}[\mathbf{G}]\|_F^2\,\big]}.\]
 
+  <p><a href="#fig-3-zh">图 3</a>(a) 中的 SNR 鸿沟有两个结构性来源。一是<strong>监督粒度变粗</strong>：SFT 使用 token 级教师信号，而 GRPO 使用轨迹级奖励，每个 token 实际获得的学习信号要稀疏得多。二是<strong>稳定化机制</strong>：importance sampling、clipping、advantage normalization 均会重新加权或抹除部分 per-token 梯度，进一步放大方差。如 <a href="#fig-3-zh">图 3</a>(b) 所示，Muon 直接对这种低 SNR 梯度做白化，相当于将噪声方向抬升至与信息方向同等量级，最终策略在数步之内便崩溃。</p>
+
   <div id="fig-3-zh" class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
   <figure><img src="/images/blog/pion/grad_snr_sft_vs_rl_math3-5_step80.png" alt="SFT vs GRPO SNR" /><figcaption>(a) 梯度 SNR：SFT vs GRPO</figcaption></figure>
   <figure><img src="/images/blog/pion/acc_adamw_muon.png" alt="Accuracy AdamW vs Muon" /><figcaption>(b) MATH500：AdamW vs Muon</figcaption></figure>
 </div>
   <p class="fig-caption">图 3. RLVR SNR（Qwen3 1.7B，MATH）。(a) 整段训练中 GRPO 的梯度 SNR 始终明显低于 SFT。(b) 在 GRPO 下，AdamW 稳步提升，而 Muon 在数步之内便崩溃至接近零的准确率。</p>
-
-  <p><a href="#fig-3-zh">图 3</a>(a) 中的 SNR 鸿沟有两个结构性来源。一是<strong>监督粒度变粗</strong>：SFT 使用 token 级教师信号，而 GRPO 使用轨迹级奖励，每个 token 实际获得的学习信号要稀疏得多。二是<strong>稳定化机制</strong>：importance sampling、clipping、advantage normalization 均会重新加权或抹除部分 per-token 梯度，进一步放大方差。如 <a href="#fig-3-zh">图 3</a>(b) 所示，Muon 直接对这种低 SNR 梯度做白化，相当于将噪声方向抬升至与信息方向同等量级，最终策略在数步之内便崩溃。</p>
 
   <div class="callout">
     <p><strong>局限 2（learning paradigm）。</strong> Muon 的均匀白化会放大低 SNR 的 RLVR 梯度中的噪声方向，因而不适合对噪声敏感的后训练。</p>

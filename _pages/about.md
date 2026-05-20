@@ -120,7 +120,14 @@ redirect_from:
     <div class="news-item">
         <div class="news-date">2026.05</div>
         <div class="news-content">
-            🏅 Recognized as a <strong>Gold Reviewer</strong> for ICML 2026!
+            ✨ One first-author paper <a href="https://arxiv.org/abs/2605.19282">Pion, an optimizer for VLA and RLVR</a> on arXiv! See its <a href="/posts/pion/">blog</a>.
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-date">2026.05</div>
+        <div class="news-content">
+            🏅 Recognized as a Gold Reviewer for ICML 2026!
         </div>
     </div>
  

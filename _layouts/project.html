@@ -1612,6 +1612,11 @@ mjx-container[display="true"] { margin: 1em 0; }
     try { localStorage.setItem('project-post-lang', lang); } catch (e) {}
     document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
 
+    var bibTarget = (lang === 'zh') ? '#bibtex-zh' : '#bibtex';
+    document.querySelectorAll('a[href="#bibtex"], a[href="#bibtex-zh"]').forEach(function(a) {
+      a.setAttribute('href', bibTarget);
+    });
+
     buildTOC();
     retypesetMath(visible);
     if (window.PionDemo && window.PionDemo.refreshAll) window.PionDemo.refreshAll();

@@ -148,7 +148,7 @@ redirect_from:
     <div class="news-item">
         <div class="news-date">2025.10</div>
         <div class="news-content">
-            ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626">LLM Unlearning Bench</a> made public on arXiv!
+            ✨ One first-author paper <a href="https://arxiv.org/abs/2510.07626">LLM Unlearning Bench</a> on arXiv!
         </div>
     </div>
 

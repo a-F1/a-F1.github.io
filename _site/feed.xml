@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://chongyu-fan.netlify.app/feed.xml" rel="self" type="application/atom+xml" /><link href="https://chongyu-fan.netlify.app/" rel="alternate" type="text/html" /><updated>2026-05-20T10:20:28-07:00</updated><id>https://chongyu-fan.netlify.app/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="https://chongyu-fan.netlify.app/posts/pion/" rel="alternate" type="text/html" title="Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>https://chongyu-fan.netlify.app/posts/pion</id><content type="html" xml:base="https://chongyu-fan.netlify.app/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-05-20T10:48:14-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="http://localhost:4000/posts/pion/" rel="alternate" type="text/html" title="Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>http://localhost:4000/posts/pion</id><content type="html" xml:base="http://localhost:4000/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
 
   <div class="tldr">
 
@@ -112,7 +112,7 @@
       <span class="axis-num">1</span>
       <div>
         <div class="axis-name">Modality</div>
-        <div class="axis-hint">language &nbsp;→&nbsp; vision + action</div>
+        <div class="axis-hint">language &nbsp;→&nbsp; vision / action</div>
       </div>
     </div>
     <div class="axis-from">
@@ -144,7 +144,7 @@
           <path d="M33 10 L39 14 L41 12" stroke="#4485C7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
-      <div class="ax-cell-label">image patches + robot actions</div>
+      <div class="ax-cell-label">image patches / robot actions</div>
     </div>
   </div>
 
@@ -431,10 +431,10 @@
 
   <p><strong>VLA Adapter on LIBERO.</strong> We first compare AdamW, Muon, and Pion on VLA Adapter across the four LIBERO task suites (Object, Spatial, Goal, Long) under a fixed per-suite training budget (1,500 steps for Object, 15,000 steps for the others), together with a finer learning curve on Object.</p>
 
-  <div id="fig-5" class="fig-grid" style="grid-template-columns: 2fr 1fr; max-width: 90%;">
-  <div class="fig-legend"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
-  <figure><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="max-height: 280px;" /><figcaption>(a) Test success rates on LIBERO</figcaption></figure>
-  <figure><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="max-height: 280px;" /><figcaption>(b) Test success rate vs. training steps on Object</figcaption></figure>
+  <div id="fig-5" class="fig-grid" style="grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); max-width: 90%; margin: 0.6em auto 0.05em; padding: 2px 10px 2px; row-gap: 0;">
+  <div class="fig-legend" style="margin-top: 0; margin-bottom: -10px;"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
+  <figure style="min-width: 0; height: auto; justify-content: flex-start; margin: 0;"><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" /><figcaption style="white-space: normal; margin: 0;">(a) Success rates on LIBERO</figcaption></figure>
+  <figure style="min-width: 0; height: auto; justify-content: flex-start; margin: 0;"><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" /><figcaption style="white-space: normal; margin: 0;">(b) Success rate vs. steps on Object</figcaption></figure>
 </div>
   <p class="fig-caption">Figure 5. AdamW, Muon, and Pion for VLA Adapter on LIBERO. (a) Test success rates on LIBERO Object, Spatial, Goal, and Long at a fixed training budget per suite (1,500 steps for Object, 15,000 steps for the others). (b) Test success rate vs. training steps on LIBERO Object.</p>
 
@@ -693,7 +693,7 @@
           <path d="M33 10 L39 14 L41 12" stroke="#4485C7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
-      <div class="ax-cell-label">图像 patch + 机器人动作</div>
+      <div class="ax-cell-label">图像 patch / 机器人动作</div>
     </div>
   </div>
 
@@ -978,10 +978,10 @@
 
   <p><strong>VLA Adapter on LIBERO。</strong> 我们首先在 VLA Adapter 上对 AdamW、Muon、Pion 进行比较：在 LIBERO 的四个子集（Object、Spatial、Goal、Long）上，每个子集采用固定训练预算（Object 1,500 步，其余 15,000 步），并在 Object 上额外给出更精细的训练曲线。</p>
 
-  <div id="fig-5-zh" class="fig-grid" style="grid-template-columns: 2fr 1fr; max-width: 90%;">
-  <div class="fig-legend"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
-  <figure><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="max-height: 280px;" /><figcaption>(a) LIBERO 上的成功率</figcaption></figure>
-  <figure><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="max-height: 280px;" /><figcaption>(b) Object 上的成功率 vs 训练步数</figcaption></figure>
+  <div id="fig-5-zh" class="fig-grid" style="grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); max-width: 90%; margin: 0.6em auto 0.05em; padding: 2px 10px 2px; row-gap: 0;">
+  <div class="fig-legend" style="margin-top: 0; margin-bottom: -10px;"><img src="/images/blog/pion/vlaadapter_legend.png" alt="Legend: AdamW, Muon, Pion" /></div>
+  <figure style="min-width: 0; height: auto; justify-content: flex-start; margin: 0;"><img src="/images/blog/pion/vlaadapter_libero.png" alt="LIBERO four tasks" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" /><figcaption style="white-space: normal; margin: 0;">(a) LIBERO 上的成功率</figcaption></figure>
+  <figure style="min-width: 0; height: auto; justify-content: flex-start; margin: 0;"><img src="/images/blog/pion/vlaadapter_training.png" alt="Object training curve" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" /><figcaption style="white-space: normal; margin: 0;">(b) Object 上的成功率 vs 训练步数</figcaption></figure>
 </div>
   <p class="fig-caption">图 5. AdamW、Muon、Pion 用于 VLA Adapter on LIBERO。(a) LIBERO Object、Spatial、Goal、Long 四个子集上的成功率，每个子集采用固定的训练预算（Object 1,500 步，其余 15,000 步）。(b) LIBERO Object 上的成功率 vs 训练步数。</p>
 

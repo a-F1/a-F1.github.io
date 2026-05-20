@@ -1930,13 +1930,13 @@ mjx-container[display="true"] { margin: 1em 0; }
 
 \[\mathrm{SNR}(\mathbf{G}) \,\triangleq\, \frac{\|\mathbb{E}[\mathbf{G}]\|_F^2}{\mathbb{E}\big[\,\|\mathbf{G} - \mathbb{E}[\mathbf{G}]\|_F^2\,\big]}.\]
 
+  <p>Two structural reasons explain the SNR gap in <a href="#fig-3">Figure 3</a>(a). First, <strong>coarser supervision granularity</strong>: SFT uses token-level teacher signals, while GRPO uses trajectory-level rewards, so each token receives a much sparser learning signal. Second, <strong>stabilization mechanisms</strong>: importance sampling, clipping, and group-relative normalization reweight or zero out parts of the per-token gradients, further inflating variance. When Muon is applied on top of these low-SNR gradients, the uniform whitening lifts the noisy directions to the same magnitude as the informative ones, and the policy collapses within a few steps, as shown in <a href="#fig-3">Figure 3</a>(b).</p>
+
   <div id="fig-3" class="fig-grid wrap" style="grid-template-columns: repeat(2, 1fr);">
   <figure><img src="/images/blog/pion/grad_snr_sft_vs_rl_math3-5_step80.png" alt="SFT vs GRPO SNR" /><figcaption>(a) Gradient SNR: SFT vs GRPO</figcaption></figure>
   <figure><img src="/images/blog/pion/acc_adamw_muon.png" alt="Accuracy AdamW vs Muon" /><figcaption>(b) MATH500: AdamW vs Muon</figcaption></figure>
 </div>
   <p class="fig-caption">Figure 3. RLVR diagnosis on Qwen3 1.7B (MATH levels 3 to 5). (a) GRPO has substantially lower gradient SNR than SFT throughout training. (b) Under GRPO, AdamW improves steadily while Muon collapses to near zero accuracy within a few steps.</p>
-
-  <p>Two structural reasons explain the SNR gap in <a href="#fig-3">Figure 3</a>(a). First, <strong>coarser supervision granularity</strong>: SFT uses token-level teacher signals, while GRPO uses trajectory-level rewards, so each token receives a much sparser learning signal. Second, <strong>stabilization mechanisms</strong>: importance sampling, clipping, and group-relative normalization reweight or zero out parts of the per-token gradients, further inflating variance. When Muon is applied on top of these low-SNR gradients, the uniform whitening lifts the noisy directions to the same magnitude as the informative ones, and the policy collapses within a few steps, as shown in <a href="#fig-3">Figure 3</a>(b).</p>
 
   <div class="callout">
     <p><strong>Limitation 2 (learning paradigm).</strong> Muon’s uniform spectral whitening amplifies noisy directions in low-SNR RLVR gradients, making it unsuitable for noise-sensitive post-training.</p>

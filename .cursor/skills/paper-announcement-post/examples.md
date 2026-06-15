@@ -78,72 +78,58 @@ We propose Pion (sPectral hIgh-pass Optimization on momeNtum), which changes onl
 I am sincerely grateful to my advisor @Sijia Liu, and to our collaborators @Mingyi Hong (UMN), @Gaowen Liu and @Ramana Rao Kompella (Cisco) for their valuable discussions and support.
 ```
 
-### 中文 (小红书 / 微信 / 知乎)
+### 中文 (小红书)
+
+Style notes (different from LinkedIn): hook line uses declarative-with-
+surprise style (ending in `！`); rhetorical-question style ending in `？`
+is also acceptable. The affiliation paragraph is OPTIONAL and is omitted
+in this compressed (~1000-character) version. Section headers are short
+labels (`🔍 背景`, `💡 主要贡献：`, `📊 实验结果：`); the 🔍 header is a
+single noun, NOT a question. Numbered items under `💡` use plain
+`1. ` `2. ` `3. ` `4. ` (NOT 1️⃣ keycap emojis; NOT `▸`). Item titles
+follow `<主题>（<axis>）` for problem-identification items (1, 2) and
+`<verb> <name>：<one-line>` / `<变体名>：<功能>` for proposal / variant
+items (3, 4). Each numbered item's title and body sit on consecutive lines
+with no blank line between them. The 📊 results section also uses plain
+`1.` `2.` numbering; closely related results (simulation + real-robot)
+live in ONE numbered block under a single headline. Concrete benchmark
+numbers (e.g. the LIBERO Object 100% / 97.0% / 32.2% breakdown) MAY be
+dropped when compressing aggressively, as long as the qualitative claim
+(`优于 AdamW 和 Muon`, `全部崩溃`) is preserved. No raw URLs (use arXiv
+ID + GitHub path + 项目主页 path). No body-emphasis emojis. No 🤝
+acknowledgements block. No hashtags. At most one mild emphasis word
+(`竟然` / `失效` / `零成本` / `不再适用`) in the hook only.
 
 ```
-🚨 很高兴分享我们的最新论文：
+🚨 Muon 在 LLM 预训练之外竟然会失效！我们提出"谱高通"优化器 Pion 作为解决方案。
 
-《Rethinking Muon Beyond Pretraining: Spectral Failures and High-Pass Remedies for VLA and RLVR》
+🔍 背景
+Muon 通过 Newton–Schulz (NS) 迭代把动量矩阵奇异值推向 1（即"均匀谱白化"），在 LLM 预训练击败 AdamW。但预训练只是一个特殊 setting（文本 + 分类 + 监督），更换模态、损失或范式时，均匀白化便成为错误的归纳偏置。
 
-▸ 论文：https://arxiv.org/abs/2605.19282
+💡 主要贡献：
+1. VLA 的失效根因（modality + loss）
+VLA 中 action 梯度天然低秩（7 自由度 + regression loss），均匀白化把噪声尾部抬到与主方向同尺度，污染更新。
+2. RLVR 的崩溃现象（learning paradigm）
+GRPO 等 RL 的策略梯度信噪比远低于 SFT，均匀白化放大噪声方向，使策略数步内便崩溃。
+3. 提出 Pion：零成本谱高通替换
+Pion 仅修改 NS 多项式系数即实现谱高通：归一化后较大的奇异值锚定到 1，较小的压向 0。每步开销与 Muon 一致。
+4. Per-head 模式：保留 head 间异质性
+RLVR 起点是已预训练 / SFT 的 LLM，attention 各 head 权重范数本就有差异，应接收不同尺度更新；但 Muon 以整层做 NS 会拉平各 head 的更新。Pion 因此提供 per-head 模式：沿 head 维度独立做高通 NS 保留异质性，在 RLVR 上恢复稳定训练。
 
-▸ 博客：https://chongyu-fan.netlify.app/posts/pion/
+📊 实验结果：
+1. VLA：Pion 在 ℓ1-regression 与 flow-matching 上优于 AdamW 和 Muon。真机实验 Franka 3 抓取放置任务同样领先。
+2. RLVR：Qwen3-1.7B / 4B × GRPO / GMPO × MATH / GSM8K 共 8 个 setting，Muon 全部崩溃，Pion 全部优于 AdamW。
 
-▸ 代码：https://github.com/OPTML-Group/Pion
-
-
-
-⚠️ 研究问题
-
-▸ Muon 是近年来在 LLM 预训练中受到广泛关注的矩阵感知优化器。它通过 Newton–Schulz (NS) 迭代将动量矩阵的奇异值统一推向 1，即一种均匀谱白化。
-
-▸ 但 LLM 预训练只是一个特定 setting（文本模态、分类损失、监督学习）。当我们更换模态、损失甚至学习范式时，均匀谱白化是否仍然适用？
-
-
-
-🔍 核心发现
-
-Muon 在两个代表性场景下都会出现谱失效。
-
-▸ VLA 训练（modality 扩展到 language / vision / action，loss 由 classification 变为 regression）：action 梯度的秩明显低于 vision 与 language，均匀白化会把噪声尾部抬到与有效主方向相同的尺度，污染更新方向。
-
-▸ RLVR（learning paradigm 由 supervised learning 变为 reinforcement learning）：RL 梯度的信噪比明显低于 SFT，均匀白化会放大噪声，导致策略在很短训练步内崩溃。
-
-
-
-💡 方法概述
-
-我们提出 Pion（sPectral hIgh-pass Optimization on momeNtum），仅修改 Muon 中 NS 的多项式系数，得到 high-pass NS。
-
-▸ Pion 实现一种谱高通效果：将信息量较高的头部奇异值锚定在 1 附近，将噪声主导的尾部奇异值压向 0。
-
-▸ Pion 提供两种执行 high-pass NS 的模式：default 模式以整个 layer 为单位执行，per-head 模式按 attention head 分别执行。per-head 模式对 RLVR 至关重要，能保留预训练或 SFT 模型中已有的 head 间异质性。
-
-
-
-✅ 实验结果
-
-▸ 在 VLA 仿真中，Pion 在 ℓ1-regression 与 flow-matching 两类结构下均优于 AdamW 和 Muon。LIBERO Object 上 Pion 训练 1,500 步即达 100% 成功率，AdamW 仅为 32.2%。在真实 Franka Research 3 抓取放置任务中 Pion 同样领先。
-
-▸ 在 RLVR（Qwen3-1.7B / 4B × GRPO / GMPO × MATH / GSM8K）中，Muon 在全部设置下均崩溃到接近零准确率，Pion 能恢复稳定训练并优于 AdamW。
-
-
-
-📌 一句话总结
-
-▸ Muon 的均匀谱白化在 LLM 预训练中非常有效，但在低秩或低信噪比场景中可能成为错误的归纳偏置。
-
-▸ Pion 将均匀白化替换为可控的谱高通优化，在零额外每步开销下使 Muon 类优化器更适用于 VLA 训练和 RLVR 后训练。
-
-
-
-🤝 致谢
-
-衷心感谢导师 Sijia Liu，以及合作者 Mingyi Hong (UMN)、Gaowen Liu 和 Ramana Rao Kompella (Cisco) 的宝贵讨论与支持。
-
-
-#Muon #Pion #优化器 #大模型 #VLA #RLVR #强化学习 #具身智能 #机器人学习 #论文分享 #AI研究
+📄 论文 arXiv ID: 2605.19282
+💻 源码 GitHub 搜: OPTML-Group/Pion
+📝 项目主页搜: chongyu-fan.netlify.app/posts/pion
 ```
+
+This compressed version is ~990 Chinese characters total. The two largest
+compression moves vs. the longer reference draft were: (1) dropping the
+affiliation paragraph entirely, and (2) dropping the LIBERO Object detail
+numbers (`100% / 97.0% / 32.2%`) and renaming `Franka Research 3` →
+`Franka 3`.
 
 ### X / Twitter — single tweet (compressed)
 
@@ -213,14 +199,69 @@ Code: https://github.com/OPTML-Group/Pion
 
 What makes this example match the bar:
 
-- Section count is identical between EN and ZH versions (8 sections each).
-- Bullet count per section matches between EN and ZH.
-- All bullets use `▸`; section headers are the canonical 7 emojis in fixed order.
-- Concrete benchmark numbers in `✅ Results` (`100% ... vs. 32.2%`).
+- Concrete benchmark numbers in the results section (`100% ... vs. 32.2%`,
+  `8 settings`, `Muon collapses`).
 - Acknowledgements is one paragraph, not a bulleted list.
+- LinkedIn version uses `@Name` placeholders for the user to convert into
+  LinkedIn tags inside the composer; 小红书 version uses plain names
+  because 小红书 does not have a tag-by-typing-`@` workflow.
+
+LinkedIn / X conventions captured here:
+
+- Section headers use the canonical fixed emoji set (🚨 ⚠️ 🔍 💡 ✅ 📌 🤝).
+- All bullets use `▸`; bullet count per section matches between EN and the
+  X thread.
 - Paper title is verbatim, in English, in quotes — never translated, never
   paraphrased.
-- LinkedIn version uses `@Name` placeholders; ZH version uses plain names
-  because 小红书 / 微信 do not have a tag-by-typing-`@` workflow.
 - The single-tweet X version compresses the entire post to one hook
   sentence + one URL; the thread version expands each section into one tweet.
+
+小红书 conventions captured here (different from LinkedIn / X):
+
+- Hook line uses declarative-with-surprise style with `竟然` + `失效`,
+  ending in `！`. The rhetorical-question style ending in `？` is equally
+  acceptable; pick whichever matches the paper's framing. All other
+  sentences in the post end in `。`, never `！`.
+- The affiliation paragraph is OPTIONAL. This compressed version omits
+  it entirely. When included, it attaches directly to the hook line with
+  no blank line in between (they form one block).
+- Section headers are short labels: `🔍 背景` (single noun, NOT a
+  question), `💡 主要贡献：`, `📊 实验结果：`. The earlier
+  `🔍 核心问题：<question>？` form is also acceptable when the question
+  framing genuinely helps; otherwise prefer the short label.
+- Numbered contributions use plain `1. ` `2. ` `3. ` `4. ` — NOT 1️⃣
+  keycap emojis, NOT `▸`. Each item's title and body sit on consecutive
+  lines (no blank line within the item); blank lines only appear between
+  items.
+- Item title forms: problem-identification items (1, 2) use noun-led
+  `<主题>（<axis>）` (e.g. `VLA 的失效根因（modality + loss）`); the
+  proposal item (3) uses verb-led `提出 <方法>：<one-line>`; variant
+  items (4) use noun-led `<变体名>：<功能>`. Avoid prefixing every item
+  with `定位 / 揭示 / ...` if the noun phrase already conveys the same
+  meaning more compactly.
+- Each numbered item is 1–3 sentences in compressed form. Method-variant
+  items (here, per-head) may be slightly longer (2–3 sentences) so a
+  reader who has not seen the paper can understand what the variant
+  fixes, why the default fails, and how it differs.
+- The 📊 results section also uses plain `1.` `2.` numbering. Closely
+  related results (VLA simulation + real-robot) are merged into ONE
+  numbered block under a single headline rather than split. Concrete
+  benchmark numbers (e.g. LIBERO Object 100% / 97.0% / 32.2%) may be
+  dropped in compressed posts as long as a qualitative claim is kept.
+- No raw `https://...` URLs anywhere in the post. Links appear as
+  `arXiv ID: 2605.19282`, `GitHub 搜: OPTML-Group/Pion`,
+  `项目主页搜: chongyu-fan.netlify.app/posts/pion`.
+- The only mild emphasis words used here are `竟然` and `失效` (in the
+  hook). The rest of the post reads like a research abstract. Avoid
+  louder marketing terms like `翻车`, `全军覆没`, `硬核亮点`, `瞬时崩溃`,
+  `行业级`, `大火的`.
+- Body emojis appear ONLY in the 4 section headers (🚨 🔍 💡 📊) and the
+  3 link prefixes (📄 💻 📝). No ✨, 🔹, 🤔, or 🤝.
+- Paper title is NOT explicitly quoted in the body; readers identify the
+  paper through the arXiv ID. (If the user wants the title visible,
+  English title in 《 》 brackets, never translated.)
+- No 🤝 acknowledgements block. No `#hashtag` line. Both are off by
+  default for 小红书; the LinkedIn version is where acknowledgements live.
+- Total length target: ~1000 Chinese characters or less. The compression
+  knobs (in priority order) are: drop affiliation paragraph, drop benchmark
+  detail numbers, shorten item titles, then trim item bodies.

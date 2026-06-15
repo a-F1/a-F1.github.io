@@ -298,7 +298,7 @@ redirect_from:
 </div>
 
 
-<h3 class="section-heading"><span>📄 CV (Updated: 2026-02-16)</span></h3>
+<h3 class="section-heading"><span>📄 CV (Updated: 2026-06)</span></h3>
 
 <div class="cv-container">
   <!-- <p class="cv-update-date">Last updated: 2025-02-03</p> -->
@@ -355,7 +355,7 @@ redirect_from:
     <h3>Conferences</h3>
     <ul>
       <li>The International Conference on Machine Learning (ICML): ICML25, 26 (<strong>Gold Reviewer</strong>)</li>
-      <li>The International Conference on Learning Representations (ICLR): ICLR25, R26</li>
+      <li>The International Conference on Learning Representations (ICLR): ICLR25, 26</li>
       <li>The Annual Conference on Neural Information Processing Systems (NeurIPS): NeurIPS25, 26</li>
       <li>IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR): CVPR26</li>
     </ul>

@@ -118,6 +118,13 @@ redirect_from:
 <div class="news-container">
 
     <div class="news-item">
+        <div class="news-date">2026.07</div>
+        <div class="news-content">
+            ✨ One first-author paper <a href="/posts/up/">UP</a>, an unbounded positive asymmetric objective that breaks the exploration-stability dilemma in RL, on arXiv! Read the <a href="/posts/up/">blog</a>.
+        </div>
+    </div>
+
+    <div class="news-item">
         <div class="news-date">2026.05</div>
         <div class="news-content">
             ✨ One first-author paper <a href="https://arxiv.org/abs/2605.19282">Pion</a>, a spectral high-pass optimizer for VLA and RLVR, on arXiv! Read the <a href="/posts/pion/">blog</a>.

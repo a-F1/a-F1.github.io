@@ -1,4 +1,1263 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-05-20T11:03:04-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="http://localhost:4000/posts/pion/" rel="alternate" type="text/html" title="Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>http://localhost:4000/posts/pion</id><content type="html" xml:base="http://localhost:4000/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="https://chongyu-fan.netlify.app/feed.xml" rel="self" type="application/atom+xml" /><link href="https://chongyu-fan.netlify.app/" rel="alternate" type="text/html" /><updated>2026-07-07T18:19:18-07:00</updated><id>https://chongyu-fan.netlify.app/feed.xml</id><title type="html">Chongyu Fan</title><subtitle>Ph.D student</subtitle><author><name>Chongyu Fan</name><email>chongyu.fan93@gmail.com</email></author><entry><title type="html">UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma</title><link href="https://chongyu-fan.netlify.app/posts/up/" rel="alternate" type="text/html" title="UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma" /><published>2026-07-07T00:00:00-07:00</published><updated>2026-07-07T00:00:00-07:00</updated><id>https://chongyu-fan.netlify.app/posts/up</id><content type="html" xml:base="https://chongyu-fan.netlify.app/posts/up/"><![CDATA[<!-- LINK PLACEHOLDERS: the arXiv link (url "#"), the Code link (url "#"), and the BibTeX eprint/url (2607.XXXXX) are placeholders. Replace them with the real arXiv ID, code repository, and citation once the preprint is public. -->
+
+<style>
+.cap-explorer { margin: 26px 0 30px; padding: 20px 22px 16px; background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%); border: 1px solid #e5e9ef; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03); }
+.cap-explorer .cap-panel { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 22px; align-items: start; }
+@media (max-width: 760px) { .cap-explorer .cap-panel { grid-template-columns: 1fr; } }
+.cap-explorer .cap-controls { display: flex; flex-direction: column; gap: 13px; }
+.cap-explorer .cap-seg-row { display: flex; flex-direction: column; gap: 10px; }
+.cap-explorer .cap-seg-group { display: flex; flex-direction: column; gap: 5px; transition: opacity 0.15s; }
+.cap-explorer .cap-seg-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: #94a3b8; }
+.cap-explorer .cap-seg { display: inline-flex; border: 1px solid #e5e9ef; border-radius: 8px; overflow: hidden; background: #fff; }
+.cap-explorer .cap-seg-btn { flex: 1; appearance: none; border: none; background: transparent; padding: 6px 10px; font: inherit; font-size: 0.82rem; color: #64748b; cursor: pointer; transition: background 0.15s, color 0.15s; border-right: 1px solid #e5e9ef; }
+.cap-explorer .cap-seg-btn:last-child { border-right: none; }
+.cap-explorer .cap-seg-btn.active { background: #4485C7; color: #fff; font-weight: 600; }
+.cap-explorer .cap-slider-row { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: opacity 0.15s; }
+.cap-explorer .cap-slider-row.is-dim { opacity: 0.34; }
+.cap-explorer .cap-slider-name { min-width: 40px; font-family: 'Latin Modern Math', 'Cambria Math', serif; font-style: italic; color: #0f172a; font-size: 0.98rem; }
+.cap-explorer .cap-slider-name sub { font-style: normal; font-size: 0.68em; }
+.cap-explorer .cap-slider { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; background: linear-gradient(to right, #e5e9ef, #cfd8e3); border-radius: 999px; outline: none; }
+.cap-explorer .cap-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #4485C7; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(68, 133, 199, 0.4); cursor: grab; }
+.cap-explorer .cap-slider::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #4485C7; border: 2px solid #fff; cursor: grab; }
+.cap-explorer .cap-slider-val { min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; color: #1f4ca7; font-size: 0.85rem; }
+.cap-explorer .cap-plot-wrap { background: #fff; border: 1px solid #e5e9ef; border-radius: 10px; padding: 8px 8px 6px; }
+.cap-explorer .cap-canvas { width: 100%; height: auto; display: block; touch-action: none; }
+.cap-explorer .cap-hover { margin: 6px 2px 0; padding-top: 11px; border-top: 1px solid #e5e9ef; font-size: 1.04rem; color: #64748b; font-variant-numeric: tabular-nums; min-height: 1.3em; line-height: 1.45; }
+.cap-explorer .cap-hover b { color: #1f4ca7; font-weight: 600; font-style: normal; }
+.cap-explorer .cap-caption { font-size: 0.86rem; color: #64748b; line-height: 1.55; margin: 12px 4px 2px; font-style: italic; }
+.cap-explorer .cap-caption b { color: #1f4ca7; font-style: normal; font-weight: 600; }
+</style>
+
+<div class="post-lang post-lang-en">
+
+  <div class="tldr">
+
+    <h2 id="tldr">TL;DR</h2>
+
+    <ul>
+      <li>Modern reinforcement learning (RL) for LLM reasoning relies on importance sampling (IS) for sample efficiency, but IS creates an exploration-stability dilemma: pure IS explodes, and the clipping used to tame it strictly caps how much the policy is allowed to move.</li>
+      <li>We formalize the <strong>Probability Capacity (Cap)</strong>, the update budget a token has before its gradient is truncated, and show that conservative clipping ties this budget to \(\pi_{\text{old}}\), structurally starving correct but low-confidence reasoning paths.</li>
+      <li><strong>Unbounded Positive Asymmetric Optimization (UP)</strong> replaces the IS ratio with a stop-gradient <strong>self-anchored ratio</strong> for positive advantages, recovering a stable, unclipped REINFORCE gradient, while keeping standard clipping for negative advantages as a safeguard.</li>
+      <li>UP is a plug-and-play objective that instantiates as <strong>UP-DAPO</strong>, <strong>UP-GRPO</strong>, and <strong>UP-GSPO</strong>, and improves accuracy and exploration across DAPO, GSPO, and GRPO, across dense, MoE, and vision-language models, and across language and multimodal data.</li>
+    </ul>
+
+  </div>
+
+  <h2 id="try-it-how-does-clipping-throttle-exploration">Try It: How Does Clipping Throttle Exploration?</h2>
+
+  <p><a href="#fig-1">Figure 1</a> below is an interactive map of the update budget a token receives before its gradient is clipped, drawn over the plane of the current policy probability \(\pi_\theta\) (x axis) and the behavior probability \(\pi_{\text{old}}\) (y axis). Switch <strong>Method</strong> between DAPO and UP-DAPO for positive advantages (\(\hat{A} &gt; 0\)), inspect the shared non-positive regime (\(\hat{A} \le 0\)), drag \(\epsilon_{\text{high}}\), \(\epsilon_{\text{low}}\), and \(c\), and hover anywhere to read the exact capacity. The key contrast: DAPO ties the budget to \(\pi_{\text{old}}\) through a thin band, while UP-DAPO frees it to the full \(1 - \pi_\theta\), independent of \(\pi_{\text{old}}\).</p>
+
+  <div id="fig-1" class="cap-explorer" data-lang="en">
+  <div class="cap-panel">
+    <div class="cap-controls">
+      <div class="cap-seg-row">
+        <div class="cap-seg-group" data-group="method">
+          <span class="cap-seg-title">Method</span>
+          <div class="cap-seg" data-seg="method">
+            <button type="button" class="cap-seg-btn active" data-val="dapo">DAPO</button>
+            <button type="button" class="cap-seg-btn" data-val="up">UP-DAPO</button>
+          </div>
+        </div>
+        <div class="cap-seg-group" data-group="sign">
+          <span class="cap-seg-title">Advantage</span>
+          <div class="cap-seg" data-seg="sign">
+            <button type="button" class="cap-seg-btn active" data-val="pos">A &gt; 0</button>
+            <button type="button" class="cap-seg-btn" data-val="neg">A &le; 0</button>
+          </div>
+        </div>
+      </div>
+      <div class="cap-slider-row" data-param-row="ehigh">
+        <span class="cap-slider-name">&epsilon;<sub>high</sub></span>
+        <input type="range" class="cap-slider" data-param="ehigh" min="0" max="1" step="0.01" value="0.28" />
+        <span class="cap-slider-val" data-val="ehigh">0.28</span>
+      </div>
+      <div class="cap-slider-row" data-param-row="elow">
+        <span class="cap-slider-name">&epsilon;<sub>low</sub></span>
+        <input type="range" class="cap-slider" data-param="elow" min="0" max="0.9" step="0.01" value="0.2" />
+        <span class="cap-slider-val" data-val="elow">0.20</span>
+      </div>
+      <div class="cap-slider-row" data-param-row="c">
+        <span class="cap-slider-name">c</span>
+        <input type="range" class="cap-slider" data-param="c" min="1" max="5" step="0.1" value="3" />
+        <span class="cap-slider-val" data-val="c">3.0</span>
+      </div>
+      <p class="cap-hover" data-out="hover">Hover over the map to read Cap at any (&pi;<sub>&theta;</sub>, &pi;<sub>old</sub>).</p>
+    </div>
+    <div class="cap-plot-wrap">
+      <canvas class="cap-canvas" width="760" height="700" role="img" aria-label="Probability Capacity heatmap over the (pi_theta, pi_old) plane"></canvas>
+    </div>
+  </div>
+  <p class="cap-caption" data-out="caption"></p>
+</div>
+  <p class="fig-caption">Figure 1. Interactive Probability Capacity map (this paper's Figure 1). The color encodes the update budget Cap over the plane of the current policy probability &pi;<sub>&theta;</sub> (x axis) and the behavior probability &pi;<sub>old</sub> (y axis). For positive advantages, DAPO confines Cap to a thin band bounded by &pi;<sub>&theta;</sub> = (1 + &epsilon;<sub>high</sub>)&pi;<sub>old</sub>, while UP-DAPO frees it to the full 1 &minus; &pi;<sub>&theta;</sub> independent of &pi;<sub>old</sub>; for non-positive advantages both methods share the clipped wedge.</p>
+
+  <h2 id="background">Background</h2>
+
+  <h3 id="from-reinforce-to-grpo-dapo-and-gspo">From REINFORCE to GRPO, DAPO, and GSPO</h3>
+
+  <p>RL has become the standard paradigm for eliciting complex reasoning from LLMs. The vanilla REINFORCE objective is strictly on-policy and yields a mathematically stable gradient:</p>
+
+\[\nabla_\theta J_{\text{REINFORCE}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_\theta}\!\left[ \sum_{t=1}^{|o|} \hat{A}\, \nabla_\theta \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right].\]
+
+  <p>REINFORCE is stable but sample inefficient, since each trajectory is discarded after a single step. To reuse sampled data across multiple steps, GRPO and DAPO introduce <strong>importance sampling (IS)</strong>, estimating the current policy \(\pi_\theta\) from samples drawn by a historical policy \(\pi_{\text{old}}\) through the ratio</p>
+
+\[r_{i,t}(\theta) = \frac{\pi_\theta(o_{i,t} \mid q, o_{i,&lt;t})}{\pi_{\text{old}}(o_{i,t} \mid q, o_{i,&lt;t})}.\]
+
+  <p>To stop this ratio from exploding, GRPO bounds it inside a trust region \([1 - \epsilon, 1 + \epsilon]\) via clipping. DAPO decouples the bounds into \((\epsilon_{\text{low}}, \epsilon_{\text{high}})\) and drops the KL penalty, so it relies exclusively on clipping to trade off stability against exploration. GSPO instead moves to a <strong>sequence-level</strong> ratio, using the length-normalized likelihood of the whole response:</p>
+
+\[s_i(\theta) = \left( \frac{\pi_\theta(o_i \mid q)}{\pi_{\text{old}}(o_i \mid q)} \right)^{\frac{1}{|o_i|}} = \exp\!\left( \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \big( \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) - \log \pi_{\text{old}}(o_{i,t} \mid q, o_{i,&lt;t}) \big) \right).\]
+
+  <p>Every one of these methods keeps \(\pi_{\text{old}}\) in the denominator, and every one leans on clipping. That shared structure is exactly what creates the dilemma below.</p>
+
+  <h3 id="probability-capacity-cap">Probability Capacity (Cap)</h3>
+
+  <p>To make the cost of clipping precise, we define the <strong>Probability Capacity (Cap)</strong> as the maximum allowable increase in \(\pi_\theta\) for a token with positive advantage (\(\hat{A} &gt; 0\)), or the maximum allowable decrease for a token with non-positive advantage (\(\hat{A} \le 0\)), before the optimization gradient is truncated. Cap is the effective <strong>budget</strong> a token has for policy exploration relative to \(\pi_{\text{old}}\). <a href="#fig-1">Figure 1</a> plots this budget directly, and the rest of this post is a story about how UP enlarges it.</p>
+
+  <h2 id="motivation">Motivation</h2>
+
+  <p>IS-based RL is caught between two failure modes. Pushing updates too aggressively (pure IS) triggers instability; constraining them too conservatively (clipping) stifles exploration. We examine each in turn.</p>
+
+  <h3 id="dilemma-1-importance-sampling-induces-instability">Dilemma 1: Importance Sampling Induces Instability</h3>
+
+  <p>The unclipped IS objective maximizes the advantage weighted by the ratio, \(J_{\text{IS}}(\theta) = \mathbb{E}[\hat{A}\, r_{i,t}(\theta)]\), whose gradient is</p>
+
+\[\nabla_\theta J_{\text{IS}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_{\text{old}}}\!\left[ \hat{A}\, r_{i,t}(\theta)\, \nabla_\theta \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right].\]
+
+  <p>Comparing this to the REINFORCE gradient, the flaw is explicit: the IS gradient is scaled by \(r_{i,t}(\theta)\). For a rare, high-reward reasoning path where the behavior probability \(\pi_{\text{old}}\) is infinitesimally small, this ratio explodes as the active policy marginally improves. The pathological scaling destroys stable representations and drives training to diverge, which is precisely why clipping is treated as indispensable.</p>
+
+  <h3 id="dilemma-2-clipping-stifles-exploration">Dilemma 2: Clipping Stifles Exploration</h3>
+
+  <p>For positive advantages, the clipped objective is \(J_{\text{IS+CLIP}}(\theta) = \min\!\big[r_{i,t}(\theta), 1 + \epsilon\big]\hat{A}\), and its gradient vanishes the moment the ratio exceeds the trust-region boundary. Mapping this to absolute probability space, the policy is upper-bounded by \(\pi_\theta \le (1 + \epsilon_{\text{high}})\pi_{\text{old}}\), so the remaining budget follows a piecewise Cap:</p>
+
+\[\mathrm{Cap}(\pi_\theta, \pi_{\text{old}}) =
+\begin{cases}
+\min\!\big(1,\, (1 + \epsilon_{\text{high}})\pi_{\text{old}}\big) - \pi_\theta &amp; \text{if } \pi_\theta &lt; (1 + \epsilon_{\text{high}})\pi_{\text{old}}, \\[4pt]
+0 &amp; \text{if } \pi_\theta \ge (1 + \epsilon_{\text{high}})\pi_{\text{old}}.
+\end{cases}\]
+
+  <p>This exposes a structural bottleneck: the budget is <strong>linearly dependent on \(\pi_{\text{old}}\)</strong>. For a low-likelihood reasoning token with \(\pi_{\text{old}} = 0.01\), a standard \(\epsilon_{\text{high}} = 0.28\) caps the absolute probability increase at a mere \(0.0028\). Once \(\pi_\theta\) reaches \(0.0128\), the capacity drops to zero, the token enters the Upper Clip region, and its gradient is nullified even when the advantage is exceptionally high. Set the method to DAPO in <a href="#fig-1">Figure 1</a> and read along the bottom of the map, where \(\pi_{\text{old}}\) is small, to see this sliver of budget for yourself. Structurally, this stifles exploration and leaves promising long-tail trajectories undiscovered.</p>
+
+  <div class="callout">
+    <p><strong>The question.</strong> How can we maximize a model’s exploration while preventing training instability in RL? Aggressive updates destabilize training; conservative clipping starves exploration. We need a formulation that escapes both.</p>
+  </div>
+
+  <h2 id="method">Method</h2>
+
+  <p>UP dismantles the dilemma with two mathematical moves: replace \(\pi_{\text{old}}\) with the current policy \(\pi_\theta\) via a stop-gradient, and route the gradient asymmetrically by the sign of the advantage.</p>
+
+  <h3 id="an-unbounded-objective-for-positive-advantages">An Unbounded Objective for Positive Advantages</h3>
+
+  <p>For correct rollouts (\(\hat{A} &gt; 0\)), we replace the IS ratio with a <strong>self-anchored ratio</strong> \(\tilde{r}_{i,t}(\theta)\) built from the stop-gradient operator \(\mathrm{sg}(\cdot)\) (Eq. 12):</p>
+
+\[J^{+}_{\text{UP}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_{\text{old}}}\!\left[ \sum_{t=1}^{|o|} \hat{A}\, \frac{\pi_\theta(o_{i,t} \mid q, o_{i,&lt;t})}{\mathrm{sg}\!\big(\pi_\theta(o_{i,t} \mid q, o_{i,&lt;t})\big)} \right], \qquad \hat{A} &gt; 0.\]
+
+  <p>During backpropagation \(\mathrm{sg}(\pi_\theta)\) is a constant scalar, yet its forward value equals \(\pi_\theta\). Applying the log-derivative trick \(\nabla x / x = \nabla \log x\) collapses the objective to (Eq. 13):</p>
+
+\[\nabla_\theta J^{+}_{\text{UP}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_{\text{old}}}\!\left[ \sum_{t=1}^{|o|} \hat{A}\, \nabla_\theta \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right].\]
+
+  <p>This is a profound simplification: optimizing the self-anchored ratio is mathematically equivalent to maximizing the <strong>REINFORCE</strong> objective. By anchoring the policy to \(\pi_\theta\) instead of \(\pi_{\text{old}}\), UP eradicates the root cause of IS instability from Dilemma 1, and its Cap becomes fully unconstrained by history, \(\mathrm{Cap} = 1 - \pi_\theta\). Switch the method to UP-DAPO with \(\hat{A} &gt; 0\) in <a href="#fig-1">Figure 1</a>: the thin clipped band expands into a full budget that depends only on \(\pi_\theta\).</p>
+
+  <h3 id="why-asymmetric-keep-clipping-for-negative-advantages">Why Asymmetric: Keep Clipping for Negative Advantages</h3>
+
+  <p>The unbounded mechanism is deliberately restricted to correct rollouts. For wrong rollouts the advantage is negative, which flips the gradient direction; applying an unbounded update there performs aggressive gradient ascent and destroys the original representation. UP therefore retains standard clipping for \(\hat{A} \le 0\), where DAPO and UP-DAPO share an identical Cap governed by the lower-clip and dual-clip boundaries (see the \(\hat{A} \le 0\) view in <a href="#fig-1">Figure 1</a>):</p>
+
+\[\mathrm{Cap}(\pi_\theta, \pi_{\text{old}}) =
+\begin{cases}
+\pi_\theta - (1 - \epsilon_{\text{low}})\pi_{\text{old}} &amp; \text{if } (1 - \epsilon_{\text{low}})\pi_{\text{old}} \le \pi_\theta \le c\,\pi_{\text{old}}, \\[4pt]
+0 &amp; \text{if } \pi_\theta &lt; (1 - \epsilon_{\text{low}})\pi_{\text{old}} \quad (\text{Lower Clip}), \\[4pt]
+0 &amp; \text{if } \pi_\theta &gt; c\,\pi_{\text{old}} \quad (\text{Dual Clip}).
+\end{cases}\]
+
+  <p>This is the crux of UP: exploration for correct rollouts, safety for wrong ones.</p>
+
+  <h3 id="up-gxpo-one-plugin-three-instantiations">UP-GxPO: One Plugin, Three Instantiations</h3>
+
+  <p>Because it only rewrites the positive branch, UP plugs into any group-based policy optimizer. The token-level <strong>UP-DAPO</strong> combines the unbounded positive objective with the DAPO clipped objective for negatives (Eq. 14):</p>
+
+\[J_{\text{UP-DAPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{\sum_i |o_i|} \sum_{i}\sum_{t}
+\begin{cases}
+\hat{A}_{i,t}\, \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) &amp; \text{if } \hat{A}_{i,t} &gt; 0, \\[4pt]
+\min\!\big( r_{i,t}(\theta)\hat{A}_{i,t},\, \mathrm{clip}(r_{i,t}(\theta), 1 - \epsilon_{\text{low}}, 1 + \epsilon_{\text{high}})\hat{A}_{i,t} \big) &amp; \text{if } \hat{A}_{i,t} \le 0.
+\end{cases}
+\right].\]
+
+  <p>The same principle gives <strong>UP-GRPO</strong>, which keeps GRPO’s symmetric clipping and KL penalty on the negative branch (Eq. 15):</p>
+
+\[J_{\text{UP-GRPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{G} \sum_{i} \frac{1}{|o_i|} \sum_{t}
+\begin{cases}
+\hat{A}_i\, \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) - \beta D_{\text{KL}}(\pi_\theta \,\|\, \pi_{\text{ref}}) &amp; \text{if } \hat{A}_i &gt; 0, \\[4pt]
+\min\!\big( r_{i,t}(\theta)\hat{A}_i,\, \mathrm{clip}(r_{i,t}(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_i \big) - \beta D_{\text{KL}}(\pi_\theta \,\|\, \pi_{\text{ref}}) &amp; \text{if } \hat{A}_i \le 0.
+\end{cases}
+\right].\]
+
+  <p>Finally, UP extends to the sequence level as <strong>UP-GSPO</strong>, whose positive branch provably reduces to a length-normalized REINFORCE gradient (Eq. 16):</p>
+
+\[J_{\text{UP-GSPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{G} \sum_{i}
+\begin{cases}
+\hat{A}_i \left( \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right) &amp; \text{if } \hat{A}_i &gt; 0, \\[4pt]
+\min\!\big( s_i(\theta)\hat{A}_i,\, \mathrm{clip}(s_i(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_i \big) &amp; \text{if } \hat{A}_i \le 0.
+\end{cases}
+\right].\]
+
+  <div class="callout">
+    <p><strong>Takeaway.</strong> UP is a drop-in objective. It swaps the positive branch of any GxPO algorithm for a stop-gradient, unclipped, REINFORCE-equivalent update, and leaves the negative branch untouched as a safeguard.</p>
+  </div>
+
+  <h2 id="experiments">Experiments</h2>
+
+  <p>We evaluate UP on dense LLMs (Qwen3-14B-Base, Qwen3-8B), an MoE model (Qwen3-30B-A3B-Base), and a vision-language model (Qwen3-VL-8B-Instruct), using the verl framework. Across every setting UP raises accuracy and exploration while keeping training stable.</p>
+
+  <h3 id="performance-exploration-and-stability-analysis-of-up-dapo">Performance, Exploration, and Stability Analysis of UP-DAPO</h3>
+
+  <p>On Qwen3-14B-Base trained on DAPO-17K-MATH and evaluated on AIME24, UP-DAPO comprehensively outperforms DAPO. As shown in <a href="#fig-2">Figure 2</a>, it lifts peak Avg@32 from \(47.71\) to \(51.15\) and Maj@32 from \(58.36\) to \(60.88\). <a href="#fig-3">Figure 3</a> traces the source of these gains: a consistently higher generation entropy alongside a higher Best@32 (from \(80.49\) to \(81.79\)) confirms that removing the \(\pi_{\text{old}}\) anchor genuinely enlarges exploration capacity. Crucially, <a href="#fig-4">Figure 4</a> shows the gradient norm and the KL divergence of UP-DAPO stay comparable to, or slightly below, DAPO’s, so this added exploration does not cost stability.</p>
+
+  <div id="fig-2" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/avg32_plot.png" alt="Avg@32 accuracy on AIME24" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Avg@32</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/maj32_plot.png" alt="Maj@32 accuracy on AIME24" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) Maj@32</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 2. Performance comparison of DAPO and UP-DAPO on Qwen3-14B-Base during training: (a) Avg@32 and (b) Maj@32 accuracy on AIME24. UP-DAPO reaches a peak Avg@32 of 51.15 against DAPO's 47.71, and a peak Maj@32 of 60.88 against 58.36.</p>
+
+  <div id="fig-3" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/entropy_plot.png" alt="Generation entropy on DAPO-17K-MATH" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Entropy</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/best32_plot.png" alt="Best@32 accuracy on AIME24" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) Best@32</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 3. Exploration capacity of UP-DAPO: (a) entropy of generation probabilities on DAPO-17K-MATH and (b) Best@32 accuracy on AIME24. UP-DAPO sustains a higher entropy and lifts peak Best@32 to 81.79 against DAPO's 80.49.</p>
+
+  <div id="fig-4" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grad_norm_plot.png" alt="Gradient norm on DAPO-17K-MATH" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Gradient norm</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/kl_plot.png" alt="KL divergence to the reference model" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL divergence</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 4. Training stability of UP-DAPO: (a) gradient norm and (b) KL divergence between the active policy and the reference model on DAPO-17K-MATH. Both quantities track DAPO closely, so the extra exploration does not destabilize training.</p>
+
+  <h3 id="ablation-studies-of-up-dapo">Ablation Studies of UP-DAPO</h3>
+
+  <p>Two ablations pin down why both design choices are necessary. As <a href="#fig-5">Figure 5</a> shows, simply relaxing DAPO’s upper clip to infinity while keeping the \(\pi_{\text{old}}\) anchor stays stable at first but explodes beyond 80 steps, with the gradient norm surging to \(10^{13}\); this shows the self-anchored ratio, not merely a loosened bound, is what enables safe unbounded updates. Applying the unbounded update symmetrically to both positive and negative advantages collapses within 25 steps, confirming that clipping on the negative branch is an indispensable safeguard.</p>
+
+  <div id="fig-5" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grad_norm_log_plot.png" alt="Gradient norm on a log scale" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Gradient norm (log scale)</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/kl_log_plot.png" alt="KL divergence on a log scale" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL divergence (log scale)</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 5. Training stability of DAPO, DAPO with $$\epsilon_{\text{high}} = \infty$$, REINFORCE (off-policy), and UP-DAPO on Qwen3-14B-Base: (a) gradient norm and (b) KL divergence, both on a log scale. DAPO with $$\epsilon_{\text{high}} = \infty$$ explodes to $$10^{13}$$ after about 80 steps, and the symmetric unbounded variant collapses within 25 steps, while UP-DAPO stays stable.</p>
+
+  <h3 id="comparison-with-other-rl-baselines">Comparison with Other RL Baselines</h3>
+
+  <p>Under the unified protocol of Liu et al., we train Qwen3-8B on MATH (Levels 3 to 5) and evaluate Pass@1 across five reasoning benchmarks. As reported in <a href="#tab-1">Table 1</a>, UP-GRPO attains the best average accuracy of \(61.31\%\), surpassing the strongest prior baseline GSPO (\(60.15\%\)) by an absolute \(1.16\%\). UP-GRPO ranks first or ties for first on four of the five individual benchmarks, and remains highly competitive on OlympiadBench, second only to ASPO. Consistent gains across benchmarks of varying difficulty show that the unbounded positive update is a broadly effective, rather than benchmark-specific, improvement over the GxPO family. <a href="#fig-6">Figure 6</a> explains these downstream gains: UP-GRPO’s policy entropy keeps rising throughout training while most baselines suffer entropy collapse, and its KL divergence stays among the lowest of the twelve methods.</p>
+
+  <div id="tab-1" class="results-table">
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left">Method</th>
+          <th style="text-align: center">AIME24</th>
+          <th style="text-align: center">AMC23</th>
+          <th style="text-align: center">MATH500</th>
+          <th style="text-align: center">Minerva</th>
+          <th style="text-align: center">OlympiadBench</th>
+          <th style="text-align: center">Average</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">GRPO</td>
+          <td style="text-align: center">35.73</td>
+          <td style="text-align: center">75.00</td>
+          <td style="text-align: center">86.00</td>
+          <td style="text-align: center">30.88</td>
+          <td style="text-align: center">51.34</td>
+          <td style="text-align: center">55.79</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Dr. GRPO</td>
+          <td style="text-align: center">33.33</td>
+          <td style="text-align: center">85.00</td>
+          <td style="text-align: center">85.80</td>
+          <td style="text-align: center">30.15</td>
+          <td style="text-align: center">51.19</td>
+          <td style="text-align: center">57.09</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">CISPO</td>
+          <td style="text-align: center">38.02</td>
+          <td style="text-align: center">87.50</td>
+          <td style="text-align: center">86.60</td>
+          <td style="text-align: center">29.04</td>
+          <td style="text-align: center">55.65</td>
+          <td style="text-align: center">59.36</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">DPPO</td>
+          <td style="text-align: center">40.10</td>
+          <td style="text-align: center">87.50</td>
+          <td style="text-align: center">86.20</td>
+          <td style="text-align: center">30.51</td>
+          <td style="text-align: center">53.27</td>
+          <td style="text-align: center">59.52</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">GMPO</td>
+          <td style="text-align: center">37.50</td>
+          <td style="text-align: center">87.50</td>
+          <td style="text-align: center">87.00</td>
+          <td style="text-align: center">31.25</td>
+          <td style="text-align: center">55.06</td>
+          <td style="text-align: center">59.66</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">GSPO</td>
+          <td style="text-align: center">40.52</td>
+          <td style="text-align: center">85.00</td>
+          <td style="text-align: center">88.20</td>
+          <td style="text-align: center">31.25</td>
+          <td style="text-align: center">55.80</td>
+          <td style="text-align: center">60.15</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">SAPO</td>
+          <td style="text-align: center">39.90</td>
+          <td style="text-align: center">82.50</td>
+          <td style="text-align: center">87.20</td>
+          <td style="text-align: center">30.88</td>
+          <td style="text-align: center">55.65</td>
+          <td style="text-align: center">59.23</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">REINFORCE++</td>
+          <td style="text-align: center">20.52</td>
+          <td style="text-align: center">62.50</td>
+          <td style="text-align: center">78.80</td>
+          <td style="text-align: center">29.78</td>
+          <td style="text-align: center">42.26</td>
+          <td style="text-align: center">46.77</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">RLOO</td>
+          <td style="text-align: center">31.67</td>
+          <td style="text-align: center">80.00</td>
+          <td style="text-align: center">85.20</td>
+          <td style="text-align: center">28.68</td>
+          <td style="text-align: center">50.60</td>
+          <td style="text-align: center">55.23</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">W-REINFORCE</td>
+          <td style="text-align: center">35.52</td>
+          <td style="text-align: center">80.00</td>
+          <td style="text-align: center">85.80</td>
+          <td style="text-align: center">30.15</td>
+          <td style="text-align: center">53.27</td>
+          <td style="text-align: center">56.95</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">ASPO</td>
+          <td style="text-align: center">37.50</td>
+          <td style="text-align: center">85.00</td>
+          <td style="text-align: center">87.60</td>
+          <td style="text-align: center">29.78</td>
+          <td style="text-align: center"><strong>58.48</strong></td>
+          <td style="text-align: center">59.67</td>
+        </tr>
+        <tr>
+          <td style="text-align: left"><strong>UP-GRPO (Ours)</strong></td>
+          <td style="text-align: center"><strong>41.04</strong></td>
+          <td style="text-align: center"><strong>87.50</strong></td>
+          <td style="text-align: center"><strong>88.40</strong></td>
+          <td style="text-align: center"><strong>31.25</strong></td>
+          <td style="text-align: center">58.33</td>
+          <td style="text-align: center"><strong>61.31</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <p class="fig-caption">Table 1. UP-GRPO against eleven RL baselines on AIME24, AMC23, MATH500, Minerva, and OlympiadBench (Pass@1, %), trained on MATH (Levels 3 to 5) with Qwen3-8B. Best per column in <strong>bold</strong>.</p>
+
+  <div id="fig-6" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px 8px; row-gap: 0;">
+  <div class="fig-legend" style="margin-top: 0; margin-bottom: -4px;">
+    <img src="/images/blog/up/grpo_family_legend.png" alt="Legend: UP-GRPO and eleven RL baselines" />
+  </div>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grpo_family_entropy_plot.png" alt="Policy entropy of UP-GRPO and baselines" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Entropy</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grpo_family_kl_plot.png" alt="KL divergence of UP-GRPO and baselines" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL divergence</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 6. Exploration capacity and training stability of UP-GRPO against eleven RL baselines on Qwen3-8B during training: (a) entropy and (b) KL divergence between the active policy and the reference model on MATH (Levels 3 to 5). Most baselines suffer entropy collapse, while UP-GRPO keeps a rising entropy and holds its KL divergence among the lowest.</p>
+
+  <h3 id="universality-of-up-across-algorithms-architectures-and-modalities">Universality of UP across Algorithms, Architectures, and Modalities</h3>
+
+  <p>UP is a universal plugin, not a token-level trick. On the <strong>MoE</strong> model Qwen3-30B-A3B-Base, <a href="#fig-7">Figure 7</a> shows UP-GSPO raises peak Avg@32 on AIME24 from GSPO’s \(52.71\%\) to \(55.73\%\), an absolute \(3.02\%\), while keeping KL divergence nearly identical to the baseline. On the <strong>vision-language</strong> model Qwen3-VL-8B-Instruct trained on Geometry3K, <a href="#fig-8">Figure 8</a> shows UP-GRPO lifts accuracy from GRPO’s \(59.30\%\) to \(62.60\%\), an absolute \(3.30\%\), again without any added instability. Together these results show UP resolves the exploration-stability dilemma regardless of optimization granularity (token-level to sequence-level), model architecture (dense to MoE), or modality (language to multimodal).</p>
+
+  <div id="fig-7" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/gspo_avg32_plot.png" alt="Avg@32 accuracy of GSPO and UP-GSPO on AIME24" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Avg@32</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/gspo_kl_plot.png" alt="KL divergence of GSPO and UP-GSPO" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL divergence</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 7. Performance and stability comparison of GSPO and UP-GSPO on Qwen3-30B-A3B-Base (MoE): (a) Avg@32 accuracy on AIME24 and (b) KL divergence on DAPO-17K-MATH. UP-GSPO reaches a peak Avg@32 of 55.73 against GSPO's 52.71, an absolute gain of 3.02.</p>
+
+  <div id="fig-8" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/vlm_avg32_plot.png" alt="Accuracy of GRPO and UP-GRPO on Geometry3K" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Accuracy</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/vlm_kl_plot.png" alt="KL divergence of GRPO and UP-GRPO" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL divergence</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">Figure 8. Performance and stability comparison of GRPO and UP-GRPO on Qwen3-VL-8B-Instruct: (a) accuracy on the Geometry3K test set and (b) KL divergence. UP-GRPO reaches 62.60 against GRPO's 59.30, an absolute gain of 3.30.</p>
+
+  <h2 id="bibtex">BibTeX</h2>
+
+  <pre class="bibtex-block"><code>@misc{fan2026up,
+      title={UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma},
+      author={Chongyu Fan and Pengfei Liu and Jingjia Huang and Sijia Liu and Yi Lin},
+      year={2026},
+      eprint={2607.XXXXX},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2607.XXXXX},
+}
+</code></pre>
+
+</div>
+
+<div class="post-lang post-lang-zh" hidden="">
+
+  <div class="tldr">
+
+    <h2 id="tldr-1">TL;DR</h2>
+
+    <ul>
+      <li>现代面向 LLM 推理的强化学习 (RL) 依赖重要性采样 (IS) 来提升样本效率，但 IS 带来了探索与稳定的两难：纯 IS 会梯度爆炸，而用于抑制爆炸的裁剪又会严格限制策略的可变动幅度。</li>
+      <li>我们把一个 token 在梯度被截断前所拥有的更新预算形式化为 <strong>概率容量 (Probability Capacity, Cap)</strong>，并指出保守的裁剪把该预算与 \(\pi_{\text{old}}\) 线性绑定，从结构上饿死了那些正确但低置信的推理路径。</li>
+      <li><strong>Unbounded Positive Asymmetric Optimization (UP)</strong> 对正优势用 stop-gradient <strong>自锚定比值</strong> 替换 IS 比值，从而还原出稳定、无裁剪的 REINFORCE 梯度；对负优势则保留标准裁剪作为安全阀。</li>
+      <li>UP 是一个即插即用的目标，可实例化为 <strong>UP-DAPO</strong>、<strong>UP-GRPO</strong> 与 <strong>UP-GSPO</strong>，并在 DAPO、GSPO、GRPO，以及 dense / MoE / 视觉语言模型、语言与多模态数据上全面提升准确率与探索能力。</li>
+    </ul>
+
+  </div>
+
+  <h2 id="section">试一试：裁剪如何抑制探索？</h2>
+
+  <p>下方的 <a href="#fig-1-zh">图 1</a> 是一张交互式地图，绘制了一个 token 在梯度被裁剪之前所能获得的更新预算，横轴为当前策略概率 \(\pi_\theta\)，纵轴为行为策略概率 \(\pi_{\text{old}}\)。在正优势 (\(\hat{A} &gt; 0\)) 下把 <strong>方法</strong> 在 DAPO 与 UP-DAPO 之间切换，也可以查看非正优势区间 (\(\hat{A} \le 0\))，拖动 \(\epsilon_{\text{high}}\)、\(\epsilon_{\text{low}}\)、\(c\)，并把鼠标移到任意位置读取精确的容量值。核心对比在于：DAPO 通过一个很窄的带把预算与 \(\pi_{\text{old}}\) 绑定，而 UP-DAPO 把预算放大为完整的 \(1 - \pi_\theta\)，与 \(\pi_{\text{old}}\) 无关。</p>
+
+  <div id="fig-1-zh" class="cap-explorer" data-lang="zh">
+  <div class="cap-panel">
+    <div class="cap-controls">
+      <div class="cap-seg-row">
+        <div class="cap-seg-group" data-group="method">
+          <span class="cap-seg-title">方法</span>
+          <div class="cap-seg" data-seg="method">
+            <button type="button" class="cap-seg-btn active" data-val="dapo">DAPO</button>
+            <button type="button" class="cap-seg-btn" data-val="up">UP-DAPO</button>
+          </div>
+        </div>
+        <div class="cap-seg-group" data-group="sign">
+          <span class="cap-seg-title">优势</span>
+          <div class="cap-seg" data-seg="sign">
+            <button type="button" class="cap-seg-btn active" data-val="pos">A &gt; 0</button>
+            <button type="button" class="cap-seg-btn" data-val="neg">A &le; 0</button>
+          </div>
+        </div>
+      </div>
+      <div class="cap-slider-row" data-param-row="ehigh">
+        <span class="cap-slider-name">&epsilon;<sub>high</sub></span>
+        <input type="range" class="cap-slider" data-param="ehigh" min="0" max="1" step="0.01" value="0.28" />
+        <span class="cap-slider-val" data-val="ehigh">0.28</span>
+      </div>
+      <div class="cap-slider-row" data-param-row="elow">
+        <span class="cap-slider-name">&epsilon;<sub>low</sub></span>
+        <input type="range" class="cap-slider" data-param="elow" min="0" max="0.9" step="0.01" value="0.2" />
+        <span class="cap-slider-val" data-val="elow">0.20</span>
+      </div>
+      <div class="cap-slider-row" data-param-row="c">
+        <span class="cap-slider-name">c</span>
+        <input type="range" class="cap-slider" data-param="c" min="1" max="5" step="0.1" value="3" />
+        <span class="cap-slider-val" data-val="c">3.0</span>
+      </div>
+      <p class="cap-hover" data-out="hover">将鼠标移到图上，即可读取任意 (&pi;<sub>&theta;</sub>, &pi;<sub>old</sub>) 处的 Cap。</p>
+    </div>
+    <div class="cap-plot-wrap">
+      <canvas class="cap-canvas" width="760" height="700" role="img" aria-label="(pi_theta, pi_old) 平面上的概率容量热图"></canvas>
+    </div>
+  </div>
+  <p class="cap-caption" data-out="caption"></p>
+</div>
+  <p class="fig-caption">图 1. 交互式概率容量图（即本文的 Figure 1）。颜色编码更新预算 Cap，横轴为当前策略概率 &pi;<sub>&theta;</sub>，纵轴为行为策略概率 &pi;<sub>old</sub>。对正优势，DAPO 把 Cap 限制在由 &pi;<sub>&theta;</sub> = (1 + &epsilon;<sub>high</sub>)&pi;<sub>old</sub> 界定的狭窄带内，而 UP-DAPO 把它放大为完整的 1 &minus; &pi;<sub>&theta;</sub>，与 &pi;<sub>old</sub> 无关；对非正优势，两种方法共享同一个被裁剪的楔形区。</p>
+
+  <h2 id="section-1">背景</h2>
+
+  <h3 id="reinforce--grpodapo--gspo">从 REINFORCE 到 GRPO、DAPO 与 GSPO</h3>
+
+  <p>RL 已成为激发 LLM 复杂推理能力的标准范式。原始的 REINFORCE 目标严格 on-policy，其梯度在数学上是稳定的：</p>
+
+\[\nabla_\theta J_{\text{REINFORCE}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_\theta}\!\left[ \sum_{t=1}^{|o|} \hat{A}\, \nabla_\theta \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right].\]
+
+  <p>REINFORCE 稳定但样本效率低，因为每条轨迹在一步更新后即被丢弃。为了在同一批采样数据上进行多步优化，GRPO 与 DAPO 引入 <strong>重要性采样 (IS)</strong>，用历史策略 \(\pi_{\text{old}}\) 采样并通过如下比值来估计当前策略 \(\pi_\theta\)：</p>
+
+\[r_{i,t}(\theta) = \frac{\pi_\theta(o_{i,t} \mid q, o_{i,&lt;t})}{\pi_{\text{old}}(o_{i,t} \mid q, o_{i,&lt;t})}.\]
+
+  <p>为防止该比值爆炸，GRPO 通过裁剪把它约束在信任域 \([1 - \epsilon, 1 + \epsilon]\) 内。DAPO 进一步将上下界解耦为 \((\epsilon_{\text{low}}, \epsilon_{\text{high}})\) 并去掉 KL 惩罚，因此完全依赖裁剪来权衡稳定与探索。GSPO 则转向 <strong>序列级</strong> 比值，采用整条回复的长度归一化似然：</p>
+
+\[s_i(\theta) = \left( \frac{\pi_\theta(o_i \mid q)}{\pi_{\text{old}}(o_i \mid q)} \right)^{\frac{1}{|o_i|}} = \exp\!\left( \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \big( \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) - \log \pi_{\text{old}}(o_{i,t} \mid q, o_{i,&lt;t}) \big) \right).\]
+
+  <p>这些方法都把 \(\pi_{\text{old}}\) 留在分母中，也都依赖裁剪。正是这一共同结构催生了下面的两难。</p>
+
+  <h3 id="cap">概率容量 (Cap)</h3>
+
+  <p>为精确刻画裁剪的代价，我们把 <strong>概率容量 (Probability Capacity, Cap)</strong> 定义为：对正优势 token (\(\hat{A} &gt; 0\))，在梯度被截断前 \(\pi_\theta\) 所能增大的最大幅度；对非正优势 token (\(\hat{A} \le 0\))，则为所能减小的最大幅度。Cap 就是一个 token 相对 \(\pi_{\text{old}}\) 用于探索的有效 <strong>预算</strong>。<a href="#fig-1-zh">图 1</a> 直接绘制了这一预算，而本文其余部分讲的正是 UP 如何把它放大。</p>
+
+  <h2 id="section-2">动机</h2>
+
+  <p>IS-based RL 夹在两种失效模式之间：更新过猛（纯 IS）会触发不稳定；约束过严（裁剪）会抑制探索。我们逐一分析。</p>
+
+  <h3 id="section-3">困境一：重要性采样导致训练不稳定</h3>
+
+  <p>无裁剪的 IS 目标用比值加权优势，\(J_{\text{IS}}(\theta) = \mathbb{E}[\hat{A}\, r_{i,t}(\theta)]\)，其梯度为：</p>
+
+\[\nabla_\theta J_{\text{IS}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_{\text{old}}}\!\left[ \hat{A}\, r_{i,t}(\theta)\, \nabla_\theta \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right].\]
+
+  <p>与 REINFORCE 梯度对比，问题一目了然：IS 梯度被 \(r_{i,t}(\theta)\) 显式缩放。对一条稀有的高回报推理路径，其行为概率 \(\pi_{\text{old}}\) 极小，只要当前策略略有提升，该比值便会爆炸。这种病态缩放会破坏稳定的表征，使训练发散，这正是裁剪被视为不可或缺的原因。</p>
+
+  <h3 id="section-4">困境二：裁剪抑制探索</h3>
+
+  <p>对正优势，裁剪后的目标为 \(J_{\text{IS+CLIP}}(\theta) = \min\!\big[r_{i,t}(\theta), 1 + \epsilon\big]\hat{A}\)，一旦比值越过信任域上界，其梯度立即归零。映射到绝对概率空间，策略被上界约束为 \(\pi_\theta \le (1 + \epsilon_{\text{high}})\pi_{\text{old}}\)，于是剩余预算服从如下分段 Cap：</p>
+
+\[\mathrm{Cap}(\pi_\theta, \pi_{\text{old}}) =
+\begin{cases}
+\min\!\big(1,\, (1 + \epsilon_{\text{high}})\pi_{\text{old}}\big) - \pi_\theta &amp; \text{if } \pi_\theta &lt; (1 + \epsilon_{\text{high}})\pi_{\text{old}}, \\[4pt]
+0 &amp; \text{if } \pi_\theta \ge (1 + \epsilon_{\text{high}})\pi_{\text{old}}.
+\end{cases}\]
+
+  <p>这暴露出一个结构性瓶颈：预算 <strong>线性依赖于 \(\pi_{\text{old}}\)</strong>。对一个低似然的推理 token，\(\pi_{\text{old}} = 0.01\)，标准的 \(\epsilon_{\text{high}} = 0.28\) 只允许绝对概率增大区区 \(0.0028\)。一旦 \(\pi_\theta\) 达到 \(0.0128\)，容量便降为零，token 进入 Upper Clip 区间，即便其优势极高，梯度也被抹除。在 <a href="#fig-1-zh">图 1</a> 中把方法设为 DAPO，观察地图底部 \(\pi_{\text{old}}\) 很小的区域，即可亲眼看到这一狭窄的预算。从结构上看，这抑制了探索，也让有潜力的长尾轨迹无从被发现。</p>
+
+  <div class="callout">
+    <p><strong>核心问题。</strong> 如何在 RL 中最大化模型探索的同时防止训练不稳定？更新过猛会破坏稳定，保守裁剪会饿死探索。我们需要一种能同时跳出这两者的形式化方法。</p>
+  </div>
+
+  <h2 id="section-5">方法</h2>
+
+  <p>UP 通过两步数学操作来化解两难：用 stop-gradient 把 \(\pi_{\text{old}}\) 替换为当前策略 \(\pi_\theta\)，并按优势的符号非对称地路由梯度。</p>
+
+  <h3 id="section-6">面向正优势的无界目标</h3>
+
+  <p>对正确 rollout (\(\hat{A} &gt; 0\))，我们用基于 stop-gradient 算子 \(\mathrm{sg}(\cdot)\) 构造的 <strong>自锚定比值</strong> \(\tilde{r}_{i,t}(\theta)\) 替换 IS 比值（式 12）：</p>
+
+\[J^{+}_{\text{UP}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_{\text{old}}}\!\left[ \sum_{t=1}^{|o|} \hat{A}\, \frac{\pi_\theta(o_{i,t} \mid q, o_{i,&lt;t})}{\mathrm{sg}\!\big(\pi_\theta(o_{i,t} \mid q, o_{i,&lt;t})\big)} \right], \qquad \hat{A} &gt; 0.\]
+
+  <p>反向传播时 \(\mathrm{sg}(\pi_\theta)\) 是常数标量，但其前向取值恰等于 \(\pi_\theta\)。应用对数导数技巧 \(\nabla x / x = \nabla \log x\)，目标坍缩为（式 13）：</p>
+
+\[\nabla_\theta J^{+}_{\text{UP}}(\theta) = \mathbb{E}_{q \sim Q,\, o \sim \pi_{\text{old}}}\!\left[ \sum_{t=1}^{|o|} \hat{A}\, \nabla_\theta \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right].\]
+
+  <p>这是一个深刻的简化：优化自锚定比值在数学上等价于最大化 <strong>REINFORCE</strong> 目标。通过把策略锚定到 \(\pi_\theta\) 而非 \(\pi_{\text{old}}\)，UP 从根源上消除了困境一中的 IS 不稳定，其 Cap 也不再受历史约束，\(\mathrm{Cap} = 1 - \pi_\theta\)。在 <a href="#fig-1-zh">图 1</a> 中把方法切换为 UP-DAPO 并取 \(\hat{A} &gt; 0\)：狭窄的裁剪带会扩展为只依赖 \(\pi_\theta\) 的完整预算。</p>
+
+  <h3 id="section-7">为何非对称：负优势保留裁剪</h3>
+
+  <p>无界机制被有意限制在正确 rollout 上。对错误 rollout，优势为负，会反转梯度方向；在此处施加无界更新等于做激进的梯度上升，会破坏原有表征。因此 UP 对 \(\hat{A} \le 0\) 保留标准裁剪，此时 DAPO 与 UP-DAPO 共享一个由下界裁剪与 dual clip 边界决定的相同 Cap（见 <a href="#fig-1-zh">图 1</a> 中的 \(\hat{A} \le 0\) 视图）：</p>
+
+\[\mathrm{Cap}(\pi_\theta, \pi_{\text{old}}) =
+\begin{cases}
+\pi_\theta - (1 - \epsilon_{\text{low}})\pi_{\text{old}} &amp; \text{if } (1 - \epsilon_{\text{low}})\pi_{\text{old}} \le \pi_\theta \le c\,\pi_{\text{old}}, \\[4pt]
+0 &amp; \text{if } \pi_\theta &lt; (1 - \epsilon_{\text{low}})\pi_{\text{old}} \quad (\text{Lower Clip}), \\[4pt]
+0 &amp; \text{if } \pi_\theta &gt; c\,\pi_{\text{old}} \quad (\text{Dual Clip}).
+\end{cases}\]
+
+  <p>这正是 UP 的关键：对正确 rollout 放开探索，对错误 rollout 守住安全。</p>
+
+  <h3 id="up-gxpo">UP-GxPO：一个插件，三种实例化</h3>
+
+  <p>由于只改写正优势分支，UP 可插入任意 group-based 策略优化器。token 级的 <strong>UP-DAPO</strong> 把无界正目标与 DAPO 对负优势的裁剪目标组合（式 14）：</p>
+
+\[J_{\text{UP-DAPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{\sum_i |o_i|} \sum_{i}\sum_{t}
+\begin{cases}
+\hat{A}_{i,t}\, \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) &amp; \text{if } \hat{A}_{i,t} &gt; 0, \\[4pt]
+\min\!\big( r_{i,t}(\theta)\hat{A}_{i,t},\, \mathrm{clip}(r_{i,t}(\theta), 1 - \epsilon_{\text{low}}, 1 + \epsilon_{\text{high}})\hat{A}_{i,t} \big) &amp; \text{if } \hat{A}_{i,t} \le 0.
+\end{cases}
+\right].\]
+
+  <p>同一原理给出 <strong>UP-GRPO</strong>，其负优势分支保留 GRPO 的对称裁剪与 KL 惩罚（式 15）：</p>
+
+\[J_{\text{UP-GRPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{G} \sum_{i} \frac{1}{|o_i|} \sum_{t}
+\begin{cases}
+\hat{A}_i\, \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) - \beta D_{\text{KL}}(\pi_\theta \,\|\, \pi_{\text{ref}}) &amp; \text{if } \hat{A}_i &gt; 0, \\[4pt]
+\min\!\big( r_{i,t}(\theta)\hat{A}_i,\, \mathrm{clip}(r_{i,t}(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_i \big) - \beta D_{\text{KL}}(\pi_\theta \,\|\, \pi_{\text{ref}}) &amp; \text{if } \hat{A}_i \le 0.
+\end{cases}
+\right].\]
+
+  <p>最后，UP 扩展到序列级得到 <strong>UP-GSPO</strong>，其正优势分支可证明地退化为长度归一化的 REINFORCE 梯度（式 16）：</p>
+
+\[J_{\text{UP-GSPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{G} \sum_{i}
+\begin{cases}
+\hat{A}_i \left( \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \log \pi_\theta(o_{i,t} \mid q, o_{i,&lt;t}) \right) &amp; \text{if } \hat{A}_i &gt; 0, \\[4pt]
+\min\!\big( s_i(\theta)\hat{A}_i,\, \mathrm{clip}(s_i(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_i \big) &amp; \text{if } \hat{A}_i \le 0.
+\end{cases}
+\right].\]
+
+  <div class="callout">
+    <p><strong>一句话总结。</strong> UP 是一个即插即用的目标：它把任意 GxPO 算法的正优势分支替换为 stop-gradient、无裁剪、等价于 REINFORCE 的更新，而负优势分支原封不动，充当安全阀。</p>
+  </div>
+
+  <h2 id="section-8">实验</h2>
+
+  <p>我们在 dense LLM（Qwen3-14B-Base、Qwen3-8B）、MoE 模型（Qwen3-30B-A3B-Base）以及视觉语言模型（Qwen3-VL-8B-Instruct）上评估 UP，实现基于 verl 框架。在所有 setting 上，UP 都能在保持训练稳定的同时提升准确率与探索能力。</p>
+
+  <h3 id="up-dapo-">UP-DAPO 的性能、探索与稳定性分析</h3>
+
+  <p>在 Qwen3-14B-Base 上用 DAPO-17K-MATH 训练并在 AIME24 评估，UP-DAPO 全面优于 DAPO。如 <a href="#fig-2-zh">图 2</a> 所示，峰值 Avg@32 从 \(47.71\) 提升至 \(51.15\)，Maj@32 从 \(58.36\) 提升至 \(60.88\)。<a href="#fig-3-zh">图 3</a> 揭示了增益来源：始终更高的生成熵，加上更高的 Best@32（从 \(80.49\) 提升至 \(81.79\)），共同证实移除 \(\pi_{\text{old}}\) 锚点确实放大了探索能力。更关键的是，<a href="#fig-4-zh">图 4</a> 表明 UP-DAPO 的梯度范数与 KL 散度与 DAPO 相当甚至略低，说明这份额外的探索并未以牺牲稳定为代价。</p>
+
+  <div id="fig-2-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/avg32_plot.png" alt="AIME24 上的 Avg@32 准确率" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Avg@32</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/maj32_plot.png" alt="AIME24 上的 Maj@32 准确率" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) Maj@32</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 2. DAPO 与 UP-DAPO 在 Qwen3-14B-Base 训练过程中的性能对比：(a) AIME24 上的 Avg@32 与 (b) Maj@32 准确率。UP-DAPO 的峰值 Avg@32 为 51.15，DAPO 为 47.71；峰值 Maj@32 为 60.88，DAPO 为 58.36。</p>
+
+  <div id="fig-3-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/entropy_plot.png" alt="DAPO-17K-MATH 上的生成熵" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) 熵</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/best32_plot.png" alt="AIME24 上的 Best@32 准确率" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) Best@32</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 3. UP-DAPO 的探索能力：(a) DAPO-17K-MATH 上生成概率的熵，(b) AIME24 上的 Best@32 准确率。UP-DAPO 维持更高的熵，并把峰值 Best@32 提升至 81.79，DAPO 为 80.49。</p>
+
+  <div id="fig-4-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grad_norm_plot.png" alt="DAPO-17K-MATH 上的梯度范数" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) 梯度范数</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/kl_plot.png" alt="与参考模型之间的 KL 散度" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL 散度</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 4. UP-DAPO 的训练稳定性：(a) 梯度范数，(b) DAPO-17K-MATH 上活跃策略与参考模型之间的 KL 散度。两者都与 DAPO 高度贴合，说明额外的探索不会破坏训练稳定。</p>
+
+  <h3 id="up-dapo--1">UP-DAPO 的消融研究</h3>
+
+  <p>两项消融进一步锁定了两个设计各自的必要性。如 <a href="#fig-5-zh">图 5</a> 所示，仅仅把 DAPO 的上界裁剪放宽到无穷、同时仍保留 \(\pi_{\text{old}}\) 锚点，前期尚能稳定，但在 80 步后爆炸，梯度范数飙升至 \(10^{13}\)；这说明真正让无界更新变得安全的是自锚定比值，而非单纯放宽边界。若把无界更新对称地施加到正负优势两侧，训练在 25 步内即崩溃，证明负优势分支上的裁剪是不可或缺的安全阀。</p>
+
+  <div id="fig-5-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grad_norm_log_plot.png" alt="对数坐标下的梯度范数" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) 梯度范数（对数坐标）</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/kl_log_plot.png" alt="对数坐标下的 KL 散度" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL 散度（对数坐标）</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 5. DAPO、DAPO（$$\epsilon_{\text{high}} = \infty$$）、REINFORCE（off-policy）与 UP-DAPO 在 Qwen3-14B-Base 上的训练稳定性：(a) 梯度范数，(b) KL 散度，均为对数坐标。DAPO（$$\epsilon_{\text{high}} = \infty$$）在约 80 步后爆炸至 $$10^{13}$$，对称无界变体在 25 步内崩溃，而 UP-DAPO 始终稳定。</p>
+
+  <h3 id="rl-">与其他 RL 基线的比较</h3>
+
+  <p>在 Liu et al. 的统一协议下，我们用 Qwen3-8B 在 MATH（难度 3 至 5）上训练，并在五个推理基准上评估 Pass@1。如 <a href="#tab-1-zh">表 1</a> 所示，UP-GRPO 取得最高平均准确率 \(61.31\%\)，比此前最强基线 GSPO（\(60.15\%\)）高出 \(1.16\%\) 的绝对值。UP-GRPO 在五个单项基准中的四个上排名第一或并列第一，在 OlympiadBench 上也极具竞争力，仅次于 ASPO。跨越不同难度基准的稳定增益表明，无界正更新是对 GxPO 家族的普遍改进，而非针对某个基准的特例。<a href="#fig-6-zh">图 6</a> 为这些下游增益提供了解释：UP-GRPO 的策略熵在整段训练中持续上升，而多数基线出现熵坍缩；其 KL 散度也维持在十二种方法中的最低之列。</p>
+
+  <div id="tab-1-zh" class="results-table">
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left">方法</th>
+          <th style="text-align: center">AIME24</th>
+          <th style="text-align: center">AMC23</th>
+          <th style="text-align: center">MATH500</th>
+          <th style="text-align: center">Minerva</th>
+          <th style="text-align: center">OlympiadBench</th>
+          <th style="text-align: center">平均</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">GRPO</td>
+          <td style="text-align: center">35.73</td>
+          <td style="text-align: center">75.00</td>
+          <td style="text-align: center">86.00</td>
+          <td style="text-align: center">30.88</td>
+          <td style="text-align: center">51.34</td>
+          <td style="text-align: center">55.79</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Dr. GRPO</td>
+          <td style="text-align: center">33.33</td>
+          <td style="text-align: center">85.00</td>
+          <td style="text-align: center">85.80</td>
+          <td style="text-align: center">30.15</td>
+          <td style="text-align: center">51.19</td>
+          <td style="text-align: center">57.09</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">CISPO</td>
+          <td style="text-align: center">38.02</td>
+          <td style="text-align: center">87.50</td>
+          <td style="text-align: center">86.60</td>
+          <td style="text-align: center">29.04</td>
+          <td style="text-align: center">55.65</td>
+          <td style="text-align: center">59.36</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">DPPO</td>
+          <td style="text-align: center">40.10</td>
+          <td style="text-align: center">87.50</td>
+          <td style="text-align: center">86.20</td>
+          <td style="text-align: center">30.51</td>
+          <td style="text-align: center">53.27</td>
+          <td style="text-align: center">59.52</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">GMPO</td>
+          <td style="text-align: center">37.50</td>
+          <td style="text-align: center">87.50</td>
+          <td style="text-align: center">87.00</td>
+          <td style="text-align: center">31.25</td>
+          <td style="text-align: center">55.06</td>
+          <td style="text-align: center">59.66</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">GSPO</td>
+          <td style="text-align: center">40.52</td>
+          <td style="text-align: center">85.00</td>
+          <td style="text-align: center">88.20</td>
+          <td style="text-align: center">31.25</td>
+          <td style="text-align: center">55.80</td>
+          <td style="text-align: center">60.15</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">SAPO</td>
+          <td style="text-align: center">39.90</td>
+          <td style="text-align: center">82.50</td>
+          <td style="text-align: center">87.20</td>
+          <td style="text-align: center">30.88</td>
+          <td style="text-align: center">55.65</td>
+          <td style="text-align: center">59.23</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">REINFORCE++</td>
+          <td style="text-align: center">20.52</td>
+          <td style="text-align: center">62.50</td>
+          <td style="text-align: center">78.80</td>
+          <td style="text-align: center">29.78</td>
+          <td style="text-align: center">42.26</td>
+          <td style="text-align: center">46.77</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">RLOO</td>
+          <td style="text-align: center">31.67</td>
+          <td style="text-align: center">80.00</td>
+          <td style="text-align: center">85.20</td>
+          <td style="text-align: center">28.68</td>
+          <td style="text-align: center">50.60</td>
+          <td style="text-align: center">55.23</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">W-REINFORCE</td>
+          <td style="text-align: center">35.52</td>
+          <td style="text-align: center">80.00</td>
+          <td style="text-align: center">85.80</td>
+          <td style="text-align: center">30.15</td>
+          <td style="text-align: center">53.27</td>
+          <td style="text-align: center">56.95</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">ASPO</td>
+          <td style="text-align: center">37.50</td>
+          <td style="text-align: center">85.00</td>
+          <td style="text-align: center">87.60</td>
+          <td style="text-align: center">29.78</td>
+          <td style="text-align: center"><strong>58.48</strong></td>
+          <td style="text-align: center">59.67</td>
+        </tr>
+        <tr>
+          <td style="text-align: left"><strong>UP-GRPO (Ours)</strong></td>
+          <td style="text-align: center"><strong>41.04</strong></td>
+          <td style="text-align: center"><strong>87.50</strong></td>
+          <td style="text-align: center"><strong>88.40</strong></td>
+          <td style="text-align: center"><strong>31.25</strong></td>
+          <td style="text-align: center">58.33</td>
+          <td style="text-align: center"><strong>61.31</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <p class="fig-caption">表 1. UP-GRPO 与十一个 RL 基线在 AIME24、AMC23、MATH500、Minerva、OlympiadBench 上的对比（Pass@1，%），使用 Qwen3-8B 在 MATH（难度 3 至 5）上训练。每列最优用<strong>粗体</strong>。</p>
+
+  <div id="fig-6-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px 8px; row-gap: 0;">
+  <div class="fig-legend" style="margin-top: 0; margin-bottom: -4px;">
+    <img src="/images/blog/up/grpo_family_legend.png" alt="图例：UP-GRPO 与十一个 RL 基线" />
+  </div>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grpo_family_entropy_plot.png" alt="UP-GRPO 与各基线的策略熵" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) 熵</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/grpo_family_kl_plot.png" alt="UP-GRPO 与各基线的 KL 散度" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL 散度</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 6. UP-GRPO 与十一个 RL 基线在 Qwen3-8B 训练过程中的探索能力与训练稳定性：(a) 熵，(b) MATH（难度 3 至 5）上活跃策略与参考模型之间的 KL 散度。多数基线出现熵坍缩，而 UP-GRPO 的熵持续上升，且 KL 散度维持在最低之列。</p>
+
+  <h3 id="up-">UP 在算法、架构与模态上的通用性</h3>
+
+  <p>UP 是通用插件，而非 token 级的技巧。在 <strong>MoE</strong> 模型 Qwen3-30B-A3B-Base 上，<a href="#fig-7-zh">图 7</a> 显示 UP-GSPO 把 AIME24 的峰值 Avg@32 从 GSPO 的 \(52.71\%\) 提升至 \(55.73\%\)，绝对提升 \(3.02\%\)，同时 KL 散度与基线几乎一致。在 <strong>视觉语言</strong> 模型 Qwen3-VL-8B-Instruct 上用 Geometry3K 训练，<a href="#fig-8-zh">图 8</a> 显示 UP-GRPO 把准确率从 GRPO 的 \(59.30\%\) 提升至 \(62.60\%\)，绝对提升 \(3.30\%\)，同样没有引入任何额外不稳定。这两个 setting 共同表明，无论优化粒度（token 级到序列级）、模型架构（dense 到 MoE）还是模态（语言到多模态），UP 都能化解探索与稳定的两难。</p>
+
+  <div id="fig-7-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/gspo_avg32_plot.png" alt="GSPO 与 UP-GSPO 在 AIME24 上的 Avg@32 准确率" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) Avg@32</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/gspo_kl_plot.png" alt="GSPO 与 UP-GSPO 的 KL 散度" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL 散度</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 7. GSPO 与 UP-GSPO 在 MoE 模型 Qwen3-30B-A3B-Base 训练过程中的性能与稳定性：(a) AIME24 上的 Avg@32 准确率，(b) DAPO-17K-MATH 上的 KL 散度。UP-GSPO 把峰值 Avg@32 从 52.71 提升至 55.73，且 KL 轨迹几乎一致。</p>
+
+  <div id="fig-8-zh" class="fig-grid" style="grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: 94%; margin: 1.2em auto 0.1em; padding: 6px 12px; row-gap: 0;">
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/vlm_avg32_plot.png" alt="GRPO 与 UP-GRPO 在 Geometry3K 上的准确率" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(a) 准确率</figcaption>
+  </figure>
+  <figure style="min-width: 0; margin: 0;">
+    <img src="/images/blog/up/vlm_kl_plot.png" alt="GRPO 与 UP-GRPO 在 Geometry3K 上的 KL 散度" style="width: 100%; height: auto; max-height: none; max-width: 100%; display: block; margin: 0;" />
+    <figcaption style="white-space: normal; margin: 0;">(b) KL 散度</figcaption>
+  </figure>
+</div>
+  <p class="fig-caption">图 8. GRPO 与 UP-GRPO 在视觉语言模型 Qwen3-VL-8B-Instruct（Geometry3K）训练过程中的性能与稳定性：(a) Geometry3K 测试集上的准确率，(b) KL 散度。UP-GRPO 把峰值准确率从 59.30 提升至 62.60，且未引入额外不稳定。</p>
+
+  <h2 id="bibtex-zh">BibTeX</h2>
+
+  <pre class="bibtex-block"><code>@misc{fan2026up,
+      title={UP: Unbounded Positive Asymmetric Optimization for Breaking the Exploration-Stability Dilemma},
+      author={Chongyu Fan and Pengfei Liu and Jingjia Huang and Sijia Liu and Yi Lin},
+      year={2026},
+      eprint={2607.XXXXX},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2607.XXXXX},
+}
+</code></pre>
+
+</div>
+
+<script>
+(function () {
+  var REDS = [[255,245,240],[254,224,210],[252,146,114],[222,45,38],[103,0,13]];
+  var BLUES = [[247,251,255],[198,219,239],[107,174,214],[33,113,181],[8,48,107]];
+  var C_RED = '#e8110b', C_BLUE = '#1414e0', C_PURPLE = '#8e1ca8';
+  var C_DIAG = '#8b95a3', C_AXIS = '#94a3b8', C_TICK = '#94a3b8', C_TXT = '#475569';
+  var C_CLIPBASE = [244, 244, 245], C_HATCH = 'rgba(120,130,145,0.42)';
+
+  // fixed backing-store geometry (independent of clientWidth so hidden ZH block renders)
+  var W = 760, H = 700;
+  var PADL = 104, PADR = 128, PADT = 30, PADB = 124;
+  var PW = W - PADL - PADR;   // 528
+  var PH = H - PADT - PADB;   // 546
+  var X0 = PADL, Y0 = PADT;
+
+  function gx(pt) { return X0 + pt * PW; }
+  function gy(po) { return Y0 + (1 - po) * PH; }
+  function ramp(stops, t) {
+    t = t < 0 ? 0 : (t > 1 ? 1 : t);
+    var s = t * (stops.length - 1), i = Math.floor(s);
+    if (i >= stops.length - 1) return stops[stops.length - 1];
+    var f = s - i, a = stops[i], b = stops[i + 1];
+    return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+  }
+  function fmt(v) { return (Math.abs(v) < 0.0005 ? 0 : v).toFixed(3); }
+
+  // ---- rich text with real subscripts (canvas cannot render HTML <sub>) ----
+  // A "rich" string is an array of runs: [{t:'π'}, {t:'old', sub:true}, ...]
+  var PI_TH = [{ t: '\u03c0' }, { t: '\u03b8', sub: true }];
+  var PI_OLD = [{ t: '\u03c0' }, { t: 'old', sub: true }];
+  function fontPx(font) { var m = font.match(/(\d+(?:\.\d+)?)px/); return m ? parseFloat(m[1]) : 12; }
+  function subFontOf(font) {
+    var sz = fontPx(font);
+    return font.replace(/(\d+(?:\.\d+)?)px/, (Math.round(sz * 0.66 * 10) / 10) + 'px');
+  }
+  function toSegs(x) { return typeof x === 'string' ? [{ t: x }] : x; }
+  function measureRich(ctx, segs, font) {
+    var sub = subFontOf(font), w = 0;
+    segs.forEach(function (s) { ctx.font = s.sub ? sub : font; w += ctx.measureText(s.t).width; });
+    return w;
+  }
+  function drawRich(ctx, segs, x, y, font, color) {
+    var sub = subFontOf(font), drop = fontPx(font) * 0.22, cx = x;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = color;
+    segs.forEach(function (s) {
+      ctx.font = s.sub ? sub : font;
+      ctx.fillText(s.t, cx, s.sub ? y + drop : y);
+      cx += ctx.measureText(s.t).width;
+    });
+  }
+  function drawRichCentered(ctx, segs, cx, y, font, color) {
+    drawRich(ctx, segs, cx - measureRich(ctx, segs, font) / 2, y, font, color);
+  }
+
+  // Cap(pi_theta, pi_old) for the current mode
+  function capAt(pt, po, st) {
+    if (st.sign === 'pos') {
+      if (st.method === 'up') return Math.max(0, 1 - pt);
+      var bnd = Math.min(1, po * (1 + st.ehigh));
+      return Math.max(0, bnd - pt);
+    }
+    var hi = pt / (1 - st.elow); // pi_old upper bound (above -> Lower Clip)
+    var lo = pt / st.c;          // pi_old lower bound (below -> Dual Clip)
+    if (po > hi || po < lo) return 0;
+    return Math.max(0, pt - (1 - st.elow) * po);
+  }
+  function maxCap(st) {
+    if (st.sign === 'neg') return Math.max(1e-6, 1 - (1 - st.elow) / st.c);
+    return 1;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+  function boxLabel(ctx, cx, cy, lines, color, font) {
+    lines = lines.map(toSegs);
+    var lh = fontPx(font) + 12, pad = 13, wmax = 0;
+    lines.forEach(function (ln) { wmax = Math.max(wmax, measureRich(ctx, ln, font)); });
+    var bw = wmax + pad * 2, bh = lines.length * lh + pad * 2 - 4;
+    var bx = cx - bw / 2, by = cy - bh / 2;
+    bx = Math.max(X0 + 2, Math.min(X0 + PW - bw - 2, bx));
+    by = Math.max(Y0 + 2, Math.min(Y0 + PH - bh - 2, by));
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.strokeStyle = 'rgba(203,213,225,0.95)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, bx, by, bw, bh, 8);
+    ctx.fill(); ctx.stroke();
+    for (var i = 0; i < lines.length; i++) {
+      drawRichCentered(ctx, lines[i], bx + bw / 2, by + pad + lh / 2 + i * lh - 1, font, color);
+    }
+  }
+  function hatch(ctx, poly) {
+    ctx.save();
+    ctx.beginPath();
+    poly.forEach(function (p, i) {
+      var X = gx(p[0]), Y = gy(p[1]);
+      if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+    });
+    ctx.closePath();
+    ctx.clip();
+    ctx.strokeStyle = C_HATCH;
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    var step = 13, x;
+    for (x = X0 - PH; x < X0 + PW; x += step) {
+      ctx.moveTo(x, Y0 + PH); ctx.lineTo(x + PH, Y0);
+    }
+    for (x = X0; x < X0 + PW + PH; x += step) {
+      ctx.moveTo(x, Y0 + PH); ctx.lineTo(x - PH, Y0);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+  function seg(ctx, p0, p1, color, width, dash) {
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.setLineDash(dash || []);
+    ctx.beginPath();
+    ctx.moveTo(gx(p0[0]), gy(p0[1]));
+    ctx.lineTo(gx(p1[0]), gy(p1[1]));
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function draw(cv, st, lang) {
+    var ctx = cv.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, W, H);
+
+    var stops = st.sign === 'pos' ? REDS : BLUES;
+    var mx = maxCap(st);
+
+    // heatmap
+    var img = ctx.createImageData(PW, PH), d = img.data;
+    for (var yy = 0; yy < PH; yy++) {
+      var po = 1 - (yy + 0.5) / PH;
+      for (var xx = 0; xx < PW; xx++) {
+        var pt = (xx + 0.5) / PW;
+        var cap = capAt(pt, po, st);
+        var idx = (yy * PW + xx) * 4;
+        if (cap > 1e-9) {
+          var col = ramp(stops, cap / mx);
+          d[idx] = col[0]; d[idx + 1] = col[1]; d[idx + 2] = col[2]; d[idx + 3] = 255;
+        } else {
+          d[idx] = C_CLIPBASE[0]; d[idx + 1] = C_CLIPBASE[1]; d[idx + 2] = C_CLIPBASE[2]; d[idx + 3] = 255;
+        }
+      }
+    }
+    ctx.putImageData(img, X0, Y0);
+
+    // clip-region hatching
+    if (st.sign === 'pos') {
+      if (st.method === 'dapo') {
+        var yb = 1 / (1 + st.ehigh); // pi_old at pt=1 on red line
+        hatch(ctx, [[0, 0], [1, 0], [1, yb]]);
+      }
+    } else {
+      var xTop = 1 - st.elow;            // pt where blue line hits po=1
+      hatch(ctx, [[0, 0], [xTop, 1], [0, 1]]);       // Lower Clip
+      hatch(ctx, [[0, 0], [1, 0], [1, 1 / st.c]]);   // Dual Clip
+    }
+
+    // grey dashed diagonal pi_old = pi_theta
+    seg(ctx, [0, 0], [1, 1], C_DIAG, 2.2, [8, 6]);
+
+    // boundary lines + boxed labels
+    var lblFont = 'italic 32px "Source Serif Pro", Georgia, serif';
+    var clipFont = '600 30px Inter, "Segoe UI", sans-serif';
+    if (st.sign === 'pos') {
+      if (st.method === 'dapo') {
+        var yb2 = 1 / (1 + st.ehigh);
+        seg(ctx, [0, 0], [1, yb2], C_RED, 5, []);
+        boxLabel(ctx, gx(0.5), gy(0.92),
+          [[{ t: 'Cap = min(1, ' }, { t: '\u03c0' }, { t: 'old', sub: true }, { t: '(1 + ' }, { t: '\u03b5' }, { t: 'high', sub: true }, { t: ')) \u2212 ' }, { t: '\u03c0' }, { t: '\u03b8', sub: true }]],
+          '#8f1a12', lblFont);
+        boxLabel(ctx, gx(0.75), gy(0.24), ['Upper Clip', '(Cap = 0)'], '#334155', clipFont);
+      } else {
+        boxLabel(ctx, gx(0.52), gy(0.5),
+          [[{ t: 'Cap = 1 \u2212 ' }, { t: '\u03c0' }, { t: '\u03b8', sub: true }]], '#8f1a12', lblFont);
+      }
+    } else {
+      var xTop2 = 1 - st.elow;
+      seg(ctx, [0, 0], [xTop2, 1], C_BLUE, 5, []);
+      seg(ctx, [0, 0], [1, 1 / st.c], C_PURPLE, 4.5, [11, 6, 3, 6]);
+      boxLabel(ctx, gx(0.56), gy(0.52),
+        [[{ t: 'Cap = ' }, { t: '\u03c0' }, { t: '\u03b8', sub: true }, { t: ' \u2212 ' }, { t: '\u03c0' }, { t: 'old', sub: true }, { t: '(1 \u2212 ' }, { t: '\u03b5' }, { t: 'low', sub: true }, { t: ')' }]],
+        '#15347a', lblFont);
+      boxLabel(ctx, gx(0.24), gy(0.86), ['Lower Clip', '(Cap = 0)'], '#334155', clipFont);
+      boxLabel(ctx, gx(0.8), gy(0.15), ['Dual Clip', '(Cap = 0)'], '#7a1690', clipFont);
+    }
+
+    // axes frame
+    ctx.strokeStyle = C_AXIS;
+    ctx.lineWidth = 1.2;
+    ctx.setLineDash([]);
+    ctx.strokeRect(X0, Y0, PW, PH);
+
+    // ticks + tick labels
+    var ticks = [0, 0.2, 0.4, 0.6, 0.8, 1];
+    ctx.fillStyle = C_TICK;
+    ctx.font = '30px Inter, "Segoe UI", sans-serif';
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'center';
+    ticks.forEach(function (t) {
+      var X = gx(t);
+      ctx.beginPath(); ctx.moveTo(X, Y0 + PH); ctx.lineTo(X, Y0 + PH + 7);
+      ctx.strokeStyle = C_AXIS; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.fillText(t.toFixed(1), X, Y0 + PH + 38);
+    });
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ticks.forEach(function (t) {
+      var Y = gy(t);
+      ctx.beginPath(); ctx.moveTo(X0 - 7, Y); ctx.lineTo(X0, Y);
+      ctx.strokeStyle = C_AXIS; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.fillText(t.toFixed(1), X0 - 14, Y);
+    });
+
+    // axis titles (with real subscripts)
+    // x-axis title: big symbol + descriptive text on one line, spaced apart so they never overlap
+    var axisSym = 'italic 40px "Source Serif Pro", Georgia, serif';
+    var xDescFont = '24px Inter, "Segoe UI", sans-serif';
+    var xDesc = lang === 'zh' ? '\uff08\u5f53\u524d\u7b56\u7565\u6982\u7387\uff09' : '(current policy probability)';
+    var xSymW = measureRich(ctx, PI_TH, axisSym);
+    ctx.font = xDescFont;
+    var xDescW = ctx.measureText(xDesc).width;
+    var xGap = 20;
+    var xTitleStart = X0 + PW / 2 - (xSymW + xGap + xDescW) / 2;
+    var xTitleY = H - 42;
+    drawRich(ctx, PI_TH, xTitleStart, xTitleY, axisSym, C_TXT);
+    ctx.fillStyle = C_TXT;
+    ctx.font = xDescFont;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(xDesc, xTitleStart + xSymW + xGap, xTitleY);
+    ctx.save();
+    ctx.translate(24, Y0 + PH / 2);
+    ctx.rotate(-Math.PI / 2);
+    drawRichCentered(ctx, PI_OLD, 0, 0, axisSym, C_TXT);
+    ctx.restore();
+
+    // colorbar
+    var cbx = X0 + PW + 26, cbw = 22, cbTop = Y0 + 10, cbH = PH - 20;
+    var grad = ctx.createLinearGradient(0, cbTop, 0, cbTop + cbH);
+    for (var g = 0; g <= 10; g++) {
+      var cc = ramp(stops, 1 - g / 10);
+      grad.addColorStop(g / 10, 'rgb(' + Math.round(cc[0]) + ',' + Math.round(cc[1]) + ',' + Math.round(cc[2]) + ')');
+    }
+    ctx.fillStyle = grad;
+    ctx.fillRect(cbx, cbTop, cbw, cbH);
+    ctx.strokeStyle = C_AXIS; ctx.lineWidth = 1.2;
+    ctx.strokeRect(cbx, cbTop, cbw, cbH);
+    ctx.fillStyle = C_TICK;
+    ctx.font = '24px Inter, "Segoe UI", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(mx.toFixed(2), cbx + cbw + 8, cbTop);
+    ctx.fillText((mx / 2).toFixed(2), cbx + cbw + 8, cbTop + cbH / 2);
+    ctx.fillText('0', cbx + cbw + 8, cbTop + cbH);
+    ctx.fillStyle = C_TXT;
+    ctx.font = '600 26px Inter, "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('Cap', cbx + cbw / 2, cbTop - 12);
+  }
+
+  function initRoot(root) {
+    if (root.dataset.capInit) return;
+    root.dataset.capInit = '1';
+    var lang = root.dataset.lang || 'en';
+    var cv = root.querySelector('.cap-canvas');
+    if (!cv) return;
+    var st = { method: 'dapo', sign: 'pos', ehigh: 0.28, elow: 0.2, c: 3 };
+    var vals = {};
+    root.querySelectorAll('.cap-slider-val').forEach(function (v) { vals[v.getAttribute('data-val')] = v; });
+    var caption = root.querySelector('[data-out="caption"]');
+    var hover = root.querySelector('[data-out="hover"]');
+    var hoverDefault = hover ? hover.innerHTML : '';
+
+    function dimRows() {
+      root.querySelectorAll('.cap-slider-row').forEach(function (r) {
+        var p = r.getAttribute('data-param-row'), dim = false;
+        if (st.sign === 'pos') {
+          if (p === 'elow' || p === 'c') dim = true;
+          if (p === 'ehigh' && st.method === 'up') dim = true;
+        } else if (p === 'ehigh') { dim = true; }
+        r.classList.toggle('is-dim', dim);
+      });
+      var mg = root.querySelector('.cap-seg-group[data-group="method"]');
+      if (mg) {
+        var off = (st.sign === 'neg');
+        mg.style.opacity = off ? '0.45' : '1';
+        var mseg = mg.querySelector('.cap-seg');
+        if (mseg) { mseg.style.pointerEvents = off ? 'none' : 'auto'; mseg.title = off ? 'DAPO and UP-DAPO are identical for A \u2264 0' : ''; }
+      }
+    }
+
+    function setCaption() {
+      if (!caption) return;
+      var t = '';
+      if (st.sign === 'pos' && st.method === 'dapo') {
+        t = lang === 'zh'
+          ? 'DAPO\uff08A &gt; 0\uff09\uff1a\u9884\u7b97\u5c40\u9650\u5728\u7ea2\u7ebf <b>\u03c0<sub>\u03b8</sub> = (1+\u03b5<sub>high</sub>)\u03c0<sub>old</sub></b> \u4e0a\u65b9\u7684\u7ea2\u8272\u7a84\u5e26\u5185\uff1b\u4e0b\u65b9\u7684 Upper Clip \u533a\u57df Cap = 0\u3002\u9884\u7b97\u968f \u03c0<sub>old</sub> \u7ebf\u6027\u6536\u7f29\uff0c\u56e0\u6b64\u4f4e \u03c0<sub>old</sub> \u7684\u7a00\u6709 token \u5947\u5c11\u3002'
+          : 'DAPO (A &gt; 0): the budget is confined to the red band above <b>\u03c0<sub>\u03b8</sub> = (1+\u03b5<sub>high</sub>)\u03c0<sub>old</sub></b>; the Upper Clip region below it has Cap = 0. Because the budget shrinks linearly with \u03c0<sub>old</sub>, rare low \u03c0<sub>old</sub> tokens are starved.';
+      } else if (st.sign === 'pos' && st.method === 'up') {
+        t = lang === 'zh'
+          ? 'UP-DAPO\uff08A &gt; 0\uff09\uff1a\u79fb\u9664 \u03c0<sub>old</sub> \u951a\u70b9\u540e\uff0c\u9884\u7b97\u53d8\u4e3a\u5b8c\u6574\u7684 <b>Cap = 1 \u2212 \u03c0<sub>\u03b8</sub></b>\uff08\u7ad6\u5411\u8272\u5e26\uff09\uff0c\u4e0e \u03c0<sub>old</sub> \u65e0\u5173\u4e14\u65e0\u88c1\u526a\u3002\u63a2\u7d22\u4e0d\u518d\u88ab\u5386\u53f2\u7b56\u7565\u9650\u4f4f\u3002'
+          : 'UP-DAPO (A &gt; 0): with the \u03c0<sub>old</sub> anchor removed, the budget becomes the full <b>Cap = 1 \u2212 \u03c0<sub>\u03b8</sub></b> (vertical bands), independent of \u03c0<sub>old</sub> and free of clipping. Exploration is no longer throttled by history.';
+      } else {
+        t = lang === 'zh'
+          ? '\u975e\u6b63\u4f18\u52bf\uff08A \u2264 0\uff09\uff1aDAPO \u4e0e UP-DAPO \u5b8c\u5168\u4e00\u81f4\u3002\u9884\u7b97 <b>Cap = \u03c0<sub>\u03b8</sub> \u2212 (1\u2212\u03b5<sub>low</sub>)\u03c0<sub>old</sub></b> \u4ec5\u5728\u84dd\u8272\u697d\u5f62\u5185\u6709\u6548\uff1b\u84dd\u7ebf\u4e0a\u65b9\u4e3a Lower Clip\uff0c\u7d2b\u7ebf\u4e0b\u65b9\u4e3a Dual Clip\uff0c\u4e24\u5904 Cap = 0\u3002'
+          : 'Non-positive advantage (A \u2264 0): DAPO and UP-DAPO are identical. The budget <b>Cap = \u03c0<sub>\u03b8</sub> \u2212 (1\u2212\u03b5<sub>low</sub>)\u03c0<sub>old</sub></b> is active only inside the blue wedge; above the blue line lies the Lower Clip and below the purple line the Dual Clip, both with Cap = 0.';
+      }
+      caption.innerHTML = t;
+    }
+
+    function render() { draw(cv, st, lang); dimRows(); setCaption(); }
+
+    root.querySelectorAll('.cap-slider').forEach(function (s) {
+      s.addEventListener('input', function () {
+        var p = s.getAttribute('data-param');
+        st[p] = parseFloat(s.value);
+        var out = vals[p];
+        if (out) out.textContent = (p === 'c') ? st[p].toFixed(1) : st[p].toFixed(2);
+        render();
+      });
+    });
+    root.querySelectorAll('.cap-seg').forEach(function (sg) {
+      var kind = sg.getAttribute('data-seg');
+      sg.querySelectorAll('.cap-seg-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          sg.querySelectorAll('.cap-seg-btn').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          st[kind] = btn.getAttribute('data-val');
+          render();
+        });
+      });
+    });
+
+    if (hover) {
+      cv.addEventListener('mousemove', function (e) {
+        var rect = cv.getBoundingClientRect();
+        if (!rect.width) return;
+        var sx = W / rect.width, sy = H / rect.height;
+        var cx = (e.clientX - rect.left) * sx, cy = (e.clientY - rect.top) * sy;
+        var pt = (cx - X0) / PW, po = 1 - (cy - Y0) / PH;
+        if (pt < 0 || pt > 1 || po < 0 || po > 1) { hover.innerHTML = hoverDefault; return; }
+        var cap = capAt(pt, po, st);
+        hover.innerHTML = '\u03c0<sub>\u03b8</sub> = <b>' + fmt(pt) + '</b>, \u03c0<sub>old</sub> = <b>' + fmt(po) + '</b> \u2192 Cap = <b>' + fmt(cap) + '</b>';
+      });
+      cv.addEventListener('mouseleave', function () { hover.innerHTML = hoverDefault; });
+    }
+
+    render();
+  }
+
+  function initAll() {
+    var roots = document.querySelectorAll('.cap-explorer');
+    for (var i = 0; i < roots.length; i++) initRoot(roots[i]);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+})();
+</script>]]></content><author><name>Chongyu Fan</name></author><category term="reinforcement-learning" /><category term="llm-reasoning" /><category term="importance-sampling" /><summary type="html"><![CDATA[IS-based RL for LLM reasoning faces an exploration-stability dilemma: pure importance sampling explodes, and the clipping used to tame it ties a token's update budget to the old policy. By formalizing the Probability Capacity and anchoring the policy to itself with a stop-gradient, Unbounded Positive Asymmetric Optimization (UP) unleashes stable, unclipped gradients for correct rollouts while keeping clipping as a safeguard for wrong ones. UP is a plug-and-play objective that improves DAPO, GRPO, and GSPO across dense, MoE, and vision-language models.]]></summary></entry><entry><title type="html">Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR</title><link href="https://chongyu-fan.netlify.app/posts/pion/" rel="alternate" type="text/html" title="Rethinking Muon Beyond Pretraining: Spectral Failures and High Pass Remedies for VLA and RLVR" /><published>2026-05-15T00:00:00-07:00</published><updated>2026-05-15T00:00:00-07:00</updated><id>https://chongyu-fan.netlify.app/posts/pion</id><content type="html" xml:base="https://chongyu-fan.netlify.app/posts/pion/"><![CDATA[<div class="post-lang post-lang-en">
 
   <div class="tldr">
 

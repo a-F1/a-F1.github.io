@@ -120,7 +120,7 @@ redirect_from:
     <div class="news-item">
         <div class="news-date">2026.07</div>
         <div class="news-content">
-            ✨ One first-author paper <a href="/posts/up/">UP</a>, an unbounded positive asymmetric objective that breaks the exploration-stability dilemma in RL, on arXiv! Read the <a href="/posts/up/">blog</a>.
+            ✨ One first-author paper <a href="/posts/up/">UP</a>, an unbounded positive asymmetric objective for RL, on arXiv! Read the <a href="/posts/up/">blog</a>.
         </div>
     </div>
 
